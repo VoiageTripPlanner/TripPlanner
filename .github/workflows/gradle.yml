@@ -45,8 +45,8 @@ jobs:
         gradle-version: '8.5'
 
     - name: Build with Gradle 8.5
-      run: cd demo
-        | gradle build
+      run: gradle build
+      working-directory: /home/runner/work/TripPlanner/TripPlanner/demo
 
   dependency-submission:
 
