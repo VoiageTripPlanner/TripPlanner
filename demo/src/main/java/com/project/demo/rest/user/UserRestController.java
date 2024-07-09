@@ -47,12 +47,12 @@ public class UserRestController {
         return UserRepository.findById(id)
                 .map(existingUser -> {
                     existingUser.setName(user.getName());
-                    existingUser.setLastname(user.getLastname());
+                    existingUser.setLast_name(user.getLast_name());
                     existingUser.setEmail(user.getEmail());
                     return UserRepository.save(existingUser);
                 })
                 .orElseGet(() -> {
-                    user.setId(id);
+                    user.setUser_id(id);
                     return UserRepository.save(user);
                 });
     }

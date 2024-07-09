@@ -6,66 +6,98 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.util.Date;
 
-@Table(name = "rol")
+@Table(name = "VO_UserRole")
 @Entity
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(nullable = false)
-    private Integer id;
+    private Integer role_id;
 
     @Column(unique = true, nullable = false)
     @Enumerated(EnumType.STRING)
     private RoleEnum name;
 
     @Column(nullable = false)
-    private String description;
+    private String abbreviation;
+
+    @Column(nullable = false)
+    private Boolean operational;
 
     @CreationTimestamp
-    @Column(updatable = false, name = "created_at")
-    private Date createdAt;
+    @Column(updatable = false, name = "creation_datetime")
+    private Date creation_datetime;
 
+    @Column(nullable = false)
+    private Long creation_responsible;
     @UpdateTimestamp
-    @Column(name = "updated_at")
-    private Date updatedAt;
+    @Column(name = "last_update_datetime")
+    private Date last_update_datetime;
 
-    public Integer getId() {
-        return id;
+    @Column(nullable = false)
+    private Long update_responsible;
+
+    public Integer getRole_id() {
+        return role_id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setRole_id(Integer role_id) {
+        this.role_id = role_id;
     }
 
-    public RoleEnum getName() {
+    public RoleEnum getRole_name() {
         return name;
     }
 
-    public void setName(RoleEnum name) {
-        this.name = name;
+    public void setRole_name(RoleEnum role_name) {
+        this.name = role_name;
     }
 
-    public String getDescription() {
-        return description;
+    public String getAbbreviation() {
+        return abbreviation;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setAbbreviation(String abbreviation) {
+        this.abbreviation = abbreviation;
     }
 
-    public Date getCreatedAt() {
-        return createdAt;
+    public Boolean getOperational() {
+        return operational;
     }
 
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
+    public void setOperational(Boolean operational) {
+        this.operational = operational;
     }
 
-    public Date getUpdatedAt() {
-        return updatedAt;
+    public Date getCreation_datetime() {
+        return creation_datetime;
     }
 
-    public void setUpdatedAt(Date updatedAt) {
-        this.updatedAt = updatedAt;
+    public void setCreation_datetime(Date creation_datetime) {
+        this.creation_datetime = creation_datetime;
+    }
+
+    public Long getCreation_responsible() {
+        return creation_responsible;
+    }
+
+    public void setCreation_responsible(Long creation_responsible) {
+        this.creation_responsible = creation_responsible;
+    }
+
+    public Date getLast_update_datetime() {
+        return last_update_datetime;
+    }
+
+    public void setLast_update_datetime(Date last_update_datetime) {
+        this.last_update_datetime = last_update_datetime;
+    }
+
+    public Long getUpdate_responsible() {
+        return update_responsible;
+    }
+
+    public void setUpdate_responsible(Long update_responsible) {
+        this.update_responsible = update_responsible;
     }
 }

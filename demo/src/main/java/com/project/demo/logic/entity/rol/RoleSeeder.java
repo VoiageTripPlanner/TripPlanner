@@ -23,11 +23,11 @@ public class RoleSeeder implements ApplicationListener<ContextRefreshedEvent> {
     }
 
     private void loadRoles() {
-        RoleEnum[] roleNames = new RoleEnum[] { RoleEnum.USER, RoleEnum.ADMIN, RoleEnum.SUPER_ADMIN };
+        RoleEnum[] roleNames = new RoleEnum[] { RoleEnum.USER, RoleEnum.ADMIN };
         Map<RoleEnum, String> roleDescriptionMap = Map.of(
                 RoleEnum.USER, "Default user role",
-                RoleEnum.ADMIN, "Administrator role",
-                RoleEnum.SUPER_ADMIN, "Super Administrator role"
+                RoleEnum.ADMIN, "Administrator role"
+//                RoleEnum.SUPER_ADMIN, "Super Administrator role"
         );
 
         Arrays.stream(roleNames).forEach((roleName) -> {
@@ -36,8 +36,11 @@ public class RoleSeeder implements ApplicationListener<ContextRefreshedEvent> {
             optionalRole.ifPresentOrElse(System.out::println, () -> {
                 Role roleToCreate = new Role();
 
-                roleToCreate.setName(roleName);
-                roleToCreate.setDescription(roleDescriptionMap.get(roleName));
+                roleToCreate.setRole_name(roleName);
+                roleToCreate.setAbbreviation(roleName.name().substring(0, 3));
+                roleToCreate.setOperational(true);
+                roleToCreate.setCreation_responsible(1L);
+                roleToCreate.setUpdate_responsible(1L);
 
                 roleRepository.save(roleToCreate);
             });
