@@ -51,6 +51,7 @@ jobs:
   dependency-submission:
 
     runs-on: ubuntu-latest
+    needs: build
     permissions:
       contents: write
 
@@ -61,11 +62,6 @@ jobs:
       with:
         java-version: '21'
         distribution: 'adopt'
-
-    - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@417ae3ccd767c252f5661f1ace9f835f9654f2b5 # v3.1.0
-      with:
-        gradle-version: '8.5'
 
     # Generates and submits a dependency graph, enabling Dependabot Alerts for all project dependencies.
     # See: https://github.com/gradle/actions/blob/main/dependency-submission/README.md
