@@ -6,8 +6,9 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.util.Date;
 
-@Table(name = "VO_UserRole")
+
 @Entity
+@Table(name = "VO_UserRole")
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -29,13 +30,13 @@ public class Role {
     private Date creation_datetime;
 
     @Column(nullable = false)
-    private Long creation_responsible;
+    private Integer creation_responsible;
     @UpdateTimestamp
     @Column(name = "last_update_datetime")
     private Date last_update_datetime;
 
     @Column(nullable = false)
-    private Long update_responsible;
+    private Integer update_responsible;
 
     public Integer getRole_id() {
         return role_id;
@@ -77,11 +78,11 @@ public class Role {
         this.creation_datetime = creation_datetime;
     }
 
-    public Long getCreation_responsible() {
+    public Integer getCreation_responsible() {
         return creation_responsible;
     }
 
-    public void setCreation_responsible(Long creation_responsible) {
+    public void setCreation_responsible(Integer creation_responsible) {
         this.creation_responsible = creation_responsible;
     }
 
@@ -93,11 +94,11 @@ public class Role {
         this.last_update_datetime = last_update_datetime;
     }
 
-    public Long getUpdate_responsible() {
+    public Integer getUpdate_responsible() {
         return update_responsible;
     }
 
-    public void setUpdate_responsible(Long update_responsible) {
+    public void setUpdate_responsible(Integer update_responsible) {
         this.update_responsible = update_responsible;
     }
 }

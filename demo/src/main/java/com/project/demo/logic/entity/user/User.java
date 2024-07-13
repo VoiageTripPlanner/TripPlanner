@@ -45,13 +45,13 @@ public class User implements UserDetails {
     private Date creation_datetime;
 
     @Column(nullable = false)
-    private Long creation_responsible;
+    private Integer creation_responsible;
     @UpdateTimestamp
     @Column(name = "updated_at")
     private Date last_update_datetime;
 
-    @Column(nullable = false)
-    private Long update_responsible;
+    @Column(nullable = true)
+    private Integer update_responsible;
 
 //    @OneToMany(mappedBy = "vo_country")
 
@@ -148,11 +148,11 @@ public class User implements UserDetails {
         this.creation_datetime = creation_datetime;
     }
 
-    public Long getCreation_responsible() {
+    public Integer getCreation_responsible() {
         return creation_responsible;
     }
 
-    public void setCreation_responsible(Long creation_responsible) {
+    public void setCreation_responsible(Integer creation_responsible) {
         this.creation_responsible = creation_responsible;
     }
 
@@ -164,11 +164,11 @@ public class User implements UserDetails {
         this.last_update_datetime = last_update_datetime;
     }
 
-    public Long getUpdate_responsible() {
+    public Integer getUpdate_responsible() {
         return update_responsible;
     }
 
-    public void setUpdate_responsible(Long update_responsible) {
+    public void setUpdate_responsible(Integer update_responsible) {
         this.update_responsible = update_responsible;
     }
 

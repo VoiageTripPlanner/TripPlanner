@@ -39,8 +39,8 @@ public class RoleSeeder implements ApplicationListener<ContextRefreshedEvent> {
                 roleToCreate.setRole_name(roleName);
                 roleToCreate.setAbbreviation(roleName.name().substring(0, 3));
                 roleToCreate.setOperational(true);
-                roleToCreate.setCreation_responsible(1L);
-                roleToCreate.setUpdate_responsible(1L);
+                roleToCreate.setCreation_responsible(1);
+                roleToCreate.setUpdate_responsible(1);
 
                 roleRepository.save(roleToCreate);
             });
