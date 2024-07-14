@@ -46,6 +46,7 @@ public class User implements UserDetails {
 
     @Column(nullable = false)
     private Long creation_responsible;
+
     @UpdateTimestamp
     @Column(name = "updated_at")
     private Date last_update_datetime;
@@ -58,6 +59,9 @@ public class User implements UserDetails {
     @ManyToOne
     @JoinColumn(name = "role_id", referencedColumnName = "role_id", nullable = false)
     private Role role;
+
+    @Column(nullable = true)
+    private String otp;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -170,6 +174,14 @@ public class User implements UserDetails {
 
     public void setUpdate_responsible(Long update_responsible) {
         this.update_responsible = update_responsible;
+    }
+
+    public String getOtp() {
+        return otp;
+    }
+
+    public void setOtp(String otp) {
+        this.otp = otp;
     }
 
     @Override
