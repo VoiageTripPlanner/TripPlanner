@@ -18,7 +18,7 @@ public class Country {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long country_id;
+    private Integer country_id;
 
     @Column(nullable = true)
     private String country_name;
@@ -31,13 +31,14 @@ public class Country {
 
 
     // Constructors
-    public Country() {}
+    public Country() {
+    }
 
-    public Long getCountry_id() {
+    public Integer getCountry_id() {
         return country_id;
     }
 
-    public void setCountry_id(Long country_id) {
+    public void setCountry_id(Integer country_id) {
         this.country_id = country_id;
     }
 
@@ -65,11 +66,7 @@ public class Country {
         this.operational = operational;
     }
 
+    ;
 
-
-//    public Country setRole(Country country) {
-//        this.role = role;
-//
-//        return this;
-//    }
 }
+

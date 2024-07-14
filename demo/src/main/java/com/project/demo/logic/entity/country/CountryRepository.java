@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface CountryRepository extends JpaRepository<Country, Long>  {
     @Query("SELECT u FROM Country u WHERE LOWER(u.country_name) LIKE %?1%")
-    List<Country> findUsersWithCharacterInName(String character);
+    List<Country> findCountriesWithCharacterInName(String character);
 
     @Query("SELECT u FROM Country u WHERE u.country_name = ?1")
     Optional<Country> findByName(String name);

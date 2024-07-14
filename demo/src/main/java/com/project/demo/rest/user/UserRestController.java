@@ -21,7 +21,7 @@ public class UserRestController {
     private PasswordEncoder passwordEncoder;
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('ADMIN', 'SUPER_ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public List<User> getAllUsers() {
         return UserRepository.findAll();
     }
@@ -43,8 +43,8 @@ public class UserRestController {
     }
 
     @PutMapping("/{id}")
-    public User updateUser(@PathVariable Long id, @RequestBody User user) {
-        return UserRepository.findById(id)
+    public User updateUser(@PathVariable Integer id, @RequestBody User user) {
+        return UserRepository.findById((long)id)
                 .map(existingUser -> {
                     existingUser.setName(user.getName());
                     existingUser.setLast_name(user.getLast_name());
@@ -57,9 +57,17 @@ public class UserRestController {
                 });
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable Long id) {
-        UserRepository.deleteById(id);
+    @PutMapping("delete/{id}")
+    public boolean deleteUser(@PathVariable Long id) {
+        return UserRepository.findById(id)
+                .map(existingUser -> {
+                    existingUser.setOperational(false);
+                    UserRepository.save(existingUser);
+                    return true ;
+                })
+                .orElseGet(() -> {
+                    return false;
+                });
     }
 
     @GetMapping("/me")
