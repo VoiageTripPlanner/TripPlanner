@@ -1,10 +1,10 @@
 package com.project.demo.repository;
 
-import com.project.demo.logic.entity.rol.Role;
-import com.project.demo.logic.entity.rol.RoleEnum;
-import com.project.demo.logic.entity.rol.RoleRepository;
-import com.project.demo.logic.entity.user.User;
-import com.project.demo.logic.entity.user.UserRepository;
+import com.project.demo.entity.rol.Role;
+import com.project.demo.entity.rol.RoleEnum;
+import com.project.demo.entity.rol.RoleRepository;
+import com.project.demo.entity.user.User;
+import com.project.demo.entity.user.UserRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,7 +1,7 @@
-package com.project.demo.logic.entity.auth;
+package com.project.demo.entity.auth;
 
-import com.project.demo.logic.entity.user.User;
-import com.project.demo.logic.entity.user.UserRepository;
+import com.project.demo.entity.user.User;
+import com.project.demo.entity.user.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;

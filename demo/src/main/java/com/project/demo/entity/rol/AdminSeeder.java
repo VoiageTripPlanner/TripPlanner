@@ -1,7 +1,7 @@
-package com.project.demo.logic.entity.rol;
+package com.project.demo.entity.rol;
 
-import com.project.demo.logic.entity.user.User;
-import com.project.demo.logic.entity.user.UserRepository;
+import com.project.demo.entity.user.User;
+import com.project.demo.entity.user.UserRepository;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.security.crypto.password.PasswordEncoder;
