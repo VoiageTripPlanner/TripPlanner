@@ -17,6 +17,9 @@ public interface UserRepository extends JpaRepository<User, Long>  {
     @Query("SELECT u FROM User u WHERE LOWER(u.name) LIKE %?1%")
     List<User> findUsersWithCharacterInName(String character);
 
+
+    @Query("SELECT u FROM User u WHERE u.operational=true")
+    List<User> findUsersOperationalUsers();
     @Query("SELECT u FROM User u WHERE u.name = ?1")
     Optional<User> findByName(String name);
 
@@ -30,6 +33,11 @@ public interface UserRepository extends JpaRepository<User, Long>  {
 
     @Query("SELECT u FROM User u")
     List<User> findAllUsers();
+
+
+    @Query("SELECT u FROM User u JOIN FETCH u.country JOIN FETCH u.role")
+    List<User> findUsersWithCountryAndRole();
+
 
     Optional<User> findByEmail(String email);
 }

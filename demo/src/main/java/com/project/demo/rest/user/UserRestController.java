@@ -23,8 +23,15 @@ public class UserRestController {
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN')")
     public List<User> getAllUsers() {
-        return UserRepository.findAll();
+        return UserRepository.findUsersOperationalUsers();
     }
+
+    @GetMapping("/userDetailed")
+    @PreAuthorize("hasAnyRole('ADMIN')")
+    public List<User> getAllUsersDetailed() {
+        return UserRepository.findUsersWithCountryAndRole();
+    }
+
 
     @PostMapping
     public User addUser(@RequestBody User user) {
