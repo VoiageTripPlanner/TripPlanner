@@ -1,4 +1,4 @@
-package com.project.demo.logic.entity.user;
+package com.project.demo.entity.user;
 
 public class LoginResponse {
     private String token;
