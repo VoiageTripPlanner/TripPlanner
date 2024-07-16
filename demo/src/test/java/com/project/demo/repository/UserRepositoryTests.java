@@ -1,10 +1,15 @@
 package com.project.demo.repository;
 
+import com.project.demo.Config.TestConfig;
+import com.project.demo.entity.Country;
+import com.project.demo.entity.auth.AuthenticationService;
+import com.project.demo.entity.Currency;
 import com.project.demo.entity.rol.Role;
 import com.project.demo.entity.rol.RoleEnum;
 import com.project.demo.entity.rol.RoleRepository;
 import com.project.demo.entity.user.User;
 import com.project.demo.entity.user.UserRepository;
+import jakarta.persistence.EntityManager;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -38,6 +43,11 @@ public class UserRepositoryTests {
     private CountryRepository countryRepository;
 
     @Autowired
+
+    private CurrencyRepository currencyRepository;
+
+
+    @Autowired
     private AuthenticationService authenticationService;
 
     @Autowired
@@ -61,14 +71,24 @@ public class UserRepositoryTests {
         Optional<Role> roleFound = roleRepository.findByName(RoleEnum.USER);
         Assertions.assertThat(roleFound).isPresent();
 
+        // Currency info
+
+        Currency currency = new Currency();
+        currency.setCurrencyId(1);
+        currency.setCurrencyName("Colon");
+        currency.setCurrencyCode("CR");
+        currency.setCurrencySymbol("CRC");
+        currency = currencyRepository.save(currency);
+
         // Info de Country
         Country country = new Country();
-        country.setCountry_name("Costa Rica");
-        country.setCountry_code("CR");
+        country.setCountryName("Costa Rica");
+        country.setCountryCode("CR");
         country.setOperational(true);
+        country.setCurrency(currency);
         countryRepository.save(country);
 
-        Optional<Country> countryFound = countryRepository.findByName("Costa Rica");
+        Optional<Country> countryFound = countryRepository.findByCountryName("Costa Rica");
         Assertions.assertThat(countryFound).isPresent();
 
         // Info User

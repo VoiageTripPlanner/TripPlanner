@@ -2,7 +2,6 @@ package com.project.demo.entity;
 import jakarta.persistence.*;
 @Entity
 @Table(name = "VO_COUNTRY")
-
 public class Country {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -16,6 +15,17 @@ public class Country {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "country_currency_id", nullable = false)
     private Currency currency;
+
+    public boolean isOperational() {
+        return operational;
+    }
+
+    public void setOperational(boolean operational) {
+        this.operational = operational;
+    }
+
+    @Column(name = "operational", nullable = false)
+    private boolean operational;
 
     public Integer getCountryId() {
         return countryId;

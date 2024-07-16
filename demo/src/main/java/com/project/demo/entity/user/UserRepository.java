@@ -1,7 +1,8 @@
 package com.project.demo.entity.user;
 
-import com.project.demo.logic.entity.country.Country;
-import com.project.demo.logic.entity.rol.Role;
+import com.project.demo.entity.Country;
+import com.project.demo.entity.rol.Role;
+import com.project.demo.repository.CountryRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

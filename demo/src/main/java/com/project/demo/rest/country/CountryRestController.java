@@ -1,9 +1,8 @@
 package com.project.demo.rest.country;
 
-import com.project.demo.logic.entity.country.Country;
-import com.project.demo.logic.entity.country.CountryRepository;
-import com.project.demo.logic.entity.user.User;
-import com.project.demo.logic.entity.user.UserRepository;
+
+import com.project.demo.entity.Country;
+import com.project.demo.repository.CountryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -17,16 +16,16 @@ import java.util.List;
 @RequestMapping("/country")
 public class CountryRestController {
     @Autowired
-    private CountryRepository CountryRepository;
+    private CountryRepository countryRepository;
 
-    @GetMapping
-    public List<Country> getAllUsers() {
-        return CountryRepository.findAll();
-    }
+//    @GetMapping
+//    public List<Country> getAllUsers() {
+//        return CountryRepository.findAll();
+//    }
 
-    @GetMapping("/{id}")
-    public Country getUserById(@PathVariable Integer id) {
-        return CountryRepository.findCountryById(id).orElseThrow(RuntimeException::new);
-    }
+//    @GetMapping("/{id}")
+//    public Country getUserById(@PathVariable Integer id) {
+//        return CountryRepository.findCountryById(id).orElseThrow(RuntimeException::new);
+//    }
 
 }

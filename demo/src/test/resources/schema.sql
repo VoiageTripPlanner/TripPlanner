@@ -9,11 +9,20 @@ CREATE TABLE VO_USER_ROLE (
                               update_responsible BIGINT
 );
 
+CREATE TABLE VO_CURRENCY(
+                            currency_id INT AUTO_INCREMENT PRIMARY KEY,
+                            currency_name VARCHAR(255) NOT NULL,
+                            currency_code VARCHAR(2) NOT NULL,
+                            currency_symbol VARCHAR(255) NOT NULL
+);
+
 CREATE TABLE VO_COUNTRY (
                             country_id INTEGER AUTO_INCREMENT PRIMARY KEY,
                             country_name VARCHAR(255),
                             country_code VARCHAR(255),
-                            operational BOOLEAN NOT NULL
+                            operational BOOLEAN NOT NULL,
+                            country_currency_id INTEGER NOT NULL,
+                            CONSTRAINT fk_currency FOREIGN KEY (country_currency_id) REFERENCES VO_CURRENCY(currency_id)
 );
 
 CREATE TABLE VO_User (
