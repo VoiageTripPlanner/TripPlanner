@@ -27,15 +27,15 @@ public class UserRepositoryTests {
     @Test
     public void UserRepository_findByUsername_ReturnsUser() {
         Role role = new Role();
-        role.setDescription("ROLE_USER");
-        role.setName(RoleEnum.USER);
+        role.setAbbreviation("USER");
+        role.setRole_name(RoleEnum.USER);
         roleRepository.save(role);
         Role roleFound = roleRepository.findByName(RoleEnum.USER).get();
 
         User user = new User();
         user.setEmail("test@gmail.com");
         user.setName("John");
-        user.setLastname("Smith");
+        user.setLast_name("Smith");
         user.setPassword("password");
         user.setRole(role);
         userRepository.save(user);
