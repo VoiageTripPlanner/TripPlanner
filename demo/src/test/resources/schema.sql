@@ -42,3 +42,5 @@ CREATE TABLE VO_User (
                          CONSTRAINT fk_country FOREIGN KEY (country_id) REFERENCES VO_COUNTRY(country_id),
                          CONSTRAINT fk_role FOREIGN KEY (role_id) REFERENCES VO_USER_ROLE(role_id)
 );
+
+
