@@ -1,6 +1,6 @@
-package com.project.demo.logic.entity.auth;
+package com.project.demo.entity.auth;
 
-import com.project.demo.logic.entity.user.UserRepository;
+import com.project.demo.entity.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

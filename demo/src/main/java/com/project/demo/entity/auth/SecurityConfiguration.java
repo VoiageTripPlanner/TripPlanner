@@ -1,4 +1,4 @@
-package com.project.demo.logic.entity.auth;
+package com.project.demo.entity.auth;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

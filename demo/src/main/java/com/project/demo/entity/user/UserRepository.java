@@ -1,4 +1,4 @@
-package com.project.demo.logic.entity.user;
+package com.project.demo.entity.user;
 
 import com.project.demo.logic.entity.country.Country;
 import com.project.demo.logic.entity.rol.Role;

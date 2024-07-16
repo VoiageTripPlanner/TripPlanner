@@ -1,15 +1,10 @@
 package com.project.demo.repository;
 
-import com.project.demo.Config.TestConfig;
-import com.project.demo.logic.entity.auth.AuthenticationService;
-import com.project.demo.logic.entity.country.Country;
-import com.project.demo.logic.entity.country.CountryRepository;
-import com.project.demo.logic.entity.rol.Role;
-import com.project.demo.logic.entity.rol.RoleEnum;
-import com.project.demo.logic.entity.rol.RoleRepository;
-import com.project.demo.logic.entity.user.User;
-import com.project.demo.logic.entity.user.UserRepository;
-import jakarta.persistence.EntityManager;
+import com.project.demo.entity.rol.Role;
+import com.project.demo.entity.rol.RoleEnum;
+import com.project.demo.entity.rol.RoleRepository;
+import com.project.demo.entity.user.User;
+import com.project.demo.entity.user.UserRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

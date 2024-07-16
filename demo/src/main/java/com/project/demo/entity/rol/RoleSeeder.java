@@ -1,4 +1,4 @@
-package com.project.demo.logic.entity.rol;
+package com.project.demo.entity.rol;
 
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
