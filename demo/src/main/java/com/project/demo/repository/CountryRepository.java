@@ -19,8 +19,5 @@ public interface CountryRepository extends JpaRepository<Country, Integer> {
     @Query("SELECT u FROM Country u WHERE LOWER(u.countryName) LIKE %?1%")
     List<Country> findCountriesWithCharacterInName(String character);
 
-//    @Query("SELECT u FROM Country u WHERE u.countryId = :id")
-//    Optional<Country> findCountryById (@Param("id") Integer id);
-
 
 }
