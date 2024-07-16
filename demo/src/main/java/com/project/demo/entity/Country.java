@@ -17,6 +17,17 @@ public class Country {
     @JoinColumn(name = "country_currency_id", nullable = false)
     private Currency currency;
 
+    public boolean isOperational() {
+        return operational;
+    }
+
+    public void setOperational(boolean operational) {
+        this.operational = operational;
+    }
+
+    @Column(name = "operational", nullable = false)
+    private boolean operational;
+
     public Integer getCountryId() {
         return countryId;
     }
