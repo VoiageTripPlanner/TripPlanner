@@ -7,7 +7,9 @@ import java.util.List;
 @Entity
 @Table(name = "VO_CURRENCY")
 public class Currency {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "currency_id", nullable = false)
     private Integer currencyId;
 

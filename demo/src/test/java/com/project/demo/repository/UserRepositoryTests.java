@@ -1,5 +1,9 @@
 package com.project.demo.repository;
 
+import com.project.demo.Config.TestConfig;
+import com.project.demo.entity.Country;
+import com.project.demo.entity.Currency;
+import com.project.demo.entity.auth.AuthenticationService;
 import com.project.demo.entity.rol.Role;
 import com.project.demo.entity.rol.RoleEnum;
 import com.project.demo.entity.rol.RoleRepository;
@@ -36,13 +40,16 @@ public class UserRepositoryTests {
     private CountryRepository countryRepository;
 
     @Autowired
+    private CurrencyRepository currencyRepository;
+
+    @Autowired
     private AuthenticationService authenticationService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
     @BeforeEach
     public void infoSetup() {
-        // Info de usuario
+        // Info de role
         Role role = new Role();
         role.setAbbreviation("USE");
         role.setRole_name(RoleEnum.USER);
@@ -56,11 +63,20 @@ public class UserRepositoryTests {
         Optional<Role> roleFound = roleRepository.findByName(RoleEnum.USER);
         Assertions.assertThat(roleFound).isPresent();
 
+        // Currency info
+        Currency currency = new Currency();
+        currency.setCurrencyId(1);
+        currency.setCurrencyName("Colon");
+        currency.setCurrencyCode("CR");
+        currency.setCurrencySymbol("CRC");
+        currency = currencyRepository.save(currency);
+
         // Info de Country
         Country country = new Country();
-        country.setCountry_name("Costa Rica");
-        country.setCountry_code("CR");
+        country.setCountryName("Costa Rica");
+        country.setCountryCode("CR");
         country.setOperational(true);
+        country.setCurrency(currency);
         countryRepository.save(country);
 
         Optional<Country> countryFound = countryRepository.findByName("Costa Rica");

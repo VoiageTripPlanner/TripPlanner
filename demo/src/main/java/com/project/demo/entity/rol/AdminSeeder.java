@@ -2,6 +2,7 @@ package com.project.demo.entity.rol;
 
 import com.project.demo.entity.user.User;
 import com.project.demo.entity.user.UserRepository;
+import com.project.demo.repository.CountryRepository;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.security.crypto.password.PasswordEncoder;
