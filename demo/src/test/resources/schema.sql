@@ -16,4 +16,13 @@ CREATE TABLE "USER" (
                       role_id BIGINT,
                       updated_at TIMESTAMP
 );
+CREATE TABLE "VO_LOCATION"
+(
+                    location_id int auto_increment primary key,
+                    address     varchar(255) not null,
+                    latitude    double       not null,
+                    longitude   double       not null,
+                    place_id    varchar(255) not null,
+                    user_id     int          null
+);
 
