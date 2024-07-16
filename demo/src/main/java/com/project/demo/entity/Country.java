@@ -1,11 +1,14 @@
 package com.project.demo.entity;
 import jakarta.persistence.*;
+
+import java.util.List;
+
 @Entity
 @Table(name = "VO_COUNTRY")
 
 public class Country {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "country_id", nullable = false)
     private Integer countryId;
 
@@ -13,9 +16,29 @@ public class Country {
     private String countryName;
     @Column(name = "country_code", nullable = false)
     private String countryCode;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "country_currency_id")
     private Currency currency;
+    @Column(name = "operational", nullable = false)
+    private boolean operational;
+    @OneToMany(mappedBy = "country", cascade = {CascadeType.REMOVE, CascadeType.PERSIST, CascadeType.MERGE})
+    private List<User> users;
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }
+
+    public boolean isOperational() {
+        return operational;
+    }
+
+    public void setOperational(boolean operational) {
+        this.operational = operational;
+    }
 
     public Integer getCountryId() {
         return countryId;

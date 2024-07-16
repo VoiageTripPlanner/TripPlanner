@@ -10,37 +10,50 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-@Table(name = "\"user\"")
+@Table(name = "VO_User")
 @Entity
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "user_id", nullable = false)
+    private Long userId;
+    @Column(nullable = false)
     private String name;
-    private String lastname;
+    @Column(name = "last_name", nullable = false)
+    private String lastName;
+    @Column(name = "second_last_name")
+    private String secondLastName;
+    @ManyToOne
+    @JoinColumn(name = "country_id")
+    private Country country;
     @Column(unique = true, length = 100, nullable = false)
     private String email;
 
     @Column(nullable = false)
     private String password;
 
+    private Boolean operational;
+
     @CreationTimestamp
     @Column(updatable = false, name = "created_at")
-    private Date createdAt;
+    private Date creationDatetime;
+    @Column(name = "creation_responsible")
+    private Integer creationResponsible;
 
     @UpdateTimestamp
     @Column(name = "updated_at")
-    private Date updatedAt;
+    private Date lastUpdateDatetime;
+    @Column(name = "update_responsible")
+    private Integer updateResponsible;
+    @ManyToOne
+    @JoinColumn(name = "role_id", nullable = false)
+    private Role role;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + role.getName().toString());
         return List.of(authority);
     }
-
-    @OneToOne(cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "role_id", referencedColumnName = "id", nullable = false)
-    private Role role;
 
     // Constructors
     public User() {}
@@ -71,12 +84,12 @@ public class User implements UserDetails {
         return email;
     }
 
-    public Long getId() {
-        return id;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public String getName() {
@@ -87,12 +100,28 @@ public class User implements UserDetails {
         this.name = name;
     }
 
-    public String getLastname() {
-        return lastname;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getSecondLastName() {
+        return secondLastName;
+    }
+
+    public void setSecondLastName(String secondLastName) {
+        this.secondLastName = secondLastName;
+    }
+
+    public Country getCountry() {
+        return country;
+    }
+
+    public void setCountry(Country country) {
+        this.country = country;
     }
 
     public String getEmail() {
@@ -112,20 +141,44 @@ public class User implements UserDetails {
         this.password = password;
     }
 
-    public Date getCreatedAt() {
-        return createdAt;
+    public Boolean getOperational() {
+        return operational;
     }
 
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
+    public void setOperational(Boolean operational) {
+        this.operational = operational;
     }
 
-    public Date getUpdatedAt() {
-        return updatedAt;
+    public Date getCreationDatetime() {
+        return creationDatetime;
     }
 
-    public void setUpdatedAt(Date updatedAt) {
-        this.updatedAt = updatedAt;
+    public void setCreationDatetime(Date creationDatetime) {
+        this.creationDatetime = creationDatetime;
+    }
+
+    public Integer getCreationResponsible() {
+        return creationResponsible;
+    }
+
+    public void setCreationResponsible(Integer creationResponsible) {
+        this.creationResponsible = creationResponsible;
+    }
+
+    public Date getLastUpdateDatetime() {
+        return lastUpdateDatetime;
+    }
+
+    public void setLastUpdateDatetime(Date lastUpdateDatetime) {
+        this.lastUpdateDatetime = lastUpdateDatetime;
+    }
+
+    public Integer getUpdateResponsible() {
+        return updateResponsible;
+    }
+
+    public void setUpdateResponsible(Integer updateResponsible) {
+        this.updateResponsible = updateResponsible;
     }
 
     public Role getRole() {

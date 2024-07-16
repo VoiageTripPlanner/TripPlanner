@@ -8,6 +8,7 @@ import java.util.List;
 @Table(name = "VO_CURRENCY")
 public class Currency {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "currency_id", nullable = false)
     private Integer currencyId;
 
@@ -17,8 +18,7 @@ public class Currency {
     private String currencyCode;
     @Column(name = "currency_symbol", nullable = false)
     private String currencySymbol;
-    @Transient
-    @OneToMany(mappedBy = "currency")
+    @OneToMany(mappedBy = "currency", cascade = {CascadeType.REMOVE, CascadeType.PERSIST, CascadeType.MERGE})
     private List<Country> countries;
 
     public Integer getCurrencyId() {
