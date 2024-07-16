@@ -1,13 +1,13 @@
-package com.project.demo.rest.auth;
+package com.project.demo.rest;
 
-import com.project.demo.entity.auth.AuthenticationService;
-import com.project.demo.entity.auth.JwtService;
-import com.project.demo.entity.rol.Role;
-import com.project.demo.entity.rol.RoleEnum;
-import com.project.demo.entity.rol.RoleRepository;
-import com.project.demo.entity.user.LoginResponse;
-import com.project.demo.entity.user.User;
-import com.project.demo.entity.user.UserRepository;
+import com.project.demo.logic.AuthenticationService;
+import com.project.demo.logic.JwtService;
+import com.project.demo.entity.Role;
+import com.project.demo.entity.RoleEnum;
+import com.project.demo.repository.RoleRepository;
+import com.project.demo.entity.LoginResponse;
+import com.project.demo.entity.User;
+import com.project.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;

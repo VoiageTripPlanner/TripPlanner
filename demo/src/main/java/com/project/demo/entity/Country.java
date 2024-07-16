@@ -14,7 +14,7 @@ public class Country {
     @Column(name = "country_code", nullable = false)
     private String countryCode;
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "country_currency_id", nullable = false)
+    @JoinColumn(name = "country_currency_id")
     private Currency currency;
 
     public Integer getCountryId() {
