@@ -1,4 +1,4 @@
-package com.project.demo.logic.entity.auth;
+package com.project.demo.entity.auth;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
