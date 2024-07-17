@@ -1,4 +1,4 @@
-package com.project.demo.logic;
+package com.project.demo.repository;
 
 import com.project.demo.entity.Country;
 import com.project.demo.entity.Role;

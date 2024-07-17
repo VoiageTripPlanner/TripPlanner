@@ -7,7 +7,6 @@ import com.project.demo.entity.Currency;
 import com.project.demo.entity.Role;
 import com.project.demo.entity.RoleEnum;
 import com.project.demo.entity.User;
-import com.project.demo.logic.UserRepository;
 import jakarta.persistence.EntityManager;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

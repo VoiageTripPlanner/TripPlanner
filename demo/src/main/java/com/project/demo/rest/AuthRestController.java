@@ -8,7 +8,7 @@ import com.project.demo.entity.RoleEnum;
 import com.project.demo.repository.RoleRepository;
 import com.project.demo.entity.LoginResponse;
 import com.project.demo.entity.User;
-import com.project.demo.logic.UserRepository;
+import com.project.demo.repository.UserRepository;
 import com.project.demo.repository.CountryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

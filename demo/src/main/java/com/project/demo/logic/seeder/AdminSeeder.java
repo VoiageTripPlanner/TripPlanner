@@ -1,6 +1,6 @@
 package com.project.demo.logic.seeder;
 
-import com.project.demo.logic.UserRepository;
+import com.project.demo.repository.UserRepository;
 import com.project.demo.repository.CountryRepository;
 import com.project.demo.repository.RoleRepository;
 import org.springframework.context.ApplicationListener;

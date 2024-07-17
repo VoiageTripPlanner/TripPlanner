@@ -4,7 +4,7 @@ import com.project.demo.entity.Role;
 import com.project.demo.entity.RoleEnum;
 import com.project.demo.repository.RoleRepository;
 import com.project.demo.entity.User;
-import com.project.demo.logic.UserRepository;
+import com.project.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;

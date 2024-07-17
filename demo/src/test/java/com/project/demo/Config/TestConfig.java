@@ -2,7 +2,7 @@ package com.project.demo.Config;
 
 
 import com.project.demo.logic.AuthenticationService;
-import com.project.demo.logic.UserRepository;
+import com.project.demo.repository.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
