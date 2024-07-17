@@ -18,14 +18,5 @@ public class CountryRestController {
     @Autowired
     private CountryRepository countryRepository;
 
-//    @GetMapping
-//    public List<Country> getAllUsers() {
-//        return CountryRepository.findAll();
-//    }
-
-//    @GetMapping("/{id}")
-//    public Country getUserById(@PathVariable Integer id) {
-//        return CountryRepository.findCountryById(id).orElseThrow(RuntimeException::new);
-//    }
 
 }

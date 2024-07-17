@@ -75,19 +75,9 @@ public class AuthRestController {
 
         if (user.getCountry() != null && user.getCountry().getCountryId() != null) {
             Optional<Country> optionalCountry = countryRepository.findById(user.getCountry().getCountryId());
-            if (optionalCountry.isPresent()) {
+
                 user.setCountry(optionalCountry.get());
-            } else {
-                // Crear y guardar una nueva entidad Country si no existe
-                Country country = new Country();
-                country.setCountryId(user.getCountry().getCountryId());
-                country.setCountryName("Default Country Name");
-                country.setCountryCode("Default Country Code");
-                country.setCurrency(new Currency());
-                country.setOperational(true);
-                country = countryRepository.save(country);
-                user.setCountry(country);
-            }
+
         } else {
             return ResponseEntity.badRequest().body("Country information is missing or incomplete");
         }
