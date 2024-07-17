@@ -27,7 +27,6 @@ public class RoleSeeder implements ApplicationListener<ContextRefreshedEvent> {
         Map<RoleEnum, String> roleDescriptionMap = Map.of(
                 RoleEnum.USER, "Default user role",
                 RoleEnum.ADMIN, "Administrator role"
-//                RoleEnum.SUPER_ADMIN, "Super Administrator role"
         );
 
         Arrays.stream(roleNames).forEach((roleName) -> {

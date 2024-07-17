@@ -18,7 +18,7 @@ public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long user_id;
+    private Integer user_id;
     @Column(nullable = false)
     private String name;
     @Column(nullable = false)
@@ -53,8 +53,6 @@ public class User implements UserDetails {
     @Column(nullable = true)
     private Integer update_responsible;
 
-//    @OneToMany(mappedBy = "vo_country")
-
     @ManyToOne
     @JoinColumn(name = "role_id", referencedColumnName = "role_id", nullable = false)
     private Role role;
@@ -69,11 +67,11 @@ public class User implements UserDetails {
     // Constructors
     public User() {}
 
-    public Long getUser_id() {
+    public Integer getUser_id() {
         return user_id;
     }
 
-    public void setUser_id(Long user_id) {
+    public void setUser_id(Integer user_id) {
         this.user_id = user_id;
     }
 
@@ -201,5 +199,9 @@ public class User implements UserDetails {
         this.role = role;
 
         return this;
+    }
+
+    public boolean isOperational() {
+        return Boolean.TRUE.equals(operational);
     }
 }

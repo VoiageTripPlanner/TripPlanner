@@ -2,7 +2,6 @@ package com.project.demo.entity;
 import jakarta.persistence.*;
 @Entity
 @Table(name = "VO_COUNTRY")
-
 public class Country {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
