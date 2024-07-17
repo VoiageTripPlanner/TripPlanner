@@ -1,5 +1,6 @@
-package com.project.demo.entity.auth;
+package com.project.demo.logic;
 
+import com.project.demo.logic.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
