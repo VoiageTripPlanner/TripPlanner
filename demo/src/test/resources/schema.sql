@@ -15,6 +15,7 @@ CREATE TABLE VO_CURRENCY(
                             currency_code VARCHAR(2) NOT NULL,
                             currency_symbol VARCHAR(255) NOT NULL
 );
+
 CREATE TABLE "VO_LOCATION"
 (
                     location_id int auto_increment primary key,
