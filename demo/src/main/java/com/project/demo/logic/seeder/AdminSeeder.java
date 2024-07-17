@@ -1,14 +1,12 @@
-package com.project.demo.entity.rol;
+package com.project.demo.logic.seeder;
 
-import com.project.demo.entity.user.User;
-import com.project.demo.entity.user.UserRepository;
+import com.project.demo.logic.UserRepository;
 import com.project.demo.repository.CountryRepository;
+import com.project.demo.repository.RoleRepository;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-
-import java.util.Optional;
 
 @Component
 public class AdminSeeder implements ApplicationListener<ContextRefreshedEvent> {

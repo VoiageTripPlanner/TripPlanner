@@ -1,5 +1,6 @@
-package com.project.demo.entity.auth;
+package com.project.demo;
 
+import com.project.demo.logic.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;

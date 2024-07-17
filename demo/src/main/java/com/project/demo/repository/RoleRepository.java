@@ -1,5 +1,7 @@
-package com.project.demo.entity.rol;
+package com.project.demo.repository;
 
+import com.project.demo.entity.Role;
+import com.project.demo.entity.RoleEnum;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

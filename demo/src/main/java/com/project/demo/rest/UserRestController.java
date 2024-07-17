@@ -1,7 +1,7 @@
-package com.project.demo.rest.user;
+package com.project.demo.rest;
 
-import com.project.demo.entity.user.User;
-import com.project.demo.entity.user.UserRepository;
+import com.project.demo.entity.User;
+import com.project.demo.logic.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;

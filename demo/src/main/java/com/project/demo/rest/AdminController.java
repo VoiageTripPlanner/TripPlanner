@@ -1,10 +1,10 @@
-package com.project.demo.rest.admin;
+package com.project.demo.rest;
 
-import com.project.demo.entity.rol.Role;
-import com.project.demo.entity.rol.RoleEnum;
-import com.project.demo.entity.rol.RoleRepository;
-import com.project.demo.entity.user.User;
-import com.project.demo.entity.user.UserRepository;
+import com.project.demo.entity.Role;
+import com.project.demo.entity.RoleEnum;
+import com.project.demo.repository.RoleRepository;
+import com.project.demo.entity.User;
+import com.project.demo.logic.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
