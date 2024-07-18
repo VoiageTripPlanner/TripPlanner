@@ -2,6 +2,7 @@ package com.project.demo.entity;
 
 import jakarta.persistence.*;
 
+
 @Table(name = "vo_location")
 @Entity
 public class Location {
@@ -20,6 +21,14 @@ public class Location {
     private int userId;
 
     public Location() {
+    }
+
+    public Location(Integer locationId, String address, double latitude, double longitude, String placeId) {
+        this.locationId = locationId;
+        this.address = address;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.placeId = placeId;
     }
 
     public Integer getLocationId() {

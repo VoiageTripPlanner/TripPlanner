@@ -1,7 +1,10 @@
-package com.project.demo.LocationUnitTest;
+package com.project.demo.locationReview;
 
 import com.project.demo.Config.TestConfig;
+import com.project.demo.entity.Location;
 import com.project.demo.repository.LocationRepository;
+
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
@@ -17,8 +20,16 @@ public class LocationRepositoryTest {
     private LocationRepository locationRepository;
 
     @Test
-    void testFindById() {
-        // Setup data in the in-memory database
-        // Test the findById method
+    public void LocationRepository_SaveAll_ReturnSavedLocations() {
+        //Arrange
+        Location location = new Location( 1, "1234 Main St", 123.456, 123.456, "1234");
+
+        //Act
+        Location savedLocation = locationRepository.save(location);
+
+        //Assert
+        Assertions.assertThat(savedLocation).isNotNull();
+        Assertions.assertThat(savedLocation.getLocationId()).isGreaterThan(0);
     }
+
 }
