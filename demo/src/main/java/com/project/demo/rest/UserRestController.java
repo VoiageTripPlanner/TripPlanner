@@ -3,13 +3,17 @@ package com.project.demo.rest;
 import com.project.demo.entity.User;
 import com.project.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.SecureRandom;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/users")
@@ -55,7 +59,7 @@ public class UserRestController {
                 .map(existingUser -> {
                     existingUser.setName(user.getName());
                     existingUser.setLast_name(user.getLast_name());
-                    existingUser.setEmail(user.getEmail());
+                    existingUser.setSecond_last_name(user.getSecond_last_name());
                     return UserRepository.save(existingUser);
                 })
                 .orElseGet(() -> {
@@ -83,5 +87,6 @@ public class UserRestController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return (User) authentication.getPrincipal();
     }
+
 
 }
