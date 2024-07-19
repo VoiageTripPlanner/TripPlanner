@@ -1,13 +1,15 @@
-package com.project.demo.rest.auth;
+package com.project.demo.rest;
 
-import com.project.demo.entity.auth.AuthenticationService;
-import com.project.demo.entity.auth.JwtService;
-import com.project.demo.entity.rol.Role;
-import com.project.demo.entity.rol.RoleEnum;
-import com.project.demo.entity.rol.RoleRepository;
-import com.project.demo.entity.user.LoginResponse;
-import com.project.demo.entity.user.User;
-import com.project.demo.entity.user.UserRepository;
+import com.project.demo.entity.Country;
+import com.project.demo.logic.AuthenticationService;
+import com.project.demo.logic.JwtService;
+import com.project.demo.entity.Role;
+import com.project.demo.entity.RoleEnum;
+import com.project.demo.repository.RoleRepository;
+import com.project.demo.entity.LoginResponse;
+import com.project.demo.entity.User;
+import com.project.demo.repository.UserRepository;
+import com.project.demo.repository.CountryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -32,7 +34,8 @@ public class AuthRestController {
     @Autowired
     private RoleRepository roleRepository;
 
-
+    @Autowired
+    private CountryRepository countryRepository;
 
     private final AuthenticationService authenticationService;
     private final JwtService jwtService;
@@ -62,14 +65,23 @@ public class AuthRestController {
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestBody User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        Optional<Role> optionalRole = roleRepository.findByName(RoleEnum.USER);
 
+        Optional<Role> optionalRole = roleRepository.findByName(RoleEnum.USER);
         if (optionalRole.isEmpty()) {
-            return null;
+            return ResponseEntity.badRequest().body("Role not found");
         }
         user.setRole(optionalRole.get());
+
+        if (user.getCountry() != null && user.getCountry().getCountryId() != null) {
+            Optional<Country> optionalCountry = countryRepository.findById(user.getCountry().getCountryId());
+
+                user.setCountry(optionalCountry.get());
+
+        } else {
+            return ResponseEntity.badRequest().body("Country information is missing or incomplete");
+        }
+
         User savedUser = userRepository.save(user);
         return ResponseEntity.ok(savedUser);
     }
-
 }

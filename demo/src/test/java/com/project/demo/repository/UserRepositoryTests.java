@@ -2,13 +2,12 @@ package com.project.demo.repository;
 
 import com.project.demo.Config.TestConfig;
 import com.project.demo.entity.Country;
+import com.project.demo.logic.AuthenticationService;
 import com.project.demo.entity.Currency;
-import com.project.demo.entity.auth.AuthenticationService;
-import com.project.demo.entity.rol.Role;
-import com.project.demo.entity.rol.RoleEnum;
-import com.project.demo.entity.rol.RoleRepository;
-import com.project.demo.entity.user.User;
-import com.project.demo.entity.user.UserRepository;
+import com.project.demo.entity.Role;
+import com.project.demo.entity.RoleEnum;
+import com.project.demo.entity.User;
+import jakarta.persistence.EntityManager;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,8 +18,9 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import javax.management.remote.JMXAuthenticator;
+
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -40,16 +40,21 @@ public class UserRepositoryTests {
     private CountryRepository countryRepository;
 
     @Autowired
+
     private CurrencyRepository currencyRepository;
+
 
     @Autowired
     private AuthenticationService authenticationService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private EntityManager entityManager;
     @BeforeEach
     public void infoSetup() {
-        // Info de role
+        // Info de usuario
         Role role = new Role();
         role.setAbbreviation("USE");
         role.setRole_name(RoleEnum.USER);
@@ -64,6 +69,7 @@ public class UserRepositoryTests {
         Assertions.assertThat(roleFound).isPresent();
 
         // Currency info
+
         Currency currency = new Currency();
         currency.setCurrencyId(1);
         currency.setCurrencyName("Colon");
@@ -79,7 +85,7 @@ public class UserRepositoryTests {
         country.setCurrency(currency);
         countryRepository.save(country);
 
-        Optional<Country> countryFound = countryRepository.findByName("Costa Rica");
+        Optional<Country> countryFound = countryRepository.findByCountryName("Costa Rica");
         Assertions.assertThat(countryFound).isPresent();
 
         // Info User
@@ -97,6 +103,22 @@ public class UserRepositoryTests {
         user.setLast_update_datetime(new Date());
         user.setUpdate_responsible(1);
         userRepository.save(user);
+
+        // Info User 2
+        User user2 = new User();
+        user2.setName("Alice");
+        user2.setLast_name("Johnson");
+        user2.setSecond_last_name("Smith");
+        user2.setCountry(country);
+        user2.setEmail("alice@gmail.com");
+        user2.setPassword(passwordEncoder.encode("password"));
+        user2.setOperational(false);
+        user2.setRole(role);
+        user2.setCreation_datetime(new Date());
+        user2.setCreation_responsible(1);
+        user2.setLast_update_datetime(new Date());
+        user2.setUpdate_responsible(1);
+        userRepository.save(user2);
 
         Optional<User> userFoundOptional = userRepository.findByName("John");
         Assertions.assertThat(userFoundOptional).isPresent();
@@ -135,4 +157,28 @@ public class UserRepositoryTests {
     }
 
 
+    @Test
+    public void ListOfUsers() {
+        List<User> allUsers = userRepository.findAllUsers();
+        Assertions.assertThat(allUsers).hasSize(2);
+        Assertions.assertThat(allUsers.get(0).getEmail()).isEqualTo("test@gmail.com");
+        Assertions.assertThat(allUsers.get(1).getEmail()).isEqualTo("alice@gmail.com");
+    }
+
+    @Test
+    public void UserDelete() {
+        Optional<User> userFoundOptional = userRepository.findByEmail("test@gmail.com");
+        Assertions.assertThat(userFoundOptional).isPresent();
+
+        User user = userFoundOptional.get();
+
+        userRepository.logicalDeleteById(user.getUser_id());
+        userRepository.flush();
+
+        entityManager.clear();
+        Optional<User> deletedUserOptional = userRepository.findById(user.getUser_id().longValue());
+        Assertions.assertThat(deletedUserOptional).isPresent();
+        User deletedUser = deletedUserOptional.get();
+        Assertions.assertThat(deletedUser.isOperational()).isFalse();
+    }
 }

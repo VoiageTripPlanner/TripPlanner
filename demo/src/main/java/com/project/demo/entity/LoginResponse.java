@@ -1,4 +1,6 @@
-package com.project.demo.entity.user;
+package com.project.demo.entity;
+
+import com.project.demo.entity.User;
 
 public class LoginResponse {
     private String token;

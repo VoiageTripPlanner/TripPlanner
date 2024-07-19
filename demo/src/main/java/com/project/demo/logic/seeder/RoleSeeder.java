@@ -1,5 +1,8 @@
-package com.project.demo.entity.rol;
+package com.project.demo.logic.seeder;
 
+import com.project.demo.entity.Role;
+import com.project.demo.entity.RoleEnum;
+import com.project.demo.repository.RoleRepository;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
@@ -27,7 +30,6 @@ public class RoleSeeder implements ApplicationListener<ContextRefreshedEvent> {
         Map<RoleEnum, String> roleDescriptionMap = Map.of(
                 RoleEnum.USER, "Default user role",
                 RoleEnum.ADMIN, "Administrator role"
-//                RoleEnum.SUPER_ADMIN, "Super Administrator role"
         );
 
         Arrays.stream(roleNames).forEach((roleName) -> {
