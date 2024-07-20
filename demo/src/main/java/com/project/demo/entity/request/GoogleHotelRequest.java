@@ -6,9 +6,7 @@ import java.util.Date;
 @Service
 public class GoogleHotelRequest {
 
-//    public final String engine= "google_hotels";
-
-    private String q;
+    private String query;
 
     private Date check_in_date;
 
@@ -16,11 +14,11 @@ public class GoogleHotelRequest {
     private  String api_key;
 
     public String getQuery() {
-        return q;
+        return query;
     }
 
     public void setQuery(String query) {
-        this.q = q;
+        this.query = query;
     }
 
     public Date getCheck_in_date() {
@@ -47,9 +45,6 @@ public class GoogleHotelRequest {
         this.api_key = api_key;
     }
 
-//    public String getEngine() {
-//        return engine;
-//    }
 
 
 

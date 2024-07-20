@@ -1,6 +1,5 @@
 package com.project.demo.logic.request;
 
-import com.project.demo.entity.request.GoogleHotelRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -31,7 +30,7 @@ public class GoogleHotelRequestService {
         return restTemplate.getForObject(builder.toUriString(), String.class);
     }
 
-    public GoogleHotelRequest listQueryHotels() {
-        return null;
-    }
+//    public GoogleHotelRequest listQueryHotels() {
+//        return null;
+//    }
 }
