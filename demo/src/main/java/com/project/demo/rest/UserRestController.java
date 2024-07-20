@@ -12,6 +12,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.SecureRandom;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,11 +59,18 @@ public class UserRestController {
 
     @PutMapping("/{id}")
     public User updateUser(@PathVariable Integer id, @RequestBody User user) {
+
+        LocalDate localDate = LocalDate.now();
+        Instant instant = localDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant();
+        Date date = Date.from(instant);
+
         return UserRepository.findById((long)id)
                 .map(existingUser -> {
                     existingUser.setName(user.getName());
                     existingUser.setLast_name(user.getLast_name());
                     existingUser.setSecond_last_name(user.getSecond_last_name());
+                    existingUser.setLast_update_datetime(date);
+                    existingUser.setUpdate_responsible(id);
                     return UserRepository.save(existingUser);
                 })
                 .orElseGet(() -> {

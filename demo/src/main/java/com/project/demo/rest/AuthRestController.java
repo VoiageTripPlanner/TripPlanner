@@ -53,6 +53,7 @@ public class AuthRestController {
         LoginResponse loginResponse = new LoginResponse();
         loginResponse.setToken(jwtToken);
         loginResponse.setExpiresIn(jwtService.getExpirationTime());
+        loginResponse.setUser_id(user.getUser_id());
 
         Optional<User> foundedUser = userRepository.findByEmail(user.getEmail());
 
