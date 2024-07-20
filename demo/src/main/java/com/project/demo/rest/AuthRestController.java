@@ -2,6 +2,7 @@ package com.project.demo.rest;
 
 import com.project.demo.entity.Country;
 import com.project.demo.logic.AuthenticationService;
+import com.project.demo.logic.EmailService;
 import com.project.demo.logic.JwtService;
 import com.project.demo.entity.Role;
 import com.project.demo.entity.RoleEnum;
@@ -35,6 +36,9 @@ public class AuthRestController {
 
     @Autowired
     private CountryRepository countryRepository;
+
+    @Autowired
+    private EmailService emailService;
 
     private final AuthenticationService authenticationService;
     private final JwtService jwtService;
@@ -94,6 +98,9 @@ public class AuthRestController {
         User userToUpdate = optionalUser.get();
         userToUpdate.setOtp(generateOTP());
         userRepository.save(userToUpdate);
+
+        emailService.sendSimpleEmail(user.getEmail(), "Reset Password", "Your OTP is: " + userToUpdate.getOtp());
+
         return ResponseEntity.ok(userToUpdate);
     }
 
