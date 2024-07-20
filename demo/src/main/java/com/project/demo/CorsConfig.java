@@ -1,7 +1,5 @@
 package com.project.demo;
 
-import com.project.demo.entity.Country;
-import com.project.demo.entity.Currency;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
