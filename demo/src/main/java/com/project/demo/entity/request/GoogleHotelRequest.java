@@ -2,17 +2,16 @@ package com.project.demo.entity.request;
 
 import java.util.Date;
 
-public class HotelRequest {
+public class GoogleHotelRequest {
+
+    public final String engine= "google_hotels";
 
     private String query;
 
     private Date check_in_date;
 
     private Date check_out_date;
-    private final String api_key= "a25a903700190f245c88c3bbde9cade9d1afe4364e307b6d1433f71bc4185fc4";
-
-//    private String api_key={GOOGLE_HOTEL_KEY};
-//    a25a903700190f245c88c3bbde9cade9d1afe4364e307b6d1433f71bc4185fc4
+    private  String api_key;
 
     public String getQuery() {
         return query;
@@ -41,6 +40,15 @@ public class HotelRequest {
     public String getApi_key() {
         return api_key;
     }
+
+    public void setApi_key(String api_key) {
+        this.api_key = api_key;
+    }
+
+    public String getEngine() {
+        return engine;
+    }
+
 
 
 }
