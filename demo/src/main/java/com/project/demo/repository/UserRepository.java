@@ -1,15 +1,14 @@
-package com.project.demo.entity.user;
+package com.project.demo.repository;
 
 import com.project.demo.entity.Country;
-import com.project.demo.entity.rol.Role;
-import com.project.demo.repository.CountryRepository;
+import com.project.demo.entity.Role;
+import com.project.demo.entity.User;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;

@@ -1,4 +1,4 @@
-package com.project.demo.rest.country;
+package com.project.demo.rest;
 
 
 import com.project.demo.entity.Country;

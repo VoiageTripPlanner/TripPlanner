@@ -2,13 +2,11 @@ package com.project.demo.repository;
 
 import com.project.demo.Config.TestConfig;
 import com.project.demo.entity.Country;
-import com.project.demo.entity.auth.AuthenticationService;
+import com.project.demo.logic.AuthenticationService;
 import com.project.demo.entity.Currency;
-import com.project.demo.entity.rol.Role;
-import com.project.demo.entity.rol.RoleEnum;
-import com.project.demo.entity.rol.RoleRepository;
-import com.project.demo.entity.user.User;
-import com.project.demo.entity.user.UserRepository;
+import com.project.demo.entity.Role;
+import com.project.demo.entity.RoleEnum;
+import com.project.demo.entity.User;
 import jakarta.persistence.EntityManager;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -21,7 +19,6 @@ import org.springframework.context.annotation.Import;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 
-import javax.management.remote.JMXAuthenticator;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
