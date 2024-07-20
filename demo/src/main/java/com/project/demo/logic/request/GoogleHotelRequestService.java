@@ -1,6 +1,7 @@
 package com.project.demo.logic.request;
 
 import com.project.demo.entity.request.GoogleHotelRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -14,11 +15,8 @@ public class GoogleHotelRequestService {
 
     @Value("${googleHotelApi.key}")
     private String googleApiKey;
-    private final RestTemplate restTemplate;
-
-    public GoogleHotelRequestService(RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
-    }
+    @Autowired
+    private RestTemplate restTemplate;
 
     public String searchHotels(String query, Date checkInDate, Date checkOutDate) {
         String baseUrl = "https://serpapi.com/search?engine=google_hotels";
@@ -28,7 +26,7 @@ public class GoogleHotelRequestService {
                 .queryParam("q", query)
                 .queryParam("check_in_date", dateFormat.format(checkInDate))
                 .queryParam("check_out_date", dateFormat.format(checkOutDate))
-                .queryParam("api_key", "");
+                .queryParam("api_key", googleApiKey);
 
         return restTemplate.getForObject(builder.toUriString(), String.class);
     }

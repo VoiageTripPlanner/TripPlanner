@@ -1,7 +1,9 @@
 package com.project.demo.entity.request;
 
-import java.util.Date;
+import org.springframework.stereotype.Service;
 
+import java.util.Date;
+@Service
 public class GoogleHotelRequest {
 
 //    public final String engine= "google_hotels";
