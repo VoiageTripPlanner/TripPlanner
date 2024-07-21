@@ -2,6 +2,7 @@ package com.project.demo.rest;
 
 import com.project.demo.entity.Country;
 import com.project.demo.logic.AuthenticationService;
+import com.project.demo.logic.EmailService;
 import com.project.demo.logic.JwtService;
 import com.project.demo.entity.Role;
 import com.project.demo.entity.RoleEnum;
@@ -13,10 +14,9 @@ import com.project.demo.repository.CountryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.security.SecureRandom;
 
 import java.util.Optional;
 
@@ -37,6 +37,9 @@ public class AuthRestController {
     @Autowired
     private CountryRepository countryRepository;
 
+    @Autowired
+    private EmailService emailService;
+
     private final AuthenticationService authenticationService;
     private final JwtService jwtService;
 
@@ -54,6 +57,7 @@ public class AuthRestController {
         LoginResponse loginResponse = new LoginResponse();
         loginResponse.setToken(jwtToken);
         loginResponse.setExpiresIn(jwtService.getExpirationTime());
+        loginResponse.setUser_id(user.getUser_id());
 
         Optional<User> foundedUser = userRepository.findByEmail(user.getEmail());
 
@@ -83,5 +87,39 @@ public class AuthRestController {
 
         User savedUser = userRepository.save(user);
         return ResponseEntity.ok(savedUser);
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(@RequestBody User user) {
+        Optional<User> optionalUser = userRepository.findByEmail(user.getEmail());
+        if (optionalUser.isEmpty()) {
+            return ResponseEntity.badRequest().body("User not found");
+        }
+        User userToUpdate = optionalUser.get();
+
+        String otp = authenticationService.generateOTP();
+
+        userToUpdate.setOtp(otp);
+        userRepository.save(userToUpdate);
+
+        emailService.sendSimpleEmail(user.getEmail(), "Reset Password", "Your OTP is: " + userToUpdate.getOtp());
+
+        return ResponseEntity.ok(userToUpdate);
+    }
+
+    @PostMapping("/validate-otp")
+    public ResponseEntity<?> validateOTP(@RequestBody User user) {
+        Optional<User> optionalUser = userRepository.findByOTP(user.getOtp());
+        if (optionalUser.isEmpty()) {
+            return ResponseEntity.badRequest().body("User not found");
+        }
+        User userToUpdate = optionalUser.get();
+        if (userToUpdate.getOtp().equals(user.getOtp())) {
+            userToUpdate.setOtp(null);
+            userToUpdate.setPassword(passwordEncoder.encode(user.getPassword()));
+            userRepository.save(userToUpdate);
+            return ResponseEntity.ok(userToUpdate);
+        }
+        return ResponseEntity.badRequest().body("OTP is incorrect");
     }
 }
