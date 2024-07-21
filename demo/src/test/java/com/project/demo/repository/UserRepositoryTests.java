@@ -141,5 +141,19 @@ public class UserRepositoryTests {
             Assertions.assertThat(user.getOtp()).isNotNull();
         }
     }
+
+    @Test
+    public void updateUser() {
+        Optional<User> userFoundOptional = userRepository.findByEmail("test@gmail.com");
+
+        if (userFoundOptional.isPresent()) {
+            User user = userFoundOptional.get();
+            user.setName("John");
+            user.setLast_name("Smith");
+            user.setSecond_last_name("Johnson");
+            user.setLast_update_datetime(new Date());
+            Assertions.assertThat(userRepository.save(user)).isNotNull();
+        }
+    }
 }
 
