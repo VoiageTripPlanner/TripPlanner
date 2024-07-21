@@ -22,7 +22,7 @@ public interface LodgeRepository extends JpaRepository<Lodge, Integer> {
 
     @Modifying
     @Transactional
-    @Query("UPDATE Lodge u SET u.operational = false WHERE u.lodge_id = :id")
+    @Query("UPDATE Lodge u SET u.operational = false WHERE u.lodgeId = :id")
     void logicalDeleteById(@Param("id") Integer id);
 
     @Query("SELECT u FROM Lodge u")

@@ -13,10 +13,10 @@ public class Lodge {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "lodge_id", nullable = false)
-    private Integer lodge_id;
-    @Column(name = "name", nullable = false)
+    private Integer lodgeId;
+    @Column(name = "name", nullable = false,length = 100)
     private String lodgeName;
-    @Column(name = "description")
+    @Column(name = "description",length = 200)
     private String description;
     @Column(name = "check_in", nullable = false)
     private Date checkIn;
@@ -39,6 +39,7 @@ public class Lodge {
     private String type;
     @Column(name = "amenities")
     private String amenities;
+
 //    @OneToOne(cascade={CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
 //    @JoinColumn(name = "trip_id", nullable = false)
 //    private Trip tripId;
@@ -48,24 +49,26 @@ public class Lodge {
 
     @CreationTimestamp
     @Column(updatable = false, name = "created_at")
-    private Date creation_datetime;
+    private Date creationDatetime;
 
     @Column(nullable = false)
-    private Integer creation_responsible;
+    private Integer creationResponsible;
     @UpdateTimestamp
     @Column(name = "updated_at")
-    private Date last_update_datetime;
+    private Date lastUpdateDatetime;
 
     @Column(nullable = true)
-    private Integer update_responsible;
+    private Integer updateResponsible;
 
 //    Setters and getters
-    public Integer getLodge_id() {
-        return lodge_id;
+
+
+    public Integer getLodgeId() {
+        return lodgeId;
     }
 
-    public void setLodge_id(Integer lodge_id) {
-        this.lodge_id = lodge_id;
+    public void setLodgeId(Integer lodgeId) {
+        this.lodgeId = lodgeId;
     }
 
     public String getLodgeName() {
@@ -172,35 +175,35 @@ public class Lodge {
         this.operational = operational;
     }
 
-    public Date getCreation_datetime() {
-        return creation_datetime;
+    public Date getCreationDatetime() {
+        return creationDatetime;
     }
 
-    public void setCreation_datetime(Date creation_datetime) {
-        this.creation_datetime = creation_datetime;
+    public void setCreationDatetime(Date creationDatetime) {
+        this.creationDatetime = creationDatetime;
     }
 
-    public Integer getCreation_responsible() {
-        return creation_responsible;
+    public Integer getCreationResponsible() {
+        return creationResponsible;
     }
 
-    public void setCreation_responsible(Integer creation_responsible) {
-        this.creation_responsible = creation_responsible;
+    public void setCreationResponsible(Integer creationResponsible) {
+        this.creationResponsible = creationResponsible;
     }
 
-    public Date getLast_update_datetime() {
-        return last_update_datetime;
+    public Date getLastUpdateDatetime() {
+        return lastUpdateDatetime;
     }
 
-    public void setLast_update_datetime(Date last_update_datetime) {
-        this.last_update_datetime = last_update_datetime;
+    public void setLastUpdateDatetime(Date lastUpdateDatetime) {
+        this.lastUpdateDatetime = lastUpdateDatetime;
     }
 
-    public Integer getUpdate_responsible() {
-        return update_responsible;
+    public Integer getUpdateResponsible() {
+        return updateResponsible;
     }
 
-    public void setUpdate_responsible(Integer update_responsible) {
-        this.update_responsible = update_responsible;
+    public void setUpdateResponsible(Integer updateResponsible) {
+        this.updateResponsible = updateResponsible;
     }
 }
