@@ -96,7 +96,10 @@ public class AuthRestController {
             return ResponseEntity.badRequest().body("User not found");
         }
         User userToUpdate = optionalUser.get();
-        userToUpdate.setOtp(generateOTP());
+
+        String otp = authenticationService.generateOTP();
+
+        userToUpdate.setOtp(otp);
         userRepository.save(userToUpdate);
 
         emailService.sendSimpleEmail(user.getEmail(), "Reset Password", "Your OTP is: " + userToUpdate.getOtp());
@@ -119,22 +122,4 @@ public class AuthRestController {
         }
         return ResponseEntity.badRequest().body("OTP is incorrect");
     }
-
-    // Define los caracteres que pueden aparecer en el OTP
-    private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    private static final int OTP_LENGTH = 6;
-    private static final SecureRandom random = new SecureRandom();
-
-    public static String generateOTP() {
-        StringBuilder otp = new StringBuilder(OTP_LENGTH);
-        for (int i = 0; i < OTP_LENGTH; i++) {
-            otp.append(CHARACTERS.charAt(random.nextInt(CHARACTERS.length())));
-        }
-        return otp.toString();
-    }
-
-
-
-
-
 }

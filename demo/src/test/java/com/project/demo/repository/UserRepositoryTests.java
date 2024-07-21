@@ -123,4 +123,23 @@ public class UserRepositoryTests {
         Optional<User> userFoundOptional = userRepository.findByName("John");
         Assertions.assertThat(userFoundOptional).isPresent();
     }
+
+    @Test
+    public void findUserToResetPassword() {
+        Optional<User> userFoundOptional = userRepository.findByEmail("test@gmail.com");
+        Assertions.assertThat(userFoundOptional).isPresent();
+    }
+
+    @Test
+    public void generateOTP() {
+        Optional<User> userFoundOptional = userRepository.findByEmail("test@gmail.com");
+
+        if (userFoundOptional.isPresent()) {
+            User user = userFoundOptional.get();
+            String otp = authenticationService.generateOTP();
+            user.setOtp(otp);
+            Assertions.assertThat(user.getOtp()).isNotNull();
+        }
+    }
 }
+
