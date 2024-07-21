@@ -12,7 +12,7 @@ public class Country {
     private String countryName;
     @Column(name = "country_code", nullable = false, length = 2)
     private String countryCode;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     @JoinColumn(name = "country_currency_id", nullable = false)
     private Currency currency;
 

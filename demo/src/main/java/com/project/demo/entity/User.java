@@ -26,7 +26,7 @@ public class User implements UserDetails {
     private String second_last_name;
 
     @ManyToOne
-    @JoinColumn(name = "country_id", referencedColumnName = "country_id", nullable = false)
+    @JoinColumn(name = "country_id", referencedColumnName = "country_id")
     private Country country;
 
     @Column(unique = true, length = 100, nullable = false)
@@ -42,7 +42,7 @@ public class User implements UserDetails {
     @Column(updatable = false, name = "created_at")
     private Date creation_datetime;
 
-    @Column(nullable = false)
+    @Column()
     private Integer creation_responsible;
     @UpdateTimestamp
     @Column(name = "updated_at")
