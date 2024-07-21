@@ -29,8 +29,9 @@ public class Lodge {
     @Column(name = "longitude", nullable = false)
     private Float longitude;
 
-//    @Column(name = "external_link", nullable = false)
-//    private String externalLink;
+    @Column(name = "external_link", nullable = false)
+    private String externalLink;
+
     @Column(name = "total_rate", nullable = false)
     private Double totalRate;
     @Column(name = "images")
@@ -61,7 +62,6 @@ public class Lodge {
     private Integer updateResponsible;
 
 //    Setters and getters
-
 
     public Integer getLodgeId() {
         return lodgeId;
@@ -206,4 +206,13 @@ public class Lodge {
     public void setUpdateResponsible(Integer updateResponsible) {
         this.updateResponsible = updateResponsible;
     }
+
+    public String getExternalLink() {
+        return externalLink;
+    }
+
+    public void setExternalLink(String externalLink) {
+        this.externalLink = externalLink;
+    }
+
 }

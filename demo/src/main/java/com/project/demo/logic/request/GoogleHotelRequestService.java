@@ -30,7 +30,4 @@ public class GoogleHotelRequestService {
         return restTemplate.getForObject(builder.toUriString(), String.class);
     }
 
-//    public GoogleHotelRequest listQueryHotels() {
-//        return null;
-//    }
 }
