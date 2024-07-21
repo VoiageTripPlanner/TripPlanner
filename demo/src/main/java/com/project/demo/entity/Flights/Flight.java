@@ -1,7 +1,6 @@
 package com.project.demo.entity.Flights;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.project.demo.entity.Currency;
 import jakarta.persistence.*;
 import java.util.Date;
 
@@ -20,7 +19,7 @@ public class Flight {
     private String airline;
     @JoinColumn(name = "departure_airport", nullable = false)
     private Integer departureId;
-    @JoinColumn(name = "arrival_airport", nullable = false)
+    @JoinColumn(name = "arrival_airport", nullable = true)
     private Integer arrivalId;
     @Column(name= "duration", nullable = false)
     private int duration;
@@ -42,9 +41,9 @@ public class Flight {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private String endDate;
 
-    @Column(name = "g_flight_url", nullable = true)
+    @Column(name = "g_flight_url", nullable = false)
     private String gFlightUrl;
-
+    @Column(name = "total_price", nullable = false)
     private double totalPrice;
 
     //CONSTRUCTORS
@@ -129,5 +128,21 @@ public class Flight {
 
     public void setEndDate(String endDate) {
         this.endDate = endDate;
+    }
+
+    public String getgFlightUrl() {
+        return gFlightUrl;
+    }
+
+    public void setgFlightUrl(String gFlightUrl) {
+        this.gFlightUrl = gFlightUrl;
+    }
+
+    public double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
     }
 }

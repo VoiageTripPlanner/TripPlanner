@@ -23,12 +23,8 @@ public class FlightController implements IController<Flight, Integer> {
     @Autowired
     private FlightService flightService;
 
-    @GetMapping("/search/{engine}/{departureId}/{arrivalId}/{outboundDate}/{type}/{returnDate}")
-    public ResponseEntity<?> searchFlights(@RequestParam String engine,
-                                           @RequestParam String departureId,
-                                           @RequestParam String arrivalId,
-                                           @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date outboundDate,
-                                           @RequestParam int type, @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date returnDate) {
+    @GetMapping("search/")
+    public ResponseEntity<?> searchFlights(@RequestBody Query query) {
         try {
             Response response = flightService.searchAndFetchFlights(engine, departureId, arrivalId, outboundDate, type, returnDate);
             return new ResponseEntity<>(response, HttpStatus.OK);
@@ -38,27 +34,17 @@ public class FlightController implements IController<Flight, Integer> {
     }
 
     @Override
-    @PostMapping("/ ")
+    @PostMapping(" ")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public Flight create(@RequestBody Flight entity) {
         return flightService.save(entity);
     }
 
     @Override
-    @GetMapping("/ ")
-    public List<Flight> retrieveAll() {
-        return flightService.findAll();
-    }
-
-    @Override
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public Optional<Flight> retrieveById(Integer aInteger) {
         return flightService.findById(aInteger);
-    }
-
-    @Override
-    @PutMapping(" ")
-    public Flight update(Flight entity) {
-        return null;
     }
 
     @Override
@@ -66,5 +52,26 @@ public class FlightController implements IController<Flight, Integer> {
     @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
     public void deleteById(Integer aInteger) {
         flightService.deleteById(aInteger);
+    }
+
+
+
+
+
+
+
+
+
+
+
+    @Override
+    @GetMapping("/ ")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+    public List<Flight> retrieveAll() { return null; }
+    @Override
+    @PutMapping("/ ")
+    @PreAuthorize("hasAnyRole('ADMIN', 'USER')")
+    public Flight update(Flight entity) {
+        return null;
     }
 }

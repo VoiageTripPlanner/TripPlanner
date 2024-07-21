@@ -32,17 +32,14 @@ public class FlightService implements IService<Flight, Integer> {
         this.restTemplate = restTemplate;
     }
 
-    // En tu FlightService
-    public Response searchAndFetchFlights(String engine, String departureId,
-                                          String arrivalId, Date outboundDate,
-                                          int type, Date returnDate) throws Exception {
+    public Response searchAndFetchFlights(Query query) throws Exception {
         String baseUrl = "https://serpapi.com";
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(baseUrl)
-                .queryParam("engine", engine)
-                .queryParam("type", type)
-                .queryParam("departure_id", departureId)
+                .queryParam("engine", "google_flights")
+                .queryParam("type", query.getType())
+                .queryParam("departure_id", query.getFlights().get)
                 .queryParam("arrival_id", arrivalId)
                 .queryParam("outbound_date", dateFormat.format(outboundDate))
                 .queryParam("api_key", apiKey);
@@ -51,17 +48,8 @@ public class FlightService implements IService<Flight, Integer> {
             builder.queryParam("return_date", dateFormat.format(returnDate));
         }
 
-        String jsonResponse = restTemplate.getForObject(builder.toUriString(), String.class);
         return objectMapper.readValue(jsonResponse, Response.class);
     }
-
-    public List<Query> parseFlight(Response response) {
-        // Directly return the list of FlightSearch objects from the response
-        return response.getOther_flights();
-    }
-
-    // Additional methods to process and retrieve specific data from the FlightSearch objects
-    // For example, filtering flights by criteria, calculating total prices, etc.
 
     //Para persistencia de datos de los vuelos
     @Override

@@ -1,8 +1,5 @@
 package com.project.demo.entity.Flights;
 
-import jakarta.persistence.Entity;
-
-import java.util.Date;
 import java.util.List;
 
 public class Query {
