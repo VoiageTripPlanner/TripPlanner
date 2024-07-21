@@ -12,11 +12,9 @@ import org.springframework.stereotype.Component;
 public class AdminSeeder implements ApplicationListener<ContextRefreshedEvent> {
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
-
     private final PasswordEncoder passwordEncoder;
     private final CountryRepository countryRepository;
-
-
+    
     public AdminSeeder(
             RoleRepository roleRepository,
             UserRepository  userRepository,
