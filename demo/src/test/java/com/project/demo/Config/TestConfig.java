@@ -42,7 +42,7 @@ public class TestConfig {
     }
 
     @Bean
-    public AuthenticationService authenticationService(UserRepository userRepository, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder) {
+    public AuthenticationService authenticationServic(UserRepository userRepository, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder) {
         return new AuthenticationService(userRepository, authenticationManager, passwordEncoder);
     }
 }
