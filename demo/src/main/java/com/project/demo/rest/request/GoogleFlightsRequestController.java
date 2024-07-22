@@ -1,27 +1,46 @@
 package com.project.demo.rest.request;
 
-import com.project.demo.logic.FlightService;
+import com.project.demo.entity.request.GoogleFlightsRequestEntity;
+import com.project.demo.logic.request.GoogleFlightsRequestService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
 
 @RestController
-@RequestMapping("/flights")
+@RequestMapping("/api/flights")
 public class GoogleFlightsRequestController {
     @Autowired
-    private FlightService flightService;
+    private GoogleFlightsRequestService googleFlightsRequestService;
 
-    @GetMapping("search/")
-    public ResponseEntity<?> searchFlights(@RequestBody Query query) {
-        try {
-            Response response = flightService.searchAndFetchFlights(query.);
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    @GetMapping
+    public GoogleFlightsRequestEntity searchFlights(@RequestParam("departure_id") String departure_id,
+                                                    @RequestParam("arrival_id") String arrival_id,
+                                                    @RequestParam("outbound_date") String outbound_date,
+                                                    @RequestParam("return_date") String return_date,
+                                                    @RequestParam("travel_class") int travel_class,
+                                                    @RequestParam("stops") int stops,
+                                                    @RequestParam("max_price") int max_price,
+                                                    @RequestParam("hl") String hl,
+                                                    @RequestParam("gl") String gl,
+                                                    @RequestParam("currency") String currency,
+                                                    @RequestParam("type") int type,
+                                                    @RequestParam("api_key") String api_key
+                                ) throws Exception {
+        GoogleFlightsRequestEntity requestEntity = new GoogleFlightsRequestEntity();
+        requestEntity.setApi_key(api_key);
+        requestEntity.setDeparture_id(departure_id);
+        requestEntity.setArrival_id(arrival_id);
+        requestEntity.setOutbound_date(LocalDate.parse(outbound_date));
+        requestEntity.setType(type);
+        requestEntity.setReturn_date(LocalDate.parse(return_date));
+        requestEntity.setTravel_class(travel_class);
+        requestEntity.setStops(stops);
+        requestEntity.setMax_price(max_price);
+        requestEntity.setHl(hl);
+        requestEntity.setGl(gl);
+        requestEntity.setCurrency(currency);
+
+        return googleFlightsRequestService.searchFlights(requestEntity);
     }
 }

@@ -1,6 +1,5 @@
 package com.project.demo.logic.request;
 
-import com.project.demo.entity.Flights.Response;
 import com.project.demo.entity.request.GoogleFlightsRequestEntity;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -8,30 +7,51 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+
 @Service
 public class GoogleFlightsRequestService {
 
-    @Value("${gflightsapikey}")
+    @Value("${GOOGLE_FLIGHTS_API_KEY}")
     private String apiKey;
 
     private RestTemplate restTemplate;
 
-    public GoogleFlightsRequestEntity searchAndFetchFlights(GoogleFlightsRequestEntity query) throws Exception {
-        String baseUrl = "https://serpapi.com";
+    public GoogleFlightsRequestEntity searchFlights(GoogleFlightsRequestEntity query) throws Exception {
+        String baseUrl = "https://serpapi.com/search?engine=google_flights";
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
-        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(baseUrl)
-                .queryParam("engine", "google_flights")
-                .queryParam("type", query.getType())
-                .queryParam("departure_id", query.getFlights().getFirst().getDepartureId())
-                .queryParam("arrival_id", query.getFlights().getFirst().getArrivalId())
-                .queryParam("outbound_date", dateFormat.format(outboundDate))
-                .queryParam("api_key", apiKey);
+                UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(baseUrl)
+                        .queryParam("departure_id", query.getDeparture_id())
+                        .queryParam("arrival_id", query.getArrival_id())
+                        .queryParam("type", query.getType())
+                        .queryParam("outbound_date", dateFormat.format(query.getOutbound_date()))
+                        .queryParam("api_key", apiKey);
 
-        if (type == 1 && returnDate != null) {
-            builder.queryParam("return_date", dateFormat.format(returnDate));
-        }
-
-        return restTemplate.getForObject(builder.toUriString(), String.class);
+                // Condicional para agregar return_date solo si type es 1
+                if (query.getType() == 1 && query.getReturn_date() != null) {
+                    builder.queryParam("return_date", dateFormat.format(query.getReturn_date()));
+                }
+                // Condiciones para agregar travel_class, stops, max_price solo si no son nulos
+                if (query.getTravel_class() != 0) {
+                    builder.queryParam("travel_class", String.valueOf(query.getTravel_class()));
+                }
+                if (query.getStops() != 0) {
+                    builder.queryParam("stops", String.valueOf(query.getStops()));
+                }
+                if (query.getMax_price() != 0) {
+                    builder.queryParam("max_price", String.valueOf(query.getMax_price()));
+                }
+                if (query.getHl() != null) {
+                    builder.queryParam("hl", String.valueOf(query.getHl()));
+                }
+                if (query.getGl() != null) {
+                    builder.queryParam("gl", String.valueOf(query.getGl()));
+                }
+                if (query.getCurrency() != null) {
+                    builder.queryParam("currency", String.valueOf(query.getCurrency()));
+                }
+                return restTemplate.getForObject(builder.toUriString(), GoogleFlightsRequestEntity.class);
     }
 }
+

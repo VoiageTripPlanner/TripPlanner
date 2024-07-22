@@ -30,10 +30,10 @@ public class Flight {
     private String flight_number;
 
     @Column(name = "outbound_date", nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     private LocalDate outbound_date;
     @Column(name = "return_date", nullable = true)
-    @Temporal(TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.DATE)
     private LocalDate return_date;
 
     @Column(name = "layover", nullable = false)

@@ -3,9 +3,10 @@ package com.project.demo.entity.request;
 import java.time.LocalDate;
 
 public class GoogleFlightsRequestEntity {
-
+    private String api_key;
     private String hl;
     private String gl;
+    private int type;
     private String currency;
     private String departure_id;
     private String arrival_id;
@@ -17,6 +18,14 @@ public class GoogleFlightsRequestEntity {
     private int max_price;
 
     public GoogleFlightsRequestEntity() {
+    }
+
+    public String getApi_key() {
+        return api_key;
+    }
+
+    public void setApi_key(String api_key) {
+        this.api_key = api_key;
     }
 
     public String getHl() {
@@ -33,6 +42,14 @@ public class GoogleFlightsRequestEntity {
 
     public void setGl(String gl) {
         this.gl = gl;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 
     public String getCurrency() {

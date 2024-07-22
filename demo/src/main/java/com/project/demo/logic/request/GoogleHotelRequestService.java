@@ -12,8 +12,9 @@ import java.util.Date;
 @Service
 public class GoogleHotelRequestService {
 
-    @Value("${googleHotelApi.key}")
+    @Value("${GOOGLE_HOTEL_KEY}")
     private String googleApiKey;
+
     @Autowired
     private RestTemplate restTemplate;
 

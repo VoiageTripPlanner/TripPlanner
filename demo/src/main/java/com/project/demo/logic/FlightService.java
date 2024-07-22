@@ -1,7 +1,7 @@
 package com.project.demo.logic;
 
 import com.project.demo.entity.Flight;
-import com.project.demo.repository.Flight.FlightRepository;
+import com.project.demo.repository.FlightRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -1,15 +1,18 @@
 package com.project.demo.entity.request;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-@Service
+
+@Entity
 public class GoogleHotelRequest {
 
+    @Id
+    private int id;
     private String query;
-
     private Date check_in_date;
-
     private Date check_out_date;
     private  String api_key;
 
@@ -44,6 +47,5 @@ public class GoogleHotelRequest {
     public void setApi_key(String api_key) {
         this.api_key = api_key;
     }
-
 
 }
