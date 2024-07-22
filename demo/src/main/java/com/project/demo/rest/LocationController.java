@@ -15,32 +15,32 @@ public class LocationController implements IController<Location, Integer>{
     private LocationService locationService;
 
     @Override
-    @PostMapping("/")
-    public Location create(Location entity) {
+    @PostMapping("")
+    public Location create(@RequestBody Location entity) {
         return locationService.save(entity);
     }
 
     @Override
-    @GetMapping("/")
+    @GetMapping("")
     public List<Location> retrieveAll() {
         return locationService.findAll();
     }
 
     @Override
-    @GetMapping("/{id}")
-    public Optional<Location> retrieveById(Integer integer) {
-        return null;
+    @GetMapping("{id}")
+    public Optional<Location> retrieveById(@PathVariable Integer integer) {
+        return locationService.findById(integer);
     }
 
     @Override
-    @PutMapping("/")
-    public Location update(Location entity) {
-        return null;
+    @PutMapping("")
+    public Location update(@RequestBody Location entity) {
+        return locationService.save(entity);
     }
 
     @Override
-    @DeleteMapping("/{id}")
-    public void deleteById(Integer integer) {
-
+    @DeleteMapping("{id}")
+    public void deleteById(@PathVariable Integer integer) {
+        locationService.deleteById(integer);
     }
 }
