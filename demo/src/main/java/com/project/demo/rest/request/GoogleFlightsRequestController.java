@@ -24,11 +24,9 @@ public class GoogleFlightsRequestController {
                                                     @RequestParam("hl") String hl,
                                                     @RequestParam("gl") String gl,
                                                     @RequestParam("currency") String currency,
-                                                    @RequestParam("type") int type,
-                                                    @RequestParam("api_key") String api_key
+                                                    @RequestParam("type") int type
                                 ) throws Exception {
         GoogleFlightsRequestEntity requestEntity = new GoogleFlightsRequestEntity();
-        requestEntity.setApi_key(api_key);
         requestEntity.setDeparture_id(departure_id);
         requestEntity.setArrival_id(arrival_id);
         requestEntity.setOutbound_date(LocalDate.parse(outbound_date));
