@@ -2,6 +2,7 @@ package com.project.demo.logic;
 
 import com.project.demo.entity.User;
 import com.project.demo.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,18 +21,17 @@ public class AuthenticationService implements IService <User, Integer> {
 
     private final AuthenticationManager authenticationManager;
 
-    private EmailService emailService;
+    @Autowired
+    EmailService emailService;
 
     public AuthenticationService(
             UserRepository userRepository,
             AuthenticationManager authenticationManager,
-            PasswordEncoder passwordEncoder,
-            EmailService emailService
+            PasswordEncoder passwordEncoder
     ) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
-        this.emailService = emailService;
     }
 
 
