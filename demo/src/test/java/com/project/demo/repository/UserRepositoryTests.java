@@ -7,6 +7,7 @@ import com.project.demo.entity.Currency;
 import com.project.demo.entity.Role;
 import com.project.demo.entity.RoleEnum;
 import com.project.demo.entity.User;
+import com.project.demo.logic.EmailService;
 import jakarta.persistence.EntityManager;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -52,6 +53,7 @@ public class UserRepositoryTests {
 
     @Autowired
     private EntityManager entityManager;
+
     @BeforeEach
     public void infoSetup() {
         // Info de usuario

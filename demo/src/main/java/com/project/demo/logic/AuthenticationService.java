@@ -2,7 +2,6 @@ package com.project.demo.logic;
 
 import com.project.demo.entity.User;
 import com.project.demo.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,9 +19,6 @@ public class AuthenticationService implements IService <User, Integer> {
     private final PasswordEncoder passwordEncoder;
 
     private final AuthenticationManager authenticationManager;
-
-    @Autowired
-    EmailService emailService;
 
     public AuthenticationService(
             UserRepository userRepository,
@@ -74,24 +70,6 @@ public class AuthenticationService implements IService <User, Integer> {
         }
         return ResponseEntity.badRequest().body("OTP is incorrect");
     }
-
-    public ResponseEntity<?> resetPassword(String email) {
-        Optional<User> optionalUser = userRepository.findByEmail(email);
-        if (optionalUser.isEmpty()) {
-            return ResponseEntity.badRequest().body("User not found");
-        }
-        User userToUpdate = optionalUser.get();
-
-        String otp = generateOTP();
-
-        userToUpdate.setOtp(otp);
-        userRepository.save(userToUpdate);
-
-        emailService.sendSimpleEmail(email, "Reset Password", "Your OTP is: " + otp);
-
-        return ResponseEntity.ok(userToUpdate);
-    }
-
 
     @Override
     public User save(User entity) {
