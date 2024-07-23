@@ -2,6 +2,7 @@ package com.project.demo.Config;
 
 
 import com.project.demo.logic.AuthenticationService;
+import com.project.demo.logic.EmailService;
 import com.project.demo.repository.UserRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -42,7 +43,7 @@ public class TestConfig {
     }
 
     @Bean
-    public AuthenticationService authenticationService(UserRepository userRepository, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder) {
-        return new AuthenticationService(userRepository, authenticationManager, passwordEncoder);
+    public AuthenticationService authenticationService(UserRepository userRepository, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder, EmailService emailService) {
+        return new AuthenticationService(userRepository, authenticationManager, passwordEncoder, emailService);
     }
 }

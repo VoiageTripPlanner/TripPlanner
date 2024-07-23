@@ -2,7 +2,6 @@ package com.project.demo.logic;
 
 import com.project.demo.entity.User;
 import com.project.demo.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -14,24 +13,25 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class AuthenticationService implements IService<User, Integer> {
+public class AuthenticationService implements IService <User, Integer> {
     private final UserRepository userRepository;
 
     private final PasswordEncoder passwordEncoder;
 
     private final AuthenticationManager authenticationManager;
 
-    @Autowired
     private EmailService emailService;
 
     public AuthenticationService(
             UserRepository userRepository,
             AuthenticationManager authenticationManager,
-            PasswordEncoder passwordEncoder
+            PasswordEncoder passwordEncoder,
+            EmailService emailService
     ) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.emailService = emailService;
     }
 
 
@@ -91,6 +91,7 @@ public class AuthenticationService implements IService<User, Integer> {
 
         return ResponseEntity.ok(userToUpdate);
     }
+
 
     @Override
     public User save(User entity) {
