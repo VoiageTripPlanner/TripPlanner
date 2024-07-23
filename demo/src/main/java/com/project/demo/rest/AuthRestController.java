@@ -18,11 +18,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.SecureRandom;
 
+import java.util.List;
 import java.util.Optional;
 
 @RequestMapping("/auth")
 @RestController
-public class AuthRestController {
+public class AuthRestController implements IController<User, Long> {
 
 
     @Autowired
@@ -79,7 +80,7 @@ public class AuthRestController {
         if (user.getCountry() != null && user.getCountry().getCountryId() != null) {
             Optional<Country> optionalCountry = countryRepository.findById(user.getCountry().getCountryId());
 
-                user.setCountry(optionalCountry.get());
+            user.setCountry(optionalCountry.get());
 
         } else {
             return ResponseEntity.badRequest().body("Country information is missing or incomplete");
@@ -91,35 +92,37 @@ public class AuthRestController {
 
     @PostMapping("/reset-password")
     public ResponseEntity<?> resetPassword(@RequestBody User user) {
-        Optional<User> optionalUser = userRepository.findByEmail(user.getEmail());
-        if (optionalUser.isEmpty()) {
-            return ResponseEntity.badRequest().body("User not found");
-        }
-        User userToUpdate = optionalUser.get();
-
-        String otp = authenticationService.generateOTP();
-
-        userToUpdate.setOtp(otp);
-        userRepository.save(userToUpdate);
-
-        emailService.sendSimpleEmail(user.getEmail(), "Reset Password", "Your OTP is: " + userToUpdate.getOtp());
-
-        return ResponseEntity.ok(userToUpdate);
+        return authenticationService.resetPassword(user.getEmail());
     }
+
 
     @PostMapping("/validate-otp")
     public ResponseEntity<?> validateOTP(@RequestBody User user) {
-        Optional<User> optionalUser = userRepository.findByOTP(user.getOtp());
-        if (optionalUser.isEmpty()) {
-            return ResponseEntity.badRequest().body("User not found");
-        }
-        User userToUpdate = optionalUser.get();
-        if (userToUpdate.getOtp().equals(user.getOtp())) {
-            userToUpdate.setOtp(null);
-            userToUpdate.setPassword(passwordEncoder.encode(user.getPassword()));
-            userRepository.save(userToUpdate);
-            return ResponseEntity.ok(userToUpdate);
-        }
-        return ResponseEntity.badRequest().body("OTP is incorrect");
+        return authenticationService.validateOTP(user);
+    }
+
+    @Override
+    public User create(User entity) {
+        return null;
+    }
+
+    @Override
+    public List<User> retrieveAll() {
+        return List.of();
+    }
+
+    @Override
+    public Optional<User> retrieveById(Long aLong) {
+        return Optional.empty();
+    }
+
+    @Override
+    public User update(User entity) {
+        return null;
+    }
+
+    @Override
+    public void deleteById(Long aLong) {
+
     }
 }

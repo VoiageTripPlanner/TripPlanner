@@ -2,20 +2,27 @@ package com.project.demo.logic;
 
 import com.project.demo.entity.User;
 import com.project.demo.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
+import java.util.List;
+import java.util.Optional;
 
 @Service
-public class AuthenticationService {
+public class AuthenticationService implements IService<User, Integer> {
     private final UserRepository userRepository;
 
     private final PasswordEncoder passwordEncoder;
 
     private final AuthenticationManager authenticationManager;
+
+    @Autowired
+    private EmailService emailService;
 
     public AuthenticationService(
             UserRepository userRepository,
@@ -51,5 +58,62 @@ public class AuthenticationService {
             otp.append(CHARACTERS.charAt(random.nextInt(CHARACTERS.length())));
         }
         return otp.toString();
+    }
+
+    public ResponseEntity<?> validateOTP(User user) {
+        Optional<User> optionalUser = userRepository.findByOTP(user.getOtp());
+        if (optionalUser.isEmpty()) {
+            return ResponseEntity.badRequest().body("User not found");
+        }
+        User userToUpdate = optionalUser.get();
+        if (userToUpdate.getOtp().equals(user.getOtp())) {
+            userToUpdate.setOtp(null);
+            userToUpdate.setPassword(passwordEncoder.encode(user.getPassword()));
+            userRepository.save(userToUpdate);
+            return ResponseEntity.ok(userToUpdate);
+        }
+        return ResponseEntity.badRequest().body("OTP is incorrect");
+    }
+
+    public ResponseEntity<?> resetPassword(String email) {
+        Optional<User> optionalUser = userRepository.findByEmail(email);
+        if (optionalUser.isEmpty()) {
+            return ResponseEntity.badRequest().body("User not found");
+        }
+        User userToUpdate = optionalUser.get();
+
+        String otp = generateOTP();
+
+        userToUpdate.setOtp(otp);
+        userRepository.save(userToUpdate);
+
+        emailService.sendSimpleEmail(email, "Reset Password", "Your OTP is: " + otp);
+
+        return ResponseEntity.ok(userToUpdate);
+    }
+
+    @Override
+    public User save(User entity) {
+        return null;
+    }
+
+    @Override
+    public List<User> findAll() {
+        return List.of();
+    }
+
+    @Override
+    public Optional<User> findById(Integer integer) {
+        return Optional.empty();
+    }
+
+    @Override
+    public User update(User entity) {
+        return null;
+    }
+
+    @Override
+    public void deleteById(Integer integer) {
+
     }
 }
