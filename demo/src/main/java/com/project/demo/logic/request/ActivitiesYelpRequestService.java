@@ -1,5 +1,6 @@
 package com.project.demo.logic.request;
 
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
@@ -9,8 +10,15 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import org.springframework.http.ResponseEntity;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 @Service
 public class ActivitiesYelpRequestService {
+
+    private static final Logger logger = LoggerFactory.getLogger(ActivitiesYelpRequestService.class);
 
     @Value("${activitiesYelpApi.key}")
     private String yelpApiKey;
@@ -40,9 +48,24 @@ public class ActivitiesYelpRequestService {
                     String.class
             );
 
+            if (!response.getStatusCode().is2xxSuccessful()) {
+                String errorBody = response.getBody();
+                if (errorBody != null) {
+                    ObjectMapper objectMapper = new ObjectMapper();
+                    JsonNode errorNode = objectMapper.readTree(errorBody);
+                    logger.error("API Error: {}", errorNode.toString());
+                } else {
+                    logger.error("API Error: {}", response.getStatusCode());
+                }
+                return "There is no response, please contact the administrator";
+            }
+
             return response.getBody();
         }
         catch (Exception e) {
+
+            logger.error("Error processing the petition",e);
+
             return "There is no response from the API service";
         }
 
