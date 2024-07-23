@@ -3,6 +3,8 @@ package com.project.demo.rest;
 import com.project.demo.entity.Currency;
 import com.project.demo.logic.CurrencyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,13 +23,15 @@ public class CurrencyController implements IController<Currency, Integer>{
     }
 
     @Override
+    @GetMapping
     public List<Currency> retrieveAll() {
         return currencyService.findAll();
     }
 
     @Override
-    public Optional<Currency> retrieveById(Integer integer) {
-        return currencyService.findById(integer);
+    @GetMapping({"/{id}"})
+    public Optional<Currency> retrieveById(@PathVariable Integer id) {
+        return currencyService.findById(id);
     }
 
     @Override
