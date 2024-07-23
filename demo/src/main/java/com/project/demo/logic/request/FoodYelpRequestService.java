@@ -11,16 +11,15 @@ import org.springframework.web.util.UriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Service
-public class ActivitiesYelpRequestService {
+public class FoodYelpRequestService {
 
-    private static final Logger logger = LoggerFactory.getLogger(ActivitiesYelpRequestService.class);
+    private static final Logger logger = LoggerFactory.getLogger(FoodYelpRequestService.class);
 
-    @Value("${activitiesYelpApi.key}")
+    @Value("${foodYelpApi.key}")
     private String yelpApiKey;
     @Autowired
     private RestTemplate restTemplate;

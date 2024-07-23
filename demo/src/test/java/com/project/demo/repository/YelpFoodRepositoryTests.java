@@ -1,7 +1,6 @@
 package com.project.demo.repository;
 
-import com.project.demo.logic.request.ActivitiesYelpRequestService;
-import com.project.demo.logic.request.GoogleHotelRequestService;
+import com.project.demo.logic.request.FoodYelpRequestService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,9 +11,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import static org.mockito.Mockito.when;
 
 import org.springframework.http.HttpEntity;
@@ -22,13 +18,13 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 
-public class YelpActivitiesRepositoryTests {
+public class YelpFoodRepositoryTests {
 
     @Mock
     private RestTemplate restTemplate;
 
     @InjectMocks
-    private ActivitiesYelpRequestService activitiesService;
+    private FoodYelpRequestService activitiesService;
 
     @Value("${activitiesYelpApi.key}")
     private String activitiesApiKeyYelp;

@@ -2,10 +2,8 @@ package com.project.demo.entity.request;
 
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-
 @Service
-public class ActivitiesYelpRequest {
+public class FoodYelpRequest {
 
     private Float latitude;
 
