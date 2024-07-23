@@ -1,16 +1,9 @@
 package com.project.demo.entity.request;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import org.springframework.stereotype.Service;
-
 import java.util.Date;
 
-@Entity
 public class GoogleHotelRequest {
 
-    @Id
-    private int id;
     private String query;
     private Date check_in_date;
     private Date check_out_date;
