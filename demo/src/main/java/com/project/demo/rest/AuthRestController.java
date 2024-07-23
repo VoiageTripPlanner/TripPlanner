@@ -89,37 +89,4 @@ public class AuthRestController {
         return ResponseEntity.ok(savedUser);
     }
 
-    @PostMapping("/reset-password")
-    public ResponseEntity<?> resetPassword(@RequestBody User user) {
-        Optional<User> optionalUser = userRepository.findByEmail(user.getEmail());
-        if (optionalUser.isEmpty()) {
-            return ResponseEntity.badRequest().body("User not found");
-        }
-        User userToUpdate = optionalUser.get();
-
-        String otp = authenticationService.generateOTP();
-
-        userToUpdate.setOtp(otp);
-        userRepository.save(userToUpdate);
-
-        emailService.sendSimpleEmail(user.getEmail(), "Reset Password", "Your OTP is: " + userToUpdate.getOtp());
-
-        return ResponseEntity.ok(userToUpdate);
-    }
-
-    @PostMapping("/validate-otp")
-    public ResponseEntity<?> validateOTP(@RequestBody User user) {
-        Optional<User> optionalUser = userRepository.findByOTP(user.getOtp());
-        if (optionalUser.isEmpty()) {
-            return ResponseEntity.badRequest().body("User not found");
-        }
-        User userToUpdate = optionalUser.get();
-        if (userToUpdate.getOtp().equals(user.getOtp())) {
-            userToUpdate.setOtp(null);
-            userToUpdate.setPassword(passwordEncoder.encode(user.getPassword()));
-            userRepository.save(userToUpdate);
-            return ResponseEntity.ok(userToUpdate);
-        }
-        return ResponseEntity.badRequest().body("OTP is incorrect");
-    }
 }

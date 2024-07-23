@@ -9,14 +9,14 @@ public class LoginResponse {
 
     private long expiresIn;
 
-    private Integer user_id;
+    private Integer userId;
 
-    public Integer getUser_id() {
-        return user_id;
+    public Integer getUserId() {
+        return userId;
     }
 
     public void setUser_id(Integer user_id) {
-        this.user_id = user_id;
+        this.userId = userId;
     }
     public String getToken() {
         return token;

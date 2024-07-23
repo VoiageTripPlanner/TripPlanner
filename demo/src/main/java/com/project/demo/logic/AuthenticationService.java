@@ -39,17 +39,4 @@ public class AuthenticationService {
         return userRepository.findByEmail(input.getEmail())
                 .orElseThrow();
     }
-
-    // Define los caracteres que pueden aparecer en el OTP
-    private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    private static final int OTP_LENGTH = 6;
-    private static final SecureRandom random = new SecureRandom();
-
-    public  String generateOTP() {
-        StringBuilder otp = new StringBuilder(OTP_LENGTH);
-        for (int i = 0; i < OTP_LENGTH; i++) {
-            otp.append(CHARACTERS.charAt(random.nextInt(CHARACTERS.length())));
-        }
-        return otp.toString();
-    }
 }
