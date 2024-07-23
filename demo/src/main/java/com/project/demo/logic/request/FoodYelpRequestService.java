@@ -24,7 +24,7 @@ public class FoodYelpRequestService {
     @Autowired
     private RestTemplate restTemplate;
 
-    public String searchActivities(Float latitude, Float longitude) {
+    public String searchFood(Float latitude, Float longitude) {
 
         try{
 

@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class FoodYelpRequestController {
 
     @Autowired
-    private FoodYelpRequestService activitiesYelpRequestService;
+    private FoodYelpRequestService foodYelpRequestService;
 
     @GetMapping
     public String searchHotels(@RequestParam("latitude") Float latitude,
                                @RequestParam("longitude")  Float longitude){
-        return activitiesYelpRequestService.searchActivities(latitude, longitude);
+        return foodYelpRequestService.searchFood(latitude, longitude);
     }
 
 

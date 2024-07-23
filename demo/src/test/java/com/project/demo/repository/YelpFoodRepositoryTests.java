@@ -24,7 +24,7 @@ public class YelpFoodRepositoryTests {
     private RestTemplate restTemplate;
 
     @InjectMocks
-    private FoodYelpRequestService activitiesService;
+    private FoodYelpRequestService foodService;
 
     @Value("${activitiesYelpApi.key}")
     private String activitiesApiKeyYelp;
@@ -58,7 +58,7 @@ public class YelpFoodRepositoryTests {
         when(restTemplate.exchange(builder.toUriString(), HttpMethod.GET, entity, String.class))
                 .thenReturn(ResponseEntity.ok(expectedResponse));
 
-        String actualResponse = activitiesService.searchActivities(latitude, longitude);
+        String actualResponse = foodService.searchFood(latitude, longitude);
 
         Assertions.assertThat(actualResponse).isEqualTo(expectedResponse);
     }
