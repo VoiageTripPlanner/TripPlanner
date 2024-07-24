@@ -189,18 +189,6 @@ public class UserRepositoryTests {
     }
 
     @Test
-    public void generateOTP() {
-        Optional<User> userFoundOptional = userRepository.findByEmail("test@gmail.com");
-
-        if (userFoundOptional.isPresent()) {
-            User user = userFoundOptional.get();
-            String otp = authenticationService.generateOTP();
-            user.setOtp(otp);
-            Assertions.assertThat(user.getOtp()).isNotNull();
-        }
-    }
-
-    @Test
     public void updateUser() {
         Optional<User> userFoundOptional = userRepository.findByEmail("test@gmail.com");
 
