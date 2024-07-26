@@ -92,10 +92,11 @@ public class AuthRestController implements IController<User, Long> {
 
     //Me da error en el test si lo paso a AuthenticationService
     @PostMapping("/reset-password")
-    public ResponseEntity<?> resetPassword(String email) {
-        Optional<User> optionalUser = userRepository.findByEmail(email);
+    public ResponseEntity<?> resetPassword(@RequestBody User user) {
+
+        Optional<User> optionalUser = userRepository.findByEmail(user.getEmail());
         if (optionalUser.isEmpty()) {
-            return ResponseEntity.badRequest().body("User not found");
+            return ResponseEntity.badRequest().body("No se ecuentra el usuario");
         }
         User userToUpdate = optionalUser.get();
 
@@ -104,7 +105,7 @@ public class AuthRestController implements IController<User, Long> {
         userToUpdate.setOtp(otp);
         userRepository.save(userToUpdate);
 
-        emailService.sendSimpleEmail(email, "Reset Password", "Your OTP is: " + otp);
+        emailService.sendSimpleEmail(user.getEmail(), "Reset Password", "Your OTP is: " + otp);
 
         return ResponseEntity.ok(userToUpdate);
     }
