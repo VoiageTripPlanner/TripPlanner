@@ -10,14 +10,12 @@ public class Flight {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "flight_id", nullable = false)
     private Integer flightId;
-    @JoinColumn(name = "departure_code_airport", nullable = false)
-    private String departureId;
-    @JoinColumn(name = "departure_name_airport", nullable = false)
-    private String departure_Name;
-    @JoinColumn(name = "arrival_code_airport", nullable = true)
-    private String arrival_Id;
-    @JoinColumn(name = "arrival_name_airport", nullable = true)
-    private String arrival_Name;
+    @ManyToOne
+    @JoinColumn(name = "departure_airport", referencedColumnName = "airport_id", nullable = false)
+    private Airport departure_airport;
+    @ManyToOne
+    @JoinColumn (name = "arrival_airport", referencedColumnName = "airport_id", nullable = false)
+    private Airport arrival_airport;
     @Column(name= "duration", nullable = false)
     private int duration;
     @Column(name = "airline_name", nullable = false)
@@ -29,17 +27,23 @@ public class Flight {
     @Column(name= "flight_number", nullable = false)
     private String flight_number;
 
-    @Column(name = "outbound_date", nullable = false)
+    @Column(name = "start_date", nullable = false)
     @Temporal(TemporalType.DATE)
     private LocalDate outbound_date;
-    @Column(name = "return_date", nullable = true)
+    @Column(name = "end_date", nullable = true)
     @Temporal(TemporalType.DATE)
     private LocalDate return_date;
 
-    @Column(name = "layover", nullable = false)
+    @Column(name = "created_at", nullable = false)
+    private LocalDate created_at;
+    @Column(name = "booking_token", nullable = false)
+    private String booking_token;
+    private String google_flights_link;
+
+    @Column(name = "is_layover", nullable = false)
     private boolean isLayover;
-    @Column(name = "total_durations", nullable = false)
-    private int total_durations;
+    @Column(name = "total_duration", nullable = false)
+    private int total_duration;
     @Column(name = "price", nullable = false)
     private int price;
     @Column(name = "type", nullable = false)

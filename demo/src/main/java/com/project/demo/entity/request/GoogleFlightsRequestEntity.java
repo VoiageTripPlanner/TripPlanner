@@ -115,4 +115,5 @@ public class GoogleFlightsRequestEntity {
     public void setMax_price(int max_price) {
         this.max_price = max_price;
     }
+    
 }
