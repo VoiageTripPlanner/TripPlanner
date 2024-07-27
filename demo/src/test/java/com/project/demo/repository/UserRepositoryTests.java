@@ -182,6 +182,7 @@ public class UserRepositoryTests {
         User deletedUser = deletedUserOptional.get();
         Assertions.assertThat(deletedUser.isOperational()).isFalse();
     }
+
     @Test
     public void findUserToResetPassword() {
         Optional<User> userFoundOptional = userRepository.findByEmail("test@gmail.com");
@@ -190,6 +191,7 @@ public class UserRepositoryTests {
 
     @Test
     public void generateOTP() {
+
         Optional<User> userFoundOptional = userRepository.findByEmail("test@gmail.com");
 
         if (userFoundOptional.isPresent()) {

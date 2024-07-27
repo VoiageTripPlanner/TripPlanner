@@ -3,8 +3,7 @@ package com.project.demo.rest;
 import com.project.demo.entity.Country;
 import com.project.demo.logic.CountryService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,27 +15,32 @@ public class CountryController implements IController<Country, Integer>{
     private CountryService countryService;
 
     @Override
-    public Country create(Country entity) {
+    @PostMapping
+    public Country create(@RequestBody Country entity) {
         return countryService.save(entity);
     }
 
     @Override
+    @GetMapping
     public List<Country> retrieveAll() {
         return countryService.findAll();
     }
 
     @Override
-    public Optional<Country> retrieveById(Integer integer) {
+    @GetMapping("/{id}")
+    public Optional<Country> retrieveById(@PathVariable Integer integer) {
         return countryService.findById(integer);
     }
 
     @Override
-    public Country update(Country entity) {
+    @PutMapping
+    public Country update(@RequestBody Country entity) {
         return countryService.update(entity);
     }
 
     @Override
-    public void deleteById(Integer integer) {
+    @DeleteMapping("/{id}")
+    public void deleteById(@PathVariable Integer integer) {
         countryService.deleteById(integer);
     }
 }

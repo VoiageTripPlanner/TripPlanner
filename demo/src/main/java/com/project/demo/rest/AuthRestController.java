@@ -15,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import java.security.SecureRandom;
+
 
 import java.security.SecureRandom;
 
@@ -140,4 +142,5 @@ public class AuthRestController implements IController<User, Long> {
     public void deleteById(Long aLong) {
 
     }
+
 }

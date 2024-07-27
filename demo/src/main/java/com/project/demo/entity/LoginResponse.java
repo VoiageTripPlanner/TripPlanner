@@ -15,7 +15,8 @@ public class LoginResponse {
         return userId;
     }
 
-    public void setUser_id(Integer userId) {
+    public void setUser_id(Integer user_id) {
+
         this.userId = userId;
     }
     public String getToken() {
