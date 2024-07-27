@@ -1,10 +1,12 @@
 package com.project.demo.rest;
 
 import com.project.demo.entity.Country;
+import com.project.demo.entity.request.UserRequest;
 import com.project.demo.logic.AuthenticationService;
 import com.project.demo.logic.JwtService;
 import com.project.demo.entity.Role;
 import com.project.demo.entity.RoleEnum;
+import com.project.demo.logic.UserService;
 import com.project.demo.repository.RoleRepository;
 import com.project.demo.entity.LoginResponse;
 import com.project.demo.entity.User;
@@ -39,6 +41,8 @@ public class AuthRestController {
 
     private final AuthenticationService authenticationService;
     private final JwtService jwtService;
+    @Autowired
+    private UserService userService;
 
     public AuthRestController(JwtService jwtService, AuthenticationService authenticationService) {
         this.jwtService = jwtService;
@@ -63,25 +67,9 @@ public class AuthRestController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@RequestBody User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+    public ResponseEntity<?> registerUser(@RequestBody UserRequest user) {
+        UserRequest savedUser = userService.save(user);
 
-        Optional<Role> optionalRole = roleRepository.findByName(RoleEnum.USER);
-        if (optionalRole.isEmpty()) {
-            return ResponseEntity.badRequest().body("Role not found");
-        }
-        user.setRole(optionalRole.get());
-
-        if (user.getCountry() != null && user.getCountry().getCountryId() != null) {
-            Optional<Country> optionalCountry = countryRepository.findById(user.getCountry().getCountryId());
-
-                user.setCountry(optionalCountry.get());
-
-        } else {
-            return ResponseEntity.badRequest().body("Country information is missing or incomplete");
-        }
-
-        User savedUser = userRepository.save(user);
         return ResponseEntity.ok(savedUser);
     }
 }

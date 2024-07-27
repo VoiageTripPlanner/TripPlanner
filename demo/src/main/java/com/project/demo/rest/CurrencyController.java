@@ -1,6 +1,7 @@
 package com.project.demo.rest;
 
 import com.project.demo.entity.Currency;
+import com.project.demo.entity.request.CurrencyRequest;
 import com.project.demo.logic.CurrencyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,29 +14,29 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/currency")
-public class CurrencyController implements IController<Currency, Integer>{
+public class CurrencyController implements IController<CurrencyRequest, Integer>{
     @Autowired
     private CurrencyService currencyService;
 
     @Override
-    public Currency create(Currency entity) {
+    public CurrencyRequest create(CurrencyRequest entity) {
         return currencyService.save(entity);
     }
 
     @Override
     @GetMapping
-    public List<Currency> retrieveAll() {
+    public List<CurrencyRequest> retrieveAll() {
         return currencyService.findAll();
     }
 
     @Override
     @GetMapping({"/{id}"})
-    public Optional<Currency> retrieveById(@PathVariable Integer id) {
+    public Optional<CurrencyRequest> retrieveById(@PathVariable Integer id) {
         return currencyService.findById(id);
     }
 
     @Override
-    public Currency update(Currency entity) {
+    public CurrencyRequest update(CurrencyRequest entity) {
         return currencyService.update(entity);
     }
 
