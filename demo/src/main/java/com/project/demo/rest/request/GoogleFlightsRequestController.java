@@ -6,6 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 @RestController
 @RequestMapping("/api/flights")
@@ -17,28 +20,18 @@ public class GoogleFlightsRequestController {
     public GoogleFlightsRequestEntity searchFlights(@RequestParam("departure_id") String departure_id,
                                                     @RequestParam("arrival_id") String arrival_id,
                                                     @RequestParam("outbound_date") String outbound_date,
-                                                    @RequestParam("return_date") String return_date,
-                                                    @RequestParam("travel_class") int travel_class,
-                                                    @RequestParam("stops") int stops,
-                                                    @RequestParam("max_price") int max_price,
-                                                    @RequestParam("hl") String hl,
-                                                    @RequestParam("gl") String gl,
-                                                    @RequestParam("currency") String currency,
+                                                    @RequestParam(value = "return_date", required = false, defaultValue = " ") String return_date,
+                                                    @RequestParam(value = "travel_class", required = false, defaultValue = "0") int travel_class,
+                                                    @RequestParam(value = "stops", required = false, defaultValue = "0") int stops,
+                                                    @RequestParam(value = "max_price", required = false, defaultValue = "0") int max_price,
+                                                    @RequestParam(value = "hl", required = false) String hl,
+                                                    @RequestParam(value = "gl", required = false) String gl,
+                                                    @RequestParam(value = "currency", required = false) String currency,
                                                     @RequestParam("type") int type
                                 ) throws Exception {
-        GoogleFlightsRequestEntity requestEntity = new GoogleFlightsRequestEntity();
-        requestEntity.setDeparture_id(departure_id);
-        requestEntity.setArrival_id(arrival_id);
-        requestEntity.setOutbound_date(LocalDate.parse(outbound_date));
-        requestEntity.setType(type);
-        requestEntity.setReturn_date(LocalDate.parse(return_date));
-        requestEntity.setTravel_class(travel_class);
-        requestEntity.setStops(stops);
-        requestEntity.setMax_price(max_price);
-        requestEntity.setHl(hl);
-        requestEntity.setGl(gl);
-        requestEntity.setCurrency(currency);
 
-        return googleFlightsRequestService.searchFlights(requestEntity);
+            GoogleFlightsRequestEntity requestEntity = new GoogleFlightsRequestEntity( type, departure_id, arrival_id, LocalDate.parse(outbound_date));
+
+            return googleFlightsRequestService.searchFlights(requestEntity);
     }
 }

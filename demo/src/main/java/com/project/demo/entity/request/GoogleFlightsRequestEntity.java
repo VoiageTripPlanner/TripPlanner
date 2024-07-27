@@ -20,6 +20,15 @@ public class GoogleFlightsRequestEntity {
     public GoogleFlightsRequestEntity() {
     }
 
+    public GoogleFlightsRequestEntity(int type, String departure_id, String arrival_id, LocalDate outbound_date) {
+        this.type = type;
+        this.departure_id = departure_id;
+        this.arrival_id = arrival_id;
+        this.outbound_date = outbound_date;
+    }
+
+
+
     public String getApi_key() {
         return api_key;
     }
