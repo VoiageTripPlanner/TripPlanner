@@ -9,6 +9,15 @@ public class LoginResponse {
 
     private long expiresIn;
 
+    private Integer userId;
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUser_id(Integer user_id) {
+        this.userId = userId;
+    }
     public String getToken() {
         return token;
     }

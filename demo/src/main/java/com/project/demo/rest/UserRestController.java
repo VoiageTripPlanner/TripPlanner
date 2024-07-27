@@ -3,13 +3,21 @@ package com.project.demo.rest;
 import com.project.demo.entity.User;
 import com.project.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.SecureRandom;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/users")
@@ -51,11 +59,18 @@ public class UserRestController {
 
     @PutMapping("/{id}")
     public User updateUser(@PathVariable Integer id, @RequestBody User user) {
+
+        LocalDate localDate = LocalDate.now();
+        Instant instant = localDate.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant();
+        Date date = Date.from(instant);
+
         return UserRepository.findById((long)id)
                 .map(existingUser -> {
                     existingUser.setName(user.getName());
                     existingUser.setLast_name(user.getLast_name());
-                    existingUser.setEmail(user.getEmail());
+                    existingUser.setSecond_last_name(user.getSecond_last_name());
+                    existingUser.setLast_update_datetime(date);
+                    existingUser.setUpdate_responsible(id);
                     return UserRepository.save(existingUser);
                 })
                 .orElseGet(() -> {
@@ -83,5 +98,6 @@ public class UserRestController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return (User) authentication.getPrincipal();
     }
+
 
 }

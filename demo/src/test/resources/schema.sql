@@ -49,6 +49,7 @@ CREATE TABLE VO_User (
                          updated_at DATE,
                          update_responsible BIGINT,
                          role_id INTEGER NOT NULL,
+                         otp VARCHAR(255),
                          CONSTRAINT fk_country FOREIGN KEY (country_id) REFERENCES VO_COUNTRY(country_id),
                          CONSTRAINT fk_role FOREIGN KEY (role_id) REFERENCES VO_USER_ROLE(role_id)
 );
