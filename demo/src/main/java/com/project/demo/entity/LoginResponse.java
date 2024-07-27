@@ -16,6 +16,7 @@ public class LoginResponse {
     }
 
     public void setUser_id(Integer user_id) {
+
         this.userId = userId;
     }
     public String getToken() {

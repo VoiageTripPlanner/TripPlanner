@@ -7,6 +7,7 @@ import com.project.demo.entity.Currency;
 import com.project.demo.entity.Role;
 import com.project.demo.entity.RoleEnum;
 import com.project.demo.entity.User;
+import com.project.demo.logic.EmailService;
 import jakarta.persistence.EntityManager;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -52,6 +53,7 @@ public class UserRepositoryTests {
 
     @Autowired
     private EntityManager entityManager;
+
     @BeforeEach
     public void infoSetup() {
         // Info de usuario
@@ -123,7 +125,6 @@ public class UserRepositoryTests {
         Optional<User> userFoundOptional = userRepository.findByName("John");
         Assertions.assertThat(userFoundOptional).isPresent();
     }
-
     @Test
     public void UserRepository_findByUsername_ReturnsUser() {
         Optional<User> userFoundOptional = userRepository.findByName("John");
@@ -189,17 +190,17 @@ public class UserRepositoryTests {
     }
 
     @Test
-    public void updateUser() {
+    public void generateOTP() {
+
         Optional<User> userFoundOptional = userRepository.findByEmail("test@gmail.com");
 
         if (userFoundOptional.isPresent()) {
             User user = userFoundOptional.get();
-            user.setName("John");
-            user.setLast_name("Smith");
-            user.setSecond_last_name("Johnson");
-            user.setLast_update_datetime(new Date());
-            Assertions.assertThat(userRepository.save(user)).isNotNull();
+            String otp = authenticationService.generateOTP();
+            user.setOtp(otp);
+            Assertions.assertThat(user.getOtp()).isNotNull();
         }
     }
+
 }
 

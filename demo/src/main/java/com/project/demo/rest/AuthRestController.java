@@ -15,14 +15,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import java.security.SecureRandom;
+
 
 import java.security.SecureRandom;
 
+import java.util.List;
 import java.util.Optional;
 
 @RequestMapping("/auth")
 @RestController
-public class AuthRestController {
+public class AuthRestController implements IController<User, Long> {
 
 
     @Autowired
@@ -79,7 +82,7 @@ public class AuthRestController {
         if (user.getCountry() != null && user.getCountry().getCountryId() != null) {
             Optional<Country> optionalCountry = countryRepository.findById(user.getCountry().getCountryId());
 
-                user.setCountry(optionalCountry.get());
+            user.setCountry(optionalCountry.get());
 
         } else {
             return ResponseEntity.badRequest().body("Country information is missing or incomplete");
@@ -87,6 +90,57 @@ public class AuthRestController {
 
         User savedUser = userRepository.save(user);
         return ResponseEntity.ok(savedUser);
+    }
+
+    //Me da error en el test si lo paso a AuthenticationService
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(@RequestBody User user) {
+
+        Optional<User> optionalUser = userRepository.findByEmail(user.getEmail());
+        if (optionalUser.isEmpty()) {
+            return ResponseEntity.badRequest().body("No se ecuentra el usuario");
+        }
+        User userToUpdate = optionalUser.get();
+
+        String otp = authenticationService.generateOTP();
+
+        userToUpdate.setOtp(otp);
+        userRepository.save(userToUpdate);
+
+        emailService.sendSimpleEmail(user.getEmail(), "Reset Password", "Your OTP is: " + otp);
+
+        return ResponseEntity.ok(userToUpdate);
+    }
+
+
+    @PostMapping("/validate-otp")
+    public ResponseEntity<?> validateOTP(@RequestBody User user) {
+        return authenticationService.validateOTP(user);
+    }
+
+    @Override
+    public User create(User entity) {
+        return null;
+    }
+
+    @Override
+    public List<User> retrieveAll() {
+        return List.of();
+    }
+
+    @Override
+    public Optional<User> retrieveById(Long aLong) {
+        return Optional.empty();
+    }
+
+    @Override
+    public User update(User entity) {
+        return null;
+    }
+
+    @Override
+    public void deleteById(Long aLong) {
+
     }
 
 }
