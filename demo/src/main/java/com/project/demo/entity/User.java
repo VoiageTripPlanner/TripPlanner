@@ -29,6 +29,10 @@ public class User implements UserDetails {
     @JoinColumn(name = "country_id", referencedColumnName = "country_id")
     private Country country;
 
+    @ManyToOne
+    @JoinColumn(name = "currency_id", referencedColumnName = "currency_id")
+    private Currency currency;
+
     @Column(unique = true, length = 100, nullable = false)
     private String email;
 
@@ -37,6 +41,8 @@ public class User implements UserDetails {
 
     @Column(nullable = false)
     private Boolean operational;
+
+    private Date birthDate;
 
     @CreationTimestamp
     @Column(updatable = false, name = "created_at")
@@ -63,7 +69,6 @@ public class User implements UserDetails {
         SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + role.getRole_name().toString());
         return List.of(authority);
     }
-
 
     // Constructors
     public User() {}
@@ -108,6 +113,13 @@ public class User implements UserDetails {
         this.country = country;
     }
 
+    public Currency getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(Currency currency) {
+        this.currency = currency;
+    }
 
     public String getEmail() {
         return email;
@@ -137,6 +149,14 @@ public class User implements UserDetails {
 
     public void setOperational(Boolean operational) {
         this.operational = operational;
+    }
+
+    public Date getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
     }
 
     public Date getCreation_datetime() {

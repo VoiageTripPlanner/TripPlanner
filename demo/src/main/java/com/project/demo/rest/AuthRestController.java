@@ -1,47 +1,34 @@
 package com.project.demo.rest;
 
-import com.project.demo.entity.Country;
+import com.project.demo.entity.request.UserRequest;
 import com.project.demo.logic.AuthenticationService;
 import com.project.demo.logic.EmailService;
 import com.project.demo.logic.JwtService;
-import com.project.demo.entity.Role;
-import com.project.demo.entity.RoleEnum;
-import com.project.demo.repository.RoleRepository;
+import com.project.demo.logic.UserService;
 import com.project.demo.entity.LoginResponse;
 import com.project.demo.entity.User;
 import com.project.demo.repository.UserRepository;
-import com.project.demo.repository.CountryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
-import java.security.SecureRandom;
-
+import java.util.List;
 import java.util.Optional;
 
 @RequestMapping("/auth")
 @RestController
-public class AuthRestController {
+public class AuthRestController implements IController<UserRequest, Integer> {
 
 
     @Autowired
     private UserRepository userRepository;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    private RoleRepository roleRepository;
-
-    @Autowired
-    private CountryRepository countryRepository;
-
-    @Autowired
     private EmailService emailService;
 
     private final AuthenticationService authenticationService;
     private final JwtService jwtService;
+    @Autowired
+    private UserService userService;
 
     public AuthRestController(JwtService jwtService, AuthenticationService authenticationService) {
         this.jwtService = jwtService;
@@ -67,26 +54,61 @@ public class AuthRestController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@RequestBody User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+    public ResponseEntity<?> registerUser(@RequestBody UserRequest user) {
+        UserRequest savedUser = userService.save(user);
 
-        Optional<Role> optionalRole = roleRepository.findByName(RoleEnum.USER);
-        if (optionalRole.isEmpty()) {
-            return ResponseEntity.badRequest().body("Role not found");
-        }
-        user.setRole(optionalRole.get());
-
-        if (user.getCountry() != null && user.getCountry().getCountryId() != null) {
-            Optional<Country> optionalCountry = countryRepository.findById(user.getCountry().getCountryId());
-
-                user.setCountry(optionalCountry.get());
-
-        } else {
-            return ResponseEntity.badRequest().body("Country information is missing or incomplete");
-        }
-
-        User savedUser = userRepository.save(user);
         return ResponseEntity.ok(savedUser);
+    }
+
+    //Me da error en el test si lo paso a AuthenticationService
+    @PostMapping("/reset-password")
+    public ResponseEntity<?> resetPassword(@RequestBody User user) {
+
+        Optional<User> optionalUser = userRepository.findByEmail(user.getEmail());
+        if (optionalUser.isEmpty()) {
+            return ResponseEntity.badRequest().body("No se ecuentra el usuario");
+        }
+        User userToUpdate = optionalUser.get();
+
+        String otp = authenticationService.generateOTP();
+
+        userToUpdate.setOtp(otp);
+        userRepository.save(userToUpdate);
+
+        emailService.sendSimpleEmail(user.getEmail(), "Reset Password", "Your OTP is: " + otp);
+
+        return ResponseEntity.ok(userToUpdate);
+    }
+
+
+    @PostMapping("/validate-otp")
+    public ResponseEntity<?> validateOTP(@RequestBody User user) {
+        return authenticationService.validateOTP(user);
+    }
+
+    @Override
+    public UserRequest create(UserRequest entity) {
+        return null;
+    }
+
+    @Override
+    public List<UserRequest> retrieveAll() {
+        return List.of();
+    }
+
+    @Override
+    public Optional<UserRequest> retrieveById(Integer aLong) {
+        return Optional.empty();
+    }
+
+    @Override
+    public UserRequest update(UserRequest entity) {
+        return null;
+    }
+
+    @Override
+    public void deleteById(Integer aLong) {
+
     }
 
 }
