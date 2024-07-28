@@ -30,7 +30,10 @@ public class GoogleFlightsRequestController {
                                                     @RequestParam("type") int type
                                 ) throws Exception {
 
-            GoogleFlightsRequestEntity requestEntity = new GoogleFlightsRequestEntity( type, departure_id, arrival_id, LocalDate.parse(outbound_date));
+            GoogleFlightsRequestEntity requestEntity = new GoogleFlightsRequestEntity( hl, gl, type, currency, departure_id, arrival_id,
+                    LocalDate.parse(outbound_date, DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH)),
+                    return_date.equals(" ") ? null : LocalDate.parse(return_date, DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.ENGLISH)),
+                    travel_class, stops, max_price);
 
             return googleFlightsRequestService.searchFlights(requestEntity);
     }

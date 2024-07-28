@@ -20,14 +20,21 @@ public class GoogleFlightsRequestEntity {
     public GoogleFlightsRequestEntity() {
     }
 
-    public GoogleFlightsRequestEntity(int type, String departure_id, String arrival_id, LocalDate outbound_date) {
+    public GoogleFlightsRequestEntity(String hl, String gl, int type, String currency,
+                                      String departure_id, String arrival_id, LocalDate outbound_date,
+                                      LocalDate return_date, int travel_class, int stops, int max_price) {
+        this.hl = hl;
+        this.gl = gl;
         this.type = type;
+        this.currency = currency;
         this.departure_id = departure_id;
         this.arrival_id = arrival_id;
         this.outbound_date = outbound_date;
+        this.return_date = return_date;
+        this.travel_class = travel_class;
+        this.stops = stops;
+        this.max_price = max_price;
     }
-
-
 
     public String getApi_key() {
         return api_key;
