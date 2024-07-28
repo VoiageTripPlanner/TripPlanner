@@ -51,6 +51,7 @@ CREATE TABLE VO_User (
                          role_id INTEGER NOT NULL,
                          birth_date DATE,
                          currency_id INT,
+                         otp VARCHAR(255),
                          CONSTRAINT fk_country FOREIGN KEY (country_id) REFERENCES VO_COUNTRY(country_id),
                          CONSTRAINT fk_role FOREIGN KEY (role_id) REFERENCES VO_USER_ROLE(role_id),
                          CONSTRAINT fk_user_currency FOREIGN KEY (currency_id) REFERENCES VO_CURRENCY(currency_id)
