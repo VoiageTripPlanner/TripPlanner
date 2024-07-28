@@ -17,7 +17,7 @@ public class OpenAIController {
 
     @GetMapping
     public String getTravelSuggestions(String query) throws JsonProcessingException {
-        return openAIService.generateTravelSuggestions(query, "You are a travel expert, give suggestions to a user who is looking for travel advice based on the clothing needed, cultural aspects, necessary supplies, security aspects and any other advice you think is good for this country.");
+        return openAIService.generateTravelSuggestions(query, "You are a travel expert, give suggestions to a user who is looking for travel advice based on the clothing needed, cultural aspects, necessary supplies, security aspects and any other advice you think is good for this country. Return a short response in a paragraph. If country not specied, return a request to type country.");
     }
 }
 
