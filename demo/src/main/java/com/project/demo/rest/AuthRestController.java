@@ -1,50 +1,34 @@
 package com.project.demo.rest;
 
-import com.project.demo.entity.Country;
+import com.project.demo.entity.request.UserRequest;
 import com.project.demo.logic.AuthenticationService;
 import com.project.demo.logic.EmailService;
 import com.project.demo.logic.JwtService;
-import com.project.demo.entity.Role;
-import com.project.demo.entity.RoleEnum;
-import com.project.demo.repository.RoleRepository;
+import com.project.demo.logic.UserService;
 import com.project.demo.entity.LoginResponse;
 import com.project.demo.entity.User;
 import com.project.demo.repository.UserRepository;
-import com.project.demo.repository.CountryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import java.security.SecureRandom;
-
-
-import java.security.SecureRandom;
-
 import java.util.List;
 import java.util.Optional;
 
 @RequestMapping("/auth")
 @RestController
-public class AuthRestController implements IController<User, Long> {
+public class AuthRestController implements IController<UserRequest, Integer> {
 
 
     @Autowired
     private UserRepository userRepository;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    private RoleRepository roleRepository;
-
-    @Autowired
-    private CountryRepository countryRepository;
-
-    @Autowired
     private EmailService emailService;
 
     private final AuthenticationService authenticationService;
     private final JwtService jwtService;
+    @Autowired
+    private UserService userService;
 
     public AuthRestController(JwtService jwtService, AuthenticationService authenticationService) {
         this.jwtService = jwtService;
@@ -70,25 +54,9 @@ public class AuthRestController implements IController<User, Long> {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@RequestBody User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+    public ResponseEntity<?> registerUser(@RequestBody UserRequest user) {
+        UserRequest savedUser = userService.save(user);
 
-        Optional<Role> optionalRole = roleRepository.findByName(RoleEnum.USER);
-        if (optionalRole.isEmpty()) {
-            return ResponseEntity.badRequest().body("Role not found");
-        }
-        user.setRole(optionalRole.get());
-
-        if (user.getCountry() != null && user.getCountry().getCountryId() != null) {
-            Optional<Country> optionalCountry = countryRepository.findById(user.getCountry().getCountryId());
-
-            user.setCountry(optionalCountry.get());
-
-        } else {
-            return ResponseEntity.badRequest().body("Country information is missing or incomplete");
-        }
-
-        User savedUser = userRepository.save(user);
         return ResponseEntity.ok(savedUser);
     }
 
@@ -119,27 +87,27 @@ public class AuthRestController implements IController<User, Long> {
     }
 
     @Override
-    public User create(User entity) {
+    public UserRequest create(UserRequest entity) {
         return null;
     }
 
     @Override
-    public List<User> retrieveAll() {
+    public List<UserRequest> retrieveAll() {
         return List.of();
     }
 
     @Override
-    public Optional<User> retrieveById(Long aLong) {
+    public Optional<UserRequest> retrieveById(Integer aLong) {
         return Optional.empty();
     }
 
     @Override
-    public User update(User entity) {
+    public UserRequest update(UserRequest entity) {
         return null;
     }
 
     @Override
-    public void deleteById(Long aLong) {
+    public void deleteById(Integer aLong) {
 
     }
 

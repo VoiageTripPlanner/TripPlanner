@@ -177,7 +177,7 @@ public class UserRepositoryTests {
         userRepository.flush();
 
         entityManager.clear();
-        Optional<User> deletedUserOptional = userRepository.findById(user.getUser_id().longValue());
+        Optional<User> deletedUserOptional = userRepository.findById(user.getUser_id());
         Assertions.assertThat(deletedUserOptional).isPresent();
         User deletedUser = deletedUserOptional.get();
         Assertions.assertThat(deletedUser.isOperational()).isFalse();
