@@ -11,10 +11,9 @@ import org.springframework.web.client.RestTemplate;
 public class OpenAIController {
     @Autowired
     private OpenAIService openAIService;
-
-     @Autowired
-     private RestTemplate restTemplate;
-
+     public OpenAIController(OpenAIService openAIService) {
+         this.openAIService = openAIService;
+     }
 
     @GetMapping
     public Object getTravelSuggestions(@RequestParam String query) throws JsonProcessingException {
