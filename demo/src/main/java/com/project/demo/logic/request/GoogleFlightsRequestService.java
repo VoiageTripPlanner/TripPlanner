@@ -17,9 +17,9 @@ public class GoogleFlightsRequestService {
     @Autowired
     private RestTemplate restTemplate;
 
-    public GoogleFlightsRequestEntity searchFlights(GoogleFlightsRequestEntity query) throws Exception {
+    public String searchFlights(GoogleFlightsRequestEntity query) throws Exception {
         try {
-            String baseUrl = "https://serpapi.com/search/?engine=google_flights";
+            String baseUrl = "https://serpapi.com/search?engine=google_flights";
             UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(baseUrl)
                     .queryParam("departure_id", query.getDeparture_id())
                     .queryParam("arrival_id", query.getArrival_id())
@@ -29,7 +29,7 @@ public class GoogleFlightsRequestService {
 
             addQueryParameters(builder, query);
 
-            return restTemplate.getForObject(builder.toUriString(), GoogleFlightsRequestEntity.class);
+            return restTemplate.getForObject(builder.toUriString(), String.class);
 
         } catch (RestClientException e) {
             throw new Exception("Failed to communicate with the flight API.", e);
