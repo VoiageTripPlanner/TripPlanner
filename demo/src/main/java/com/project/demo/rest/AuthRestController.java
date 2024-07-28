@@ -1,27 +1,16 @@
 package com.project.demo.rest;
 
-import com.project.demo.entity.Country;
 import com.project.demo.entity.request.UserRequest;
 import com.project.demo.logic.AuthenticationService;
 import com.project.demo.logic.EmailService;
 import com.project.demo.logic.JwtService;
-import com.project.demo.entity.Role;
-import com.project.demo.entity.RoleEnum;
 import com.project.demo.logic.UserService;
-import com.project.demo.repository.RoleRepository;
 import com.project.demo.entity.LoginResponse;
 import com.project.demo.entity.User;
 import com.project.demo.repository.UserRepository;
-import com.project.demo.repository.CountryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import java.security.SecureRandom;
-
-
-import java.security.SecureRandom;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -32,15 +21,6 @@ public class AuthRestController implements IController<UserRequest, Integer> {
 
     @Autowired
     private UserRepository userRepository;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    private RoleRepository roleRepository;
-
-    @Autowired
-    private CountryRepository countryRepository;
 
     @Autowired
     private EmailService emailService;
@@ -107,27 +87,27 @@ public class AuthRestController implements IController<UserRequest, Integer> {
     }
 
     @Override
-    public User create(User entity) {
+    public UserRequest create(UserRequest entity) {
         return null;
     }
 
     @Override
-    public List<User> retrieveAll() {
+    public List<UserRequest> retrieveAll() {
         return List.of();
     }
 
     @Override
-    public Optional<User> retrieveById(Long aLong) {
+    public Optional<UserRequest> retrieveById(Integer aLong) {
         return Optional.empty();
     }
 
     @Override
-    public User update(User entity) {
+    public UserRequest update(UserRequest entity) {
         return null;
     }
 
     @Override
-    public void deleteById(Long aLong) {
+    public void deleteById(Integer aLong) {
 
     }
 
