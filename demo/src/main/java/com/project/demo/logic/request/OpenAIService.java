@@ -32,7 +32,7 @@ public class OpenAIService {
         this.restTemplate = restTemplate;
         this.objectMapper = objectMapper;
     }
-    public Object generateTravelSuggestions(String query, String prompt) throws JsonProcessingException {
+    public String generateTravelSuggestions(String query, String prompt) throws JsonProcessingException {
         try {
             Map<String, Object> systemContent = new HashMap<>();
             systemContent.put("type", "text");
@@ -70,7 +70,7 @@ public class OpenAIService {
 
             HttpEntity<String> entity = new HttpEntity<>(requestBody, headers);
 
-            return restTemplate.postForObject(openAIUrl, entity, Object.class);
+            return restTemplate.postForObject(openAIUrl, entity, String.class);
         } catch (JsonProcessingException e){
             throw new InvalidRequestException(
                     "Failed to process the request body.",
