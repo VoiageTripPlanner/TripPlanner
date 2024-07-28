@@ -38,8 +38,11 @@ public interface UserRepository extends JpaRepository<User, Long>  {
     @Query("SELECT u FROM User u JOIN FETCH u.country JOIN FETCH u.role")
     List<User> findUsersWithCountryAndRole();
 
-
+    @Query("SELECT u FROM User u WHERE LOWER(u.email) LIKE %?1%")
     Optional<User> findByEmail(String email);
+
+    @Query("SELECT u FROM User u WHERE LOWER(u.otp) LIKE %?1%")
+    Optional<User> findByOTP(String otp);
 }
 
 

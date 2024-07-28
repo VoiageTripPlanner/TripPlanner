@@ -55,6 +55,9 @@ public class User implements UserDetails {
     @JoinColumn(name = "role_id", referencedColumnName = "role_id", nullable = false)
     private Role role;
 
+    @Column(nullable = true)
+    private String otp;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + role.getRole_name().toString());
@@ -166,6 +169,14 @@ public class User implements UserDetails {
 
     public void setUpdate_responsible(Integer update_responsible) {
         this.update_responsible = update_responsible;
+    }
+
+    public String getOtp() {
+        return otp;
+    }
+
+    public void setOtp(String otp) {
+        this.otp = otp;
     }
 
     @Override

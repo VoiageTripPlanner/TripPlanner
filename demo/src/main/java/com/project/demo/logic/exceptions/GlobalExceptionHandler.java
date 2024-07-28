@@ -2,16 +2,59 @@ package com.project.demo.logic.exceptions;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.security.SignatureException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ProblemDetail;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.AccountStatusException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.util.Map;
+import java.util.logging.Logger;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    @ExceptionHandler(ApiRequestException.class)
+    public ResponseEntity<ErrorResponse> handleApiException(ApiRequestException e) {
+        ErrorResponse errorResponse = new ErrorResponse(
+                e.getHttpStatus().value(),
+                e.getHttpStatus().getReasonPhrase(),
+                e.getUserMessage(),
+                e.getTimestamp(),
+                e.getErrorType()
+        );
+        return new ResponseEntity<>(errorResponse, e.getHttpStatus());
+    }
+
+    @ExceptionHandler(InvalidRequestException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidRequestException(InvalidRequestException e) {
+        ErrorResponse errorResponse = new ErrorResponse(
+                e.getHttpStatus().value(),
+                e.getHttpStatus().getReasonPhrase(),
+                e.getUserMessage(),
+                e.getTimestamp(),
+                e.getErrorType()
+        );
+        return new ResponseEntity<>(errorResponse, e.getHttpStatus());
+    }
+
+    @ExceptionHandler(ApplicationException.class)
+    public ResponseEntity<ErrorResponse> handleApplicationException(ApplicationException e) {
+        ErrorResponse errorResponse = new ErrorResponse(
+                e.getHttpStatus().value(),
+                e.getHttpStatus().getReasonPhrase(),
+                e.getUserMessage(),
+                e.getTimestamp(),
+                e.getErrorType()
+        );
+        return new ResponseEntity<>(errorResponse, e.getHttpStatus());
+    }
+
     @ExceptionHandler(Exception.class)
     public ProblemDetail handleSecurityException(Exception exception) {
         ProblemDetail errorDetail = null;
@@ -53,4 +96,5 @@ public class GlobalExceptionHandler {
 
         return errorDetail;
     }
+
 }

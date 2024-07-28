@@ -3,8 +3,7 @@ package com.project.demo.rest;
 import com.project.demo.entity.Currency;
 import com.project.demo.logic.CurrencyService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,27 +15,33 @@ public class CurrencyController implements IController<Currency, Integer>{
     private CurrencyService currencyService;
 
     @Override
-    public Currency create(Currency entity) {
+    @PostMapping
+    public Currency create(@RequestBody Currency entity) {
         return currencyService.save(entity);
     }
 
     @Override
+    @GetMapping
     public List<Currency> retrieveAll() {
         return currencyService.findAll();
     }
 
     @Override
-    public Optional<Currency> retrieveById(Integer integer) {
+    @GetMapping("/{id}")
+    public Optional<Currency> retrieveById(@PathVariable Integer integer) {
         return currencyService.findById(integer);
     }
 
     @Override
-    public Currency update(Currency entity) {
+    @PutMapping
+    public Currency update(@RequestBody Currency entity) {
         return currencyService.update(entity);
     }
 
     @Override
-    public void deleteById(Integer integer) {
+    @DeleteMapping("/{id}")
+    public void deleteById(@PathVariable Integer integer) {
         currencyService.deleteById(integer);
     }
+
 }
