@@ -39,12 +39,12 @@ public class GoogleFlightsRequestService {
     }
 
     private void addQueryParameters(UriComponentsBuilder builder, GoogleFlightsRequestEntity query) throws Exception {
-            if (query.getType() == 1 && query.getReturn_date() != null) {
-                builder.queryParam("return_date", query.getReturn_date());
-            } else if (query.getType() == 2 && query.getReturn_date() == null) {
-
-            } else if (query.getType() != 1 && query.getType() != 2) {
+            if(query.getType() != 1 && query.getType() != 2) {
                 throw new IllegalArgumentException("Invalid type value.");
+            } else if (query.getType() == 2 && query.getReturn_date() == null) {
+               throw new Exception("Return date is required only for round trip flights.");
+            } else if(query.getType() == 1 && query.getReturn_date() != null) {
+                builder.queryParam("return_date", query.getReturn_date());
             }
 
             if (query.getTravel_class() >= 1 && query.getTravel_class() <= 4) {
