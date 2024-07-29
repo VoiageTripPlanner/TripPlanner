@@ -3,9 +3,7 @@ package com.project.demo.entity;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-
 import java.util.Date;
-
 
 @Entity
 @Table(name = "VO_UserRole")
