@@ -80,7 +80,9 @@ public class UserService implements IService<UserRequest, Integer> {
                 .map(existingUser -> {
                     existingUser.setName(userRequest.getName());
                     existingUser.setLast_name(userRequest.getLastname());
-                    existingUser.setEmail(userRequest.getEmail());
+                    existingUser.setSecond_last_name(userRequest.getSecondLastname());
+                    existingUser.setCurrency(currencyRepository.findById(Integer.valueOf(userRequest.getCurrencyId())).orElse(null));
+                    existingUser.setCountry(countryRepository.findById(Integer.valueOf(userRequest.getCountryId())).orElse(null));
                     userRepository.save(existingUser);
                     return userRequest;
                 })
