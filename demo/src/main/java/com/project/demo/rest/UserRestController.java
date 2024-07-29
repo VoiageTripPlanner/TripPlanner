@@ -1,29 +1,32 @@
 package com.project.demo.rest;
 
 import com.project.demo.entity.User;
+import com.project.demo.entity.request.UserRequest;
+import com.project.demo.logic.UserService;
 import com.project.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/users")
-public class UserRestController {
+public class UserRestController implements IController<UserRequest, Integer> {
+
     @Autowired
     private UserRepository UserRepository;
 
     @Autowired
-    private PasswordEncoder passwordEncoder;
+    private UserService userService;
 
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN')")
-    public List<User> getAllUsers() {
-        return UserRepository.findUsersOperationalUsers();
+    public List<UserRequest> retrieveAll() {
+        return userService.findAll();
     }
 
     @GetMapping("/userDetailed")
@@ -32,16 +35,22 @@ public class UserRestController {
         return UserRepository.findUsersWithCountryAndRole();
     }
 
-
     @PostMapping
-    public User addUser(@RequestBody User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return UserRepository.save(user);
+    public UserRequest create(@RequestBody UserRequest user) {
+        return userService.save(user);
     }
 
     @GetMapping("/{id}")
-    public User getUserById(@PathVariable Long id) {
-        return UserRepository.findById(id).orElseThrow(RuntimeException::new);
+    public Optional<UserRequest> retrieveById(@PathVariable Integer id) {
+        if (userService.findById(id).isPresent()) {
+            return userService.findById(id);
+        }
+        return Optional.empty();
+    }
+
+    @Override
+    public UserRequest update(UserRequest entity) {
+        return null;
     }
 
     @GetMapping("/filterByName/{name}")
@@ -50,31 +59,13 @@ public class UserRestController {
     }
 
     @PutMapping("/{id}")
-    public User updateUser(@PathVariable Integer id, @RequestBody User user) {
-        return UserRepository.findById((long)id)
-                .map(existingUser -> {
-                    existingUser.setName(user.getName());
-                    existingUser.setLast_name(user.getLast_name());
-                    existingUser.setEmail(user.getEmail());
-                    return UserRepository.save(existingUser);
-                })
-                .orElseGet(() -> {
-                    user.setUser_id(id);
-                    return UserRepository.save(user);
-                });
+    public UserRequest update(@PathVariable Integer id, @RequestBody UserRequest user) {
+        return userService.update(user);
     }
 
     @PutMapping("delete/{id}")
-    public boolean deleteUser(@PathVariable Long id) {
-        return UserRepository.findById(id)
-                .map(existingUser -> {
-                    existingUser.setOperational(false);
-                    UserRepository.save(existingUser);
-                    return true ;
-                })
-                .orElseGet(() -> {
-                    return false;
-                });
+    public void deleteById(@PathVariable Integer id) {
+        userService.deleteById(id);
     }
 
     @GetMapping("/me")
@@ -83,5 +74,4 @@ public class UserRestController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return (User) authentication.getPrincipal();
     }
-
 }

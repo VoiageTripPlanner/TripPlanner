@@ -1,5 +1,6 @@
 package com.project.demo;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
