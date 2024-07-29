@@ -12,8 +12,18 @@ CREATE TABLE VO_USER_ROLE (
 CREATE TABLE VO_CURRENCY(
                             currency_id INT AUTO_INCREMENT PRIMARY KEY,
                             currency_name VARCHAR(255) NOT NULL,
-                            currency_code VARCHAR(2) NOT NULL,
+                            currency_code VARCHAR(3) NOT NULL,
                             currency_symbol VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE "VO_LOCATION"
+(
+                    location_id int auto_increment primary key,
+                    address     varchar(255) not null,
+                    latitude    double       not null,
+                    longitude   double       not null,
+                    place_id    varchar(255) not null,
+                    user_id     int          null
 );
 
 CREATE TABLE VO_COUNTRY (
@@ -39,8 +49,12 @@ CREATE TABLE VO_User (
                          updated_at DATE,
                          update_responsible BIGINT,
                          role_id INTEGER NOT NULL,
+                         birth_date DATE,
+                         currency_id INT,
+                         otp VARCHAR(255),
                          CONSTRAINT fk_country FOREIGN KEY (country_id) REFERENCES VO_COUNTRY(country_id),
-                         CONSTRAINT fk_role FOREIGN KEY (role_id) REFERENCES VO_USER_ROLE(role_id)
+                         CONSTRAINT fk_role FOREIGN KEY (role_id) REFERENCES VO_USER_ROLE(role_id),
+                         CONSTRAINT fk_user_currency FOREIGN KEY (currency_id) REFERENCES VO_CURRENCY(currency_id)
 );
 
 
