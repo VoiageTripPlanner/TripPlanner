@@ -48,13 +48,18 @@ public class UserRestController implements IController<UserRequest, Integer> {
         return Optional.empty();
     }
 
+    @Override
+    public UserRequest update(UserRequest entity) {
+        return null;
+    }
+
     @GetMapping("/filterByName/{name}")
     public List<User> getUserById(@PathVariable String name) {
         return UserRepository.findUsersWithCharacterInName(name);
     }
 
-    @PutMapping
-    public UserRequest update(@RequestBody UserRequest user) {
+    @PutMapping("/{id}")
+    public UserRequest update(@PathVariable Integer id, @RequestBody UserRequest user) {
         return userService.update(user);
     }
 
