@@ -25,7 +25,7 @@ public interface IService <T, ID>{
      * @param id the ID of the entity to retrieve
      * @return the entity, if found
      */
-    Optional<T> findById(ID id);
+    T findById(ID id);
 
     /**
      * Update an existing entity.

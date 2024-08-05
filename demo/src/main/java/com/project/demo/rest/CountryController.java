@@ -1,9 +1,9 @@
 package com.project.demo.rest;
 
 import com.project.demo.entity.Country;
-import com.project.demo.entity.request.CountryRequest;
 import com.project.demo.logic.CountryService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,34 +14,28 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/country")
-public class CountryController implements IController<CountryRequest, Integer>{
+public class CountryController implements IController<Country, Integer>{
     @Autowired
     private CountryService countryService;
-
     @Override
-    public CountryRequest create(CountryRequest entity) {
-        return countryService.save(entity);
-    }
+    public ResponseEntity<Country> create(Country entity) {return ResponseEntity.ok(countryService.save(entity));}
 
     @Override
     @GetMapping
-    public List<CountryRequest> retrieveAll() {
-        return countryService.findAll();
+    public ResponseEntity<List<Country>> retrieveAll() {
+        return ResponseEntity.ok(countryService.findAll());
     }
 
     @Override
     @GetMapping("/{id}")
-    public Optional<CountryRequest> retrieveById(@PathVariable Integer id) {
-        return countryService.findById(id);
-    }
+    public ResponseEntity<Country> retrieveById(@PathVariable Integer id) {return ResponseEntity.ok(countryService.findById(id));}
 
     @Override
-    public CountryRequest update(CountryRequest entity) {
-        return countryService.update(entity);
-    }
+    public ResponseEntity<Country> update(Country entity) {return ResponseEntity.ok(countryService.update(entity));}
 
     @Override
-    public void deleteById(Integer integer) {
+    public ResponseEntity<Void> deleteById(Integer integer) {
         countryService.deleteById(integer);
+        return ResponseEntity.ok().build();
     }
 }

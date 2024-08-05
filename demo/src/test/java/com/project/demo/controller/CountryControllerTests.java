@@ -2,7 +2,6 @@ package com.project.demo.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.demo.entity.Country;
-import com.project.demo.entity.request.CountryRequest;
 import com.project.demo.logic.CountryService;
 import com.project.demo.logic.JwtAuthenticationFilter;
 import com.project.demo.logic.JwtService;
@@ -47,9 +46,9 @@ public class CountryControllerTests {
 
     @Test
     public void CountryController_GetAllCountries_ReturnsCountryList() throws Exception {
-        List<CountryRequest> countryRequestList = new ArrayList<>();
-        countryRequestList.add(new CountryRequest());
-        countryRequestList.add(new CountryRequest());
+        List<Country> countryRequestList = new ArrayList<>();
+        countryRequestList.add(new Country());
+        countryRequestList.add(new Country());
         given(countryService.findAll()).willReturn(countryRequestList);
 
         ResultActions response = mockMvc.perform(get("/country")

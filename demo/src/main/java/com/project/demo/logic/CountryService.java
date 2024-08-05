@@ -1,52 +1,71 @@
 package com.project.demo.logic;
 
 import com.project.demo.entity.Country;
-import com.project.demo.entity.request.CountryRequest;
+
+import com.project.demo.logic.exceptions.CountryServiceException;
 import com.project.demo.repository.CountryRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+
 
 @Service
-public class CountryService implements IService<CountryRequest, Integer>{
-    @Autowired
-    private CountryRepository countryRepository;
-
-    @Override
-    public CountryRequest save(CountryRequest entity) {
-        return new CountryRequest();
+public class CountryService implements IService<Country, Integer>{ // Needs refactor
+    private final CountryRepository countryRepository;
+    public CountryService(CountryRepository countryRepository) {
+        this.countryRepository = countryRepository;
     }
 
     @Override
-    public List<CountryRequest> findAll() {
-        List<Country> countries = countryRepository.findAll();
-        return countries.stream()
-                .map(country -> {
-                    CountryRequest countryRequest = new CountryRequest();
-                    countryRequest.setId(country.getCountryId().toString());
-                    countryRequest.setName(country.getCountryName());
-                    countryRequest.setCode(country.getCountryCode());
-                    countryRequest.setCurrencyId(country.getCurrency().getCurrencyId().toString());
-                    return countryRequest;
-                })
-                .collect(Collectors.toList());
+    public List<Country> findAll() {
+        try {
+            return countryRepository.findAll();
+        } catch (Exception e) {
+            throw new CountryServiceException(
+                    "Failed to retrieve all countries.",
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    "REPOSITORY_ERROR",
+                    "An error occurred while retrieving countries. Please try again later.",
+                    e
+            );
+        }
     }
 
     @Override
-    public Optional<CountryRequest> findById(Integer integer) {
-        return Optional.of(new CountryRequest());
+    public void deleteById(Integer id) {
+        try {
+            if (!countryRepository.existsById(id)) {
+                throw new CountryServiceException(
+                        "Country with id " + id + " not found.",
+                        HttpStatus.NOT_FOUND,
+                        "RESOURCE_NOT_FOUND",
+                        "The country with the specified ID does not exist.",
+                        null
+                );
+            }
+            countryRepository.deleteById(id);
+        } catch (Exception e) {
+            throw new CountryServiceException(
+                    "Failed to delete country by ID.",
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    "REPOSITORY_ERROR",
+                    "An error occurred while deleting the country. Please try again later.",
+                    e
+            );
+        }
     }
 
+
+    // The following methods contain dummy implementations to satisfy the IService interface requirements.
+    // These methods are not used in the actual application logic.
     @Override
-    public CountryRequest update(CountryRequest entity) {
-        return new CountryRequest();
-    }
+    public Country save(Country entity) {return null;}
+    @Override
+    public Country findById(Integer integer) {return new Country();}
 
     @Override
-    public void deleteById(Integer integer) {
-        countryRepository.deleteById(integer);
-    }
+    public Country update(Country entity) {return null;}
+
 }

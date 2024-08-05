@@ -55,6 +55,92 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, e.getHttpStatus());
     }
 
+    @ExceptionHandler(RepositoryException.class)
+    public ResponseEntity<ErrorResponse> handleRepositoryException(RepositoryException e) {
+        ErrorResponse errorResponse = new ErrorResponse(
+                e.getHttpStatus().value(),
+                e.getHttpStatus().getReasonPhrase(),
+                e.getUserMessage(),
+                e.getTimestamp(),
+                e.getErrorType()
+        );
+        return new ResponseEntity<>(errorResponse, e.getHttpStatus());
+    }
+
+    @ExceptionHandler(EmailServiceException.class)
+    public ResponseEntity<ErrorResponse> handleEmailServiceException(EmailServiceException e) {
+        ErrorResponse errorResponse = new ErrorResponse(
+                e.getHttpStatus().value(),
+                e.getHttpStatus().getReasonPhrase(),
+                e.getUserMessage(),
+                e.getTimestamp(),
+                e.getErrorType()
+        );
+        return new ResponseEntity<>(errorResponse, e.getHttpStatus());
+    }
+
+    @ExceptionHandler(FlightServiceException.class)
+    public ResponseEntity<ErrorResponse> handleFlightServiceException(FlightServiceException e) {
+        ErrorResponse errorResponse = new ErrorResponse(
+                e.getHttpStatus().value(),
+                e.getHttpStatus().getReasonPhrase(),
+                e.getUserMessage(),
+                e.getTimestamp(),
+                e.getErrorType()
+        );
+        return new ResponseEntity<>(errorResponse, e.getHttpStatus());
+    }
+
+    @ExceptionHandler(LocationServiceException.class)
+    public ResponseEntity<ErrorResponse> handleLocationServiceException(LocationServiceException e) {
+        ErrorResponse errorResponse = new ErrorResponse(
+                e.getHttpStatus().value(),
+                e.getHttpStatus().getReasonPhrase(),
+                e.getUserMessage(),
+                e.getTimestamp(),
+                e.getErrorType()
+        );
+        return new ResponseEntity<>(errorResponse, e.getHttpStatus());
+    }
+
+    @ExceptionHandler(LodgeServiceException.class)
+    public ResponseEntity<ErrorResponse> handleLodgeServiceException(LodgeServiceException e) {
+        ErrorResponse errorResponse = new ErrorResponse(
+                e.getHttpStatus().value(),
+                e.getHttpStatus().getReasonPhrase(),
+                e.getUserMessage(),
+                e.getTimestamp(),
+                e.getErrorType()
+        );
+        return new ResponseEntity<>(errorResponse, e.getHttpStatus());
+    }
+
+    @ExceptionHandler(UserServiceException.class)
+    public ResponseEntity<ErrorResponse> handleUserServiceException(UserServiceException e) {
+        ErrorResponse errorResponse = new ErrorResponse(
+                e.getHttpStatus().value(),
+                e.getHttpStatus().getReasonPhrase(),
+                e.getUserMessage(),
+                e.getTimestamp(),
+                e.getErrorType()
+        );
+        return new ResponseEntity<>(errorResponse, e.getHttpStatus());
+    }
+
+    @ExceptionHandler(CountryServiceException.class)
+    public ResponseEntity<ErrorResponse> handleCountryServiceException(CountryServiceException e) {
+        ErrorResponse errorResponse = new ErrorResponse(
+                e.getHttpStatus().value(),
+                e.getHttpStatus().getReasonPhrase(),
+                e.getUserMessage(),
+                e.getTimestamp(),
+                e.getErrorType()
+        );
+        return new ResponseEntity<>(errorResponse, e.getHttpStatus());
+    }
+
+
+
     @ExceptionHandler(Exception.class)
     public ProblemDetail handleSecurityException(Exception exception) {
         ProblemDetail errorDetail = null;

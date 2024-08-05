@@ -5,6 +5,7 @@ import com.project.demo.entity.request.UserRequest;
 import com.project.demo.logic.UserService;
 import com.project.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,61 +18,62 @@ import java.util.Optional;
 @RequestMapping("/users")
 public class UserRestController implements IController<UserRequest, Integer> {
 
-    @Autowired
-    private UserRepository UserRepository;
+    private final UserRepository UserRepository;
+    private final UserService userService;
 
-    @Autowired
-    private UserService userService;
+    public UserRestController(com.project.demo.repository.UserRepository userRepository, UserService userService) {
+        UserRepository = userRepository;
+        this.userService = userService;
+    }
 
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN')")
-    public List<UserRequest> retrieveAll() {
-        return userService.findAll();
+    public ResponseEntity<List<UserRequest>> retrieveAll() {
+        return ResponseEntity.ok(userService.findAll());
     }
 
     @GetMapping("/userDetailed")
     @PreAuthorize("hasAnyRole('ADMIN')")
-    public List<User> getAllUsersDetailed() {
-        return UserRepository.findUsersWithCountryAndRole();
+    public ResponseEntity<List<User>> getAllUsersDetailed() {
+        return ResponseEntity.ok(UserRepository.findUsersWithCountryAndRole());
     }
 
     @PostMapping
-    public UserRequest create(@RequestBody UserRequest user) {
-        return userService.save(user);
+    public ResponseEntity<UserRequest> create(@RequestBody UserRequest user) {
+        return ResponseEntity.ok(userService.save(user));
     }
 
     @GetMapping("/{id}")
-    public Optional<UserRequest> retrieveById(@PathVariable Integer id) {
-        if (userService.findById(id).isPresent()) {
-            return userService.findById(id);
-        }
-        return Optional.empty();
+    public ResponseEntity<UserRequest> retrieveById(@PathVariable Integer id) {
+       return ResponseEntity.ok(userService.findById(id));
+
     }
 
     @Override
-    public UserRequest update(UserRequest entity) {
+    public ResponseEntity<UserRequest> update(UserRequest entity) {
         return null;
     }
 
     @GetMapping("/filterByName/{name}")
-    public List<User> getUserById(@PathVariable String name) {
-        return UserRepository.findUsersWithCharacterInName(name);
+    public ResponseEntity<List<User>> getUserById(@PathVariable String name) {
+        return ResponseEntity.ok(UserRepository.findUsersWithCharacterInName(name));
     }
 
     @PutMapping("/{id}")
-    public UserRequest update(@PathVariable Integer id, @RequestBody UserRequest user) {
-        return userService.update(user);
+    public ResponseEntity<UserRequest> update(@PathVariable Integer id, @RequestBody UserRequest user) {
+        return ResponseEntity.ok(userService.update(user));
     }
 
     @PutMapping("delete/{id}")
-    public void deleteById(@PathVariable Integer id) {
+    public ResponseEntity<Void> deleteById(@PathVariable Integer id) {
         userService.deleteById(id);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/me")
     @PreAuthorize("isAuthenticated()")
-    public User authenticatedUser() {
+    public ResponseEntity<User> authenticatedUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return (User) authentication.getPrincipal();
+        return ResponseEntity.ok((User) authentication.getPrincipal());
     }
 }

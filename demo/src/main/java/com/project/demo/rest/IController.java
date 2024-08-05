@@ -2,11 +2,12 @@ package com.project.demo.rest;
 
 import java.util.List;
 import java.util.Optional;
+import org.springframework.http.ResponseEntity;
 
 public interface IController <T, ID>{
-    T create(T entity);
-    List<T> retrieveAll();
-    Optional<T> retrieveById(ID id);
-    T update(T entity);
-    void deleteById(ID id);
+    ResponseEntity<T> create(T entity);
+    ResponseEntity<List<T>> retrieveAll();
+    ResponseEntity<T> retrieveById(ID id);
+    ResponseEntity<T> update(T entity);
+    ResponseEntity<Void> deleteById(ID id);
 }

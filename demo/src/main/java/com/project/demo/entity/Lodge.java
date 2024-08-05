@@ -1,5 +1,6 @@
 package com.project.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -11,7 +12,7 @@ import java.util.Date;
 @Table(name = "VO_Lodge")
 public class Lodge {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "lodge_id", nullable = false)
     private Integer lodgeId;
     @Column(name = "name", nullable = false,length = 100)
@@ -40,10 +41,6 @@ public class Lodge {
     private String type;
     @Column(name = "amenities")
     private String amenities;
-
-//    @OneToOne(cascade={CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
-//    @JoinColumn(name = "trip_id", nullable = false)
-//    private Trip tripId;
 
     @Column(nullable = false)
     private Boolean operational;

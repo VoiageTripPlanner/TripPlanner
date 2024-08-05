@@ -1,5 +1,7 @@
 package com.project.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.util.Date;
 
@@ -10,10 +12,10 @@ public class Flight {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "flight_id", nullable = false)
     private Integer flightId;
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     @JoinColumn(name = "departure_airport", referencedColumnName = "airport_id", nullable = false)
     private Airport departure_airport;
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     @JoinColumn (name = "arrival_airport", referencedColumnName = "airport_id", nullable = false)
     private Airport arrival_airport;
     @Column(name= "duration", nullable = false)
@@ -48,11 +50,24 @@ public class Flight {
     private int price;
     @Column(name = "type", nullable = false)
     private String type;
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+    @JoinColumn(name = "trip_id")
+    @JsonIgnore
+    private Trip trip;
 
     //CONSTRUCTORS
     public Flight() {}
 
     //GETTERS & SETTERS
+
+    public Trip getTrip() {
+        return trip;
+    }
+
+    public void setTrip(Trip trip) {
+        this.trip = trip;
+    }
+
     public Integer getFlightId() {
         return flightId;
     }

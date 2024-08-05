@@ -1,9 +1,9 @@
 package com.project.demo.rest;
 
 import com.project.demo.entity.Currency;
-import com.project.demo.entity.request.CurrencyRequest;
 import com.project.demo.logic.CurrencyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,34 +14,39 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/currency")
-public class CurrencyController implements IController<CurrencyRequest, Integer>{
+public class CurrencyController implements IController<Currency, Integer> {
     @Autowired
     private CurrencyService currencyService;
 
     @Override
-    public CurrencyRequest create(CurrencyRequest entity) {
-        return currencyService.save(entity);
+    public ResponseEntity<Currency> create(Currency entity) {
+        Currency createdCurrency = currencyService.save(entity);
+        return ResponseEntity.ok(createdCurrency);
     }
 
     @Override
     @GetMapping
-    public List<CurrencyRequest> retrieveAll() {
-        return currencyService.findAll();
+    public ResponseEntity<List<Currency>> retrieveAll() {
+        List<Currency> currencies = currencyService.findAll();
+        return ResponseEntity.ok(currencies);
     }
 
     @Override
-    @GetMapping({"/{id}"})
-    public Optional<CurrencyRequest> retrieveById(@PathVariable Integer id) {
-        return currencyService.findById(id);
+    @GetMapping("/{id}")
+    public ResponseEntity<Currency> retrieveById(@PathVariable Integer id) {
+        Currency currency = currencyService.findById(id);
+        return ResponseEntity.ok(currency);
     }
 
     @Override
-    public CurrencyRequest update(CurrencyRequest entity) {
-        return currencyService.update(entity);
+    public ResponseEntity<Currency> update(Currency entity) {
+        Currency updatedCurrency = currencyService.update(entity);
+        return ResponseEntity.ok(updatedCurrency);
     }
 
     @Override
-    public void deleteById(Integer integer) {
-        currencyService.deleteById(integer);
+    public ResponseEntity<Void> deleteById(Integer id) {
+        currencyService.deleteById(id);
+        return ResponseEntity.ok().build();
     }
 }

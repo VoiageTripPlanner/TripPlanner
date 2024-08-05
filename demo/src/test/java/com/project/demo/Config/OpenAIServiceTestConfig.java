@@ -1,11 +1,5 @@
 package com.project.demo.Config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.project.demo.logic.request.OpenAIService;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.web.client.RestTemplate;
-
 //@Configuration
 public class OpenAIServiceTestConfig {
 //

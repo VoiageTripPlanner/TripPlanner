@@ -10,39 +10,43 @@ import java.util.List;
 import java.util.Optional;
 @RestController
 @RequestMapping("/lodge")
-public class LodgeController implements IController<Lodge,Integer>{
+public class LodgeController implements IController<Lodge, Integer> {
 
     @Autowired
     private LodgeService lodgeService;
+
+    @Override
     @PostMapping
-    @Override
-    public Lodge create(Lodge entity) {
-        return lodgeService.save(entity);
+    public ResponseEntity<Lodge> create(@RequestBody Lodge entity) {
+        Lodge createdLodge = lodgeService.save(entity);
+        return ResponseEntity.ok(createdLodge);
     }
 
+    @Override
     @GetMapping
-    @Override
-    public List<Lodge> retrieveAll() {
-        return lodgeService.findAll();
+    public ResponseEntity<List<Lodge>> retrieveAll() {
+        List<Lodge> lodges = lodgeService.findAll();
+        return ResponseEntity.ok(lodges);
     }
 
+    @Override
     @GetMapping("/{id}")
-    @Override
-    public Optional<Lodge> retrieveById(Integer integer) {
-        return lodgeService.findById(integer);
+    public ResponseEntity<Lodge> retrieveById(@PathVariable Integer id) {
+        Lodge lodge = lodgeService.findById(id);
+        return ResponseEntity.ok(lodge);
     }
 
+    @Override
     @PutMapping("/{id}")
-    @Override
-    public Lodge update(Lodge entity) {
-        return lodgeService.update(entity);
+    public ResponseEntity<Lodge> update(@RequestBody Lodge entity) {
+        Lodge updatedLodge = lodgeService.update(entity);
+        return ResponseEntity.ok(updatedLodge);
     }
 
+    @Override
     @DeleteMapping("/{id}")
-    @Override
-    public void deleteById(Integer integer) {
-        lodgeService.deleteById(integer);
+    public ResponseEntity<Void> deleteById(@PathVariable Integer id) {
+        lodgeService.deleteById(id);
+        return ResponseEntity.ok().build();
     }
-
-
 }

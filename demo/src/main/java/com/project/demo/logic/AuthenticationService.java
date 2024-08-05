@@ -83,8 +83,8 @@ public class AuthenticationService implements IService <User, Integer> {
     }
 
     @Override
-    public Optional<User> findById(Integer integer) {
-        return Optional.empty();
+    public User findById(Integer integer) {
+        return null;
     }
 
     @Override

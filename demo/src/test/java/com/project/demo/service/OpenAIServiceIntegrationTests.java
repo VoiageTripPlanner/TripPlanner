@@ -1,15 +1,5 @@
 package com.project.demo.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.project.demo.Config.OpenAIServiceTestConfig;
-import com.project.demo.logic.request.OpenAIService;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ContextConfiguration;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 //@SpringBootTest

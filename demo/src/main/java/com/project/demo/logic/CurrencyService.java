@@ -1,53 +1,69 @@
 package com.project.demo.logic;
 
 import com.project.demo.entity.Currency;
-import com.project.demo.entity.request.CurrencyRequest;
+import com.project.demo.logic.exceptions.RepositoryException;
 import com.project.demo.repository.CurrencyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
-public class CurrencyService implements IService<CurrencyRequest, Integer> {
+public class CurrencyService implements IService<Currency, Integer> {
 
-    @Autowired
-    private CurrencyRepository currencyRepository;
+    private final CurrencyRepository currencyRepository;
 
-    @Override
-    public CurrencyRequest save(CurrencyRequest entity) {
-        return new CurrencyRequest();
+    public CurrencyService(CurrencyRepository currencyRepository) {
+        this.currencyRepository = currencyRepository;
     }
 
     @Override
-    public List<CurrencyRequest> findAll() {
-        List<Currency> currencyList = currencyRepository.findAll();
-        return currencyList.stream()
-                .map(currency -> {
-                    CurrencyRequest currencyRequest = new CurrencyRequest();
-                    currencyRequest.setId(currency.getCurrencyId().toString());
-                    currencyRequest.setName(currency.getCurrencyName());
-                    currencyRequest.setCode(currency.getCurrencyCode());
-                    currencyRequest.setCurrencySymbol(currency.getCurrencySymbol());
-                    return currencyRequest;
-                })
-                .collect(Collectors.toList());
+    public Currency save(Currency entity) {
+        return new Currency();
     }
 
     @Override
-    public Optional<CurrencyRequest> findById(Integer integer) {
-        return Optional.of(new CurrencyRequest());
+    public List<Currency> findAll() {
+        try {
+            return currencyRepository.findAll();
+        } catch (Exception e) {
+            throw new RepositoryException(
+                    "Failed to retrieve all currencies.",
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    "REPOSITORY_ERROR",
+                    "An error occurred while retrieving currencies. Please try again later.",
+                    e
+            );
+        }
     }
 
     @Override
-    public CurrencyRequest update(CurrencyRequest entity) {
-        return new CurrencyRequest();
+    public Currency findById(Integer integer) {
+        return currencyRepository.findById(integer).orElse(null);
+    }
+
+    @Override
+    public Currency update(Currency entity) {
+        return new Currency();
     }
 
     @Override
     public void deleteById(Integer integer) {
-        currencyRepository.deleteById(integer);
+        try {
+            currencyRepository.deleteById(integer);
+        } catch (Exception e) {
+            throw new RepositoryException(
+                    "Failed to delete currency by ID.",
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    "REPOSITORY_ERROR",
+                    "An error occurred while deleting the currency. Please try again later.",
+                    e
+            );
+        }
+    }
+
+    public com.project.demo.entity.Currency findByIdC(Integer integer){ //Revise this
+        return currencyRepository.findById(integer).orElse(null);
     }
 }

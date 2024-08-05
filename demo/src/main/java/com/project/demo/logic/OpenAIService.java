@@ -1,4 +1,4 @@
-package com.project.demo.logic.request;
+package com.project.demo.logic;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -32,7 +32,7 @@ public class OpenAIService {
         this.restTemplate = restTemplate;
         this.objectMapper = objectMapper;
     }
-    public String generateTravelSuggestions(String query, String prompt) throws JsonProcessingException {
+    public String generateTravelSuggestions(String query, String prompt){
         try {
             Map<String, Object> systemContent = new HashMap<>();
             systemContent.put("type", "text");

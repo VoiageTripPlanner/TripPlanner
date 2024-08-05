@@ -1,7 +1,6 @@
 package com.project.demo.service;
 
 import com.project.demo.entity.Currency;
-import com.project.demo.entity.request.CurrencyRequest;
 import com.project.demo.logic.CurrencyService;
 import com.project.demo.repository.CurrencyRepository;
 import org.assertj.core.api.Assertions;
@@ -24,11 +23,11 @@ public class CurrencyServiceTests {
 
     @Test
     public void CurrencyService_FindAll_ReturnsAllCurrencies() {
-        List<Currency> currencyList = Mockito.mock(List.class);
+        List<com.project.demo.entity.Currency> currencyList = Mockito.mock(List.class);
 
         Mockito.when(currencyRepository.findAll()).thenReturn(currencyList);
 
-        List<CurrencyRequest> currencyListResponse = currencyService.findAll();
+        List<Currency> currencyListResponse = currencyService.findAll();
 
         Assertions.assertThat(currencyListResponse).isNotNull();
     }

@@ -1,4 +1,5 @@
 package com.project.demo.entity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -64,6 +65,18 @@ public class User implements UserDetails {
     @Column(nullable = true)
     private String otp;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.MERGE)
+    @JsonIgnore
+    private List<Trip> trips;
+
+    public List<Trip> getTrips() {
+        return trips;
+    }
+
+    public void setTrips(List<Trip> trips) {
+        this.trips = trips;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + role.getRole_name().toString());
@@ -72,6 +85,10 @@ public class User implements UserDetails {
 
     // Constructors
     public User() {}
+
+    public User(Integer user_id) {
+        this.user_id = user_id;
+    }
 
     public Integer getUser_id() {
         return user_id;

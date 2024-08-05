@@ -1,11 +1,10 @@
 package com.project.demo.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.project.demo.entity.request.CurrencyRequest;
+import com.project.demo.entity.Currency;
 import com.project.demo.logic.CurrencyService;
 import com.project.demo.logic.JwtAuthenticationFilter;
 import com.project.demo.logic.JwtService;
-import com.project.demo.rest.CountryController;
 import com.project.demo.rest.CurrencyController;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -46,16 +45,16 @@ public class CurrencyControllerTests {
 
     @Test
     public void CurrencyController_GetAllCurrencies_ReturnsCurrencyList() throws Exception {
-        List<CurrencyRequest> currencyRequestList = new ArrayList<>();
-        currencyRequestList.add(new CurrencyRequest());
-        currencyRequestList.add(new CurrencyRequest());
-        given(currencyService.findAll()).willReturn(currencyRequestList);
+        List<Currency> currencyList = new ArrayList<>();
+        currencyList.add(new Currency());
+        currencyList.add(new Currency());
+        given(currencyService.findAll()).willReturn(currencyList);
 
         ResultActions response = mockMvc.perform(get("/currency")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(currencyRequestList)));
+                .content(objectMapper.writeValueAsString(currencyList)));
 
         response.andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(currencyRequestList)));
+                .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(currencyList)));
     }
 }

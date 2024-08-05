@@ -106,17 +106,17 @@ public class UserServiceTest {
     public void UserService_FindById_ReturnsUserRequest() {
         Mockito.when(userRepository.findById(1)).thenReturn(Optional.ofNullable(user));
 
-        Optional<UserRequest> userResponse = userService.findById(1);
+        UserRequest userResponse = userService.findById(1);
 
         Assertions.assertThat(userResponse).isNotNull();
-        Assertions.assertThat(userResponse.get().getId()).isEqualTo(userRequest.getId());
+        Assertions.assertThat(userResponse.getId()).isEqualTo(userRequest.getId());
     }
 
     @Test
     public void UserService_UpdateUser_ReturnsUserRequest() {
         Mockito.when(userRepository.findById(1)).thenReturn(Optional.ofNullable(user));
 
-        Optional<UserRequest> userResponse = userService.findById(1);
+        UserRequest userResponse = userService.findById(1);
 
         Assertions.assertThat(userResponse).isNotNull();
     }

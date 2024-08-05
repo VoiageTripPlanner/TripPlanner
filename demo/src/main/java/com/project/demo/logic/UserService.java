@@ -68,10 +68,10 @@ public class UserService implements IService<UserRequest, Integer> {
     }
 
     @Override
-    public Optional<UserRequest> findById(Integer id) {
-        User user = userRepository.findById(id).orElseThrow(RuntimeException::new);
+    public UserRequest findById(Integer id) {
+        User user = userRepository.findById(id).orElse(null);
         createUserRequest(user);
-        return Optional.of(userRequest);
+        return userRequest;
     }
 
     @Override
@@ -129,5 +129,9 @@ public class UserService implements IService<UserRequest, Integer> {
         userRequest.setCreateAt(user.getCreation_datetime().toString());
         userRequest.setUpdateAt(user.getLast_update_datetime().toString());
         userRequest.setRoleId(user.getRole().getRole_id());
+    }
+
+    public User findByIdTrip(Integer id) {
+        return userRepository.findById(id).orElse(null);
     }
 }

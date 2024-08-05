@@ -1,7 +1,6 @@
 package com.project.demo.service;
 
 import com.project.demo.entity.Country;
-import com.project.demo.entity.request.CountryRequest;
 import com.project.demo.logic.CountryService;
 import com.project.demo.repository.CountryRepository;
 import org.assertj.core.api.Assertions;
@@ -27,7 +26,7 @@ public class CountryServiceTests {
         List<Country> countryList = Mockito.mock(List.class);
         Mockito.when(countryRepository.findAll()).thenReturn(countryList);
 
-        List<CountryRequest> countryListResponse = countryService.findAll();
+        List<Country> countryListResponse = countryService.findAll();
 
         Assertions.assertThat(countryListResponse).isNotNull();
     }

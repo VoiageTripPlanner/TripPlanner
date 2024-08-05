@@ -16,23 +16,20 @@ import java.util.Optional;
 
 @RequestMapping("/auth")
 @RestController
-public class AuthRestController implements IController<UserRequest, Integer> {
+public class AuthRestController {
 
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private EmailService emailService;
-
+    private final UserRepository userRepository;
+    private final EmailService emailService;
     private final AuthenticationService authenticationService;
     private final JwtService jwtService;
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
-    public AuthRestController(JwtService jwtService, AuthenticationService authenticationService) {
-        this.jwtService = jwtService;
+    public AuthRestController(UserRepository userRepository, EmailService emailService, AuthenticationService authenticationService, JwtService jwtService, UserService userService) {
+        this.userRepository = userRepository;
+        this.emailService = emailService;
         this.authenticationService = authenticationService;
+        this.jwtService = jwtService;
+        this.userService = userService;
     }
 
     @PostMapping("/login")
@@ -84,31 +81,6 @@ public class AuthRestController implements IController<UserRequest, Integer> {
     @PostMapping("/validate-otp")
     public ResponseEntity<?> validateOTP(@RequestBody User user) {
         return authenticationService.validateOTP(user);
-    }
-
-    @Override
-    public UserRequest create(UserRequest entity) {
-        return null;
-    }
-
-    @Override
-    public List<UserRequest> retrieveAll() {
-        return List.of();
-    }
-
-    @Override
-    public Optional<UserRequest> retrieveById(Integer aLong) {
-        return Optional.empty();
-    }
-
-    @Override
-    public UserRequest update(UserRequest entity) {
-        return null;
-    }
-
-    @Override
-    public void deleteById(Integer aLong) {
-
     }
 
 }
