@@ -58,6 +58,21 @@ public class Lodge {
     @Column(nullable = true)
     private Integer updateResponsible;
 
+    public Integer getCreationResponsible() {
+        return creationResponsible;
+    }
+
+    public void setCreationResponsible(Integer creationResponsible) {
+        this.creationResponsible = creationResponsible;
+    }
+
+    public Integer getUpdateResponsible() {
+        return updateResponsible;
+    }
+
+    public void setUpdateResponsible(Integer updateResponsible) {
+        this.updateResponsible = updateResponsible;
+    }
 //    Setters and getters
 
     public Integer getLodgeId() {
@@ -180,28 +195,12 @@ public class Lodge {
         this.creationDatetime = creationDatetime;
     }
 
-    public Integer getCreationResponsible() {
-        return creationResponsible;
-    }
-
-    public void setCreationResponsible(Integer creationResponsible) {
-        this.creationResponsible = creationResponsible;
-    }
-
     public Date getLastUpdateDatetime() {
         return lastUpdateDatetime;
     }
 
     public void setLastUpdateDatetime(Date lastUpdateDatetime) {
         this.lastUpdateDatetime = lastUpdateDatetime;
-    }
-
-    public Integer getUpdateResponsible() {
-        return updateResponsible;
-    }
-
-    public void setUpdateResponsible(Integer updateResponsible) {
-        this.updateResponsible = updateResponsible;
     }
 
     public String getExternalLink() {

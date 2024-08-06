@@ -12,12 +12,12 @@ public class Flight {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "flight_id", nullable = false)
     private Integer flightId;
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
-    @JoinColumn(name = "departure_airport", referencedColumnName = "airport_id", nullable = false)
-    private Airport departure_airport;
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
-    @JoinColumn (name = "arrival_airport", referencedColumnName = "airport_id", nullable = false)
-    private Airport arrival_airport;
+//    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+//    @JoinColumn(name = "departure_airport", referencedColumnName = "airport_id", nullable = false)
+//    private Airport departure_airport;
+//    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+//    @JoinColumn (name = "arrival_airport", referencedColumnName = "airport_id", nullable = false)
+//    private Airport arrival_airport;
     @Column(name= "duration", nullable = false)
     private int duration;
     @Column(name = "airline_name", nullable = false)
@@ -76,21 +76,21 @@ public class Flight {
         this.flightId = flightId;
     }
 
-    public Airport getDeparture_airport() {
-        return departure_airport;
-    }
-
-    public void setDeparture_airport(Airport departure_airport) {
-        this.departure_airport = departure_airport;
-    }
-
-    public Airport getArrival_airport() {
-        return arrival_airport;
-    }
-
-    public void setArrival_airport(Airport arrival_airport) {
-        this.arrival_airport = arrival_airport;
-    }
+//    public Airport getDeparture_airport() {
+//        return departure_airport;
+//    }
+//
+//    public void setDeparture_airport(Airport departure_airport) {
+//        this.departure_airport = departure_airport;
+//    }
+//
+//    public Airport getArrival_airport() {
+//        return arrival_airport;
+//    }
+//
+//    public void setArrival_airport(Airport arrival_airport) {
+//        this.arrival_airport = arrival_airport;
+//    }
 
     public int getDuration() {
         return duration;

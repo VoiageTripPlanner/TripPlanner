@@ -12,28 +12,30 @@ public class TripService implements IService<Trip, Integer>{
     private final TripRepository tripRepository;
     private final CurrencyService currencyService;
     private final UserService userService;
+    private final FlightService flightService;
+    private final RestaurantService restaurantService;
 
-    public TripService(TripRepository tripRepository, CurrencyService currencyService, UserService userService) {
+    public TripService(TripRepository tripRepository, CurrencyService currencyService, UserService userService, FlightService flightService, RestaurantService restaurantService) {
         this.tripRepository = tripRepository;
         this.currencyService = currencyService;
         this.userService = userService;
+        this.flightService = flightService;
+        this.restaurantService = restaurantService;
     }
 
     @Override
     @Transactional
     public Trip save(Trip entity) {
         entity.setCurrency(currencyService.findById(entity.getCurrency().getCurrencyId()));
-        entity.setUser(userService.findByIdTrip(entity.getUser().getUser_id()));
+        entity.setUser(userService.findById(entity.getUser().getUser_id()));
 
-        for (Flight flight : entity.getFlights()) {
-            flight.setTrip(entity);
-        }
-        for (Restaurant restaurant : entity.getRestaurants()) {
-            restaurant.setTrip(entity);
-        }
-        for (Activity activity : entity.getActivities()) {
-            activity.setTrip(entity);
-        }
+
+        //entity.getFlights().replaceAll(flightService::save);
+        entity.getRestaurants().replaceAll(restaurantService::save);
+
+        //entity.getFlights().forEach(flight -> flight.setTrip(entity));
+        entity.getRestaurants().forEach(restaurant -> restaurant.setTrip(entity));
+        entity.getActivities().forEach(activity -> activity.setTrip(entity));
 
         return tripRepository.save(entity);
     }

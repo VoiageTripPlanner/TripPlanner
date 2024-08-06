@@ -1,5 +1,6 @@
 package com.project.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Table(name = "VO_Airport")
@@ -12,7 +13,33 @@ public class Airport {
     private String id;
     private String time;
 
+//    @OneToOne(mappedBy = "departure_airport")
+//    @JsonIgnore
+//    private Flight departureFlight;
+//
+//    @OneToOne(mappedBy = "arrival_airport")
+//    @JsonIgnore
+//    private Flight arrivalFlight;
+
+//    public Flight getDepartureFlight() {
+//        return departureFlight;
+//    }
+//
+//    public void setDepartureFlight(Flight departureFlight) {
+//        this.departureFlight = departureFlight;
+//    }
+//
+//    public Flight getArrivalFlight() {
+//        return arrivalFlight;
+//    }
+//
+//    public void setArrivalFlight(Flight arrivalFlight) {
+//        this.arrivalFlight = arrivalFlight;
+//    }
+
     public Airport() {}
+
+
 
     public Airport(Integer airport_id) {
         this.airport_id = airport_id;

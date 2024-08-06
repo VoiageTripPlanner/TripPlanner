@@ -1,5 +1,6 @@
 package com.project.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 
@@ -19,6 +20,18 @@ public class Location {
     private String placeId;
     @Column(nullable = true)
     private int userId;
+
+//    @OneToOne(mappedBy = "locationMark")
+//    @JsonIgnore
+//    private Restaurant restaurant;
+
+//    public Restaurant getRestaurant() {
+//        return restaurant;
+//    }
+//
+//    public void setRestaurant(Restaurant restaurant) {
+//        this.restaurant = restaurant;
+//    }
 
     public Location() {
     }

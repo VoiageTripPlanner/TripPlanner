@@ -16,7 +16,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/users")
-public class UserRestController implements IController<UserRequest, Integer> {
+public class UserRestController implements IController<User, Integer> {
 
     private final UserRepository UserRepository;
     private final UserService userService;
@@ -28,7 +28,7 @@ public class UserRestController implements IController<UserRequest, Integer> {
 
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN')")
-    public ResponseEntity<List<UserRequest>> retrieveAll() {
+    public ResponseEntity<List<User>> retrieveAll() {
         return ResponseEntity.ok(userService.findAll());
     }
 
@@ -39,18 +39,17 @@ public class UserRestController implements IController<UserRequest, Integer> {
     }
 
     @PostMapping
-    public ResponseEntity<UserRequest> create(@RequestBody UserRequest user) {
+    public ResponseEntity<User> create(@RequestBody User user) {
         return ResponseEntity.ok(userService.save(user));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserRequest> retrieveById(@PathVariable Integer id) {
+    public ResponseEntity<User> retrieveById(@PathVariable Integer id) {
        return ResponseEntity.ok(userService.findById(id));
-
     }
 
     @Override
-    public ResponseEntity<UserRequest> update(UserRequest entity) {
+    public ResponseEntity<User> update(User entity) {
         return null;
     }
 
@@ -60,7 +59,7 @@ public class UserRestController implements IController<UserRequest, Integer> {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserRequest> update(@PathVariable Integer id, @RequestBody UserRequest user) {
+    public ResponseEntity<User> update(@PathVariable Integer id, @RequestBody User user) {
         return ResponseEntity.ok(userService.update(user));
     }
 

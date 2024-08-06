@@ -23,26 +23,23 @@ public class Restaurant {
     @JoinColumn(name = "trip_id")
     @JsonIgnore
     private Trip trip;
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true)
     @JoinColumn(name = "location_mark_id")
     private Location locationMark;
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
-    @JoinColumn(name = "creation_responsible_id")
-    private User creationResponsible;
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
-    @JoinColumn(name = "last_update_responsible_id")
-    private User lastUpdateResponsible;
+//    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+//    @JoinColumn(name = "creation_responsible_id")
+//    private User creationResponsible;
+//    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+//    @JoinColumn(name = "last_update_responsible_id")
+//    private User lastUpdateResponsible;
 
-    public Restaurant(Integer restaurantId, String name, String description, Date creationDatetime, Date lastUpdateDatetime, Trip trip, Location locationMark, User creationResponsible, User lastUpdateResponsible) {
+    public Restaurant(Integer restaurantId, String name, String description, Date creationDatetime, Date lastUpdateDatetime, Trip trip) {
         this.restaurantId = restaurantId;
         this.name = name;
         this.description = description;
         this.creationDatetime = creationDatetime;
         this.lastUpdateDatetime = lastUpdateDatetime;
         this.trip = trip;
-        this.locationMark = locationMark;
-        this.creationResponsible = creationResponsible;
-        this.lastUpdateResponsible = lastUpdateResponsible;
     }
 
     public Restaurant() {
@@ -97,27 +94,4 @@ public class Restaurant {
         this.trip = trip;
     }
 
-    public Location getLocationMark() {
-        return locationMark;
-    }
-
-    public void setLocationMark(Location locationMark) {
-        this.locationMark = locationMark;
-    }
-
-    public User getCreationResponsible() {
-        return creationResponsible;
-    }
-
-    public void setCreationResponsible(User creationResponsible) {
-        this.creationResponsible = creationResponsible;
-    }
-
-    public User getLastUpdateResponsible() {
-        return lastUpdateResponsible;
-    }
-
-    public void setLastUpdateResponsible(User lastUpdateResponsible) {
-        this.lastUpdateResponsible = lastUpdateResponsible;
-    }
 }

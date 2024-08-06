@@ -39,21 +39,21 @@ public class UserServiceTest {
     @InjectMocks
     private UserService userService;
 
-    private UserRequest userRequest;
+    private User userRequest;
     private User user;
     private Role role;
 
     @BeforeEach
     public void setUp() {
-        userRequest = new UserRequest();
-        userRequest.setId(1);
-        userRequest.setName("John");
-        userRequest.setLastname("Smith");
-        userRequest.setEmail("john@gmail.com");
-        userRequest.setPassword("password");
-        userRequest.setCountryId("1");
-        userRequest.setCurrencyId("1");
-        userRequest.setRoleId(1);
+//        userRequest = new UserRequest();
+//        userRequest.setId(1);
+//        userRequest.setName("John");
+//        userRequest.setLastname("Smith");
+//        userRequest.setEmail("john@gmail.com");
+//        userRequest.setPassword("password");
+//        userRequest.setCountryId("1");
+//        userRequest.setCurrencyId("1");
+//        userRequest.setRoleId(1);
 
         role = new Role();
         role.setRole_id(1);
@@ -81,8 +81,8 @@ public class UserServiceTest {
         Currency currency = Mockito.mock(Currency.class);
         Role role = Mockito.mock(Role.class);
 
-        Mockito.when(countryRepository.findById(Integer.valueOf(userRequest.getCountryId()))).thenReturn(Optional.ofNullable(country));
-        Mockito.when(currencyRepository.findById(Integer.valueOf(userRequest.getCurrencyId()))).thenReturn(Optional.ofNullable(currency));
+        Mockito.when(countryRepository.findById(userRequest.getCountry().getCountryId())).thenReturn(Optional.ofNullable(country));
+        Mockito.when(currencyRepository.findById(userRequest.getCurrency().getCurrencyId())).thenReturn(Optional.ofNullable(currency));
         Mockito.when(roleRepository.findByName(RoleEnum.USER)).thenReturn(Optional.ofNullable(role));
         Mockito.when(userRepository.save(Mockito.any(User.class))).thenReturn(new User());
 
@@ -97,7 +97,7 @@ public class UserServiceTest {
         List<User> userList = Mockito.mock(List.class);
         Mockito.when(userRepository.findUsersOperationalUsers()).thenReturn(userList);
 
-        List<UserRequest> userRequestList = userService.findAll();
+        List<User> userRequestList = userService.findAll();
 
         Assertions.assertThat(userRequestList).isNotNull();
     }
@@ -106,17 +106,17 @@ public class UserServiceTest {
     public void UserService_FindById_ReturnsUserRequest() {
         Mockito.when(userRepository.findById(1)).thenReturn(Optional.ofNullable(user));
 
-        UserRequest userResponse = userService.findById(1);
+        User userResponse = userService.findById(1);
 
         Assertions.assertThat(userResponse).isNotNull();
-        Assertions.assertThat(userResponse.getId()).isEqualTo(userRequest.getId());
+        Assertions.assertThat(userResponse.getUser_id()).isEqualTo(userRequest.getUser_id());
     }
 
     @Test
     public void UserService_UpdateUser_ReturnsUserRequest() {
         Mockito.when(userRepository.findById(1)).thenReturn(Optional.ofNullable(user));
 
-        UserRequest userResponse = userService.findById(1);
+        User userResponse = userService.findById(1);
 
         Assertions.assertThat(userResponse).isNotNull();
     }

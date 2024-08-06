@@ -1,16 +1,22 @@
 package com.project.demo.logic;
 
 import com.project.demo.entity.Restaurant;
+import com.project.demo.repository.RestaurantRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class RestaurantService implements IService<Restaurant, Integer> {
+    private final RestaurantRepository restaurantRepository;
+
+    public RestaurantService(RestaurantRepository restaurantRepository) {
+        this.restaurantRepository = restaurantRepository;
+    }
+
     @Override
     public Restaurant save(Restaurant entity) {
-        return null;
+        return restaurantRepository.save(entity);
     }
 
     @Override

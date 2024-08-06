@@ -51,8 +51,8 @@ public class AuthRestController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@RequestBody UserRequest user) {
-        UserRequest savedUser = userService.save(user);
+    public ResponseEntity<?> registerUser(@RequestBody User user) {
+        User savedUser = userService.save(user);
 
         return ResponseEntity.ok(savedUser);
     }
