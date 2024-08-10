@@ -9,13 +9,13 @@ public class Location {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private Integer locationId;
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String address;
     @Column(nullable = false)
     private double latitude;
     @Column(nullable = false)
     private double longitude;
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String placeId;
     @Column(nullable = true)
     private int userId;
