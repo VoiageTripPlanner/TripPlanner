@@ -1,19 +1,23 @@
 package com.project.demo.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 
 @Table(name = "VO_Airport")
 @Entity
 public class Airport {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer airport_id;
     private String name;
     private String id;
     private String time;
 
     public Airport() {}
+
+    public Airport(Integer airport_id) {
+        this.airport_id = airport_id;
+    }
 
     public Integer getAirport_id() {
         return airport_id;

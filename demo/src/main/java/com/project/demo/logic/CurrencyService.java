@@ -50,4 +50,8 @@ public class CurrencyService implements IService<CurrencyRequest, Integer> {
     public void deleteById(Integer integer) {
         currencyRepository.deleteById(integer);
     }
+
+    public Currency findByIdTrip(Integer integer) {
+        return currencyRepository.findById(integer).orElse(null);
+    }
 }

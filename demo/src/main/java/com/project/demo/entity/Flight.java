@@ -1,5 +1,7 @@
 package com.project.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.util.Date;
 
@@ -10,12 +12,6 @@ public class Flight {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "flight_id", nullable = false)
     private Integer flightId;
-    @ManyToOne
-    @JoinColumn(name = "departure_airport", referencedColumnName = "airport_id", nullable = false)
-    private Airport departure_airport;
-    @ManyToOne
-    @JoinColumn (name = "arrival_airport", referencedColumnName = "airport_id", nullable = false)
-    private Airport arrival_airport;
     @Column(name= "duration", nullable = false)
     private int duration;
     @Column(name = "airline_name", nullable = false)
@@ -48,17 +44,25 @@ public class Flight {
     private int price;
     @Column(name = "type", nullable = false)
     private String type;
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+    @JoinColumn(name = "departure_airport")
+    private Airport departure_airport;
+
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+    @JoinColumn(name = "arrival_airport")
+    private Airport arrival_airport;
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+    @JoinColumn(name = "trip_id")
+    @JsonIgnore
+    private Trip trip;
 
     //CONSTRUCTORS
     public Flight() {}
 
     //GETTERS & SETTERS
-    public Integer getFlightId() {
-        return flightId;
-    }
 
-    public void setFlightId(Integer flightId) {
-        this.flightId = flightId;
+    public Trip getTrip() {
+        return trip;
     }
 
     public Airport getDeparture_airport() {
@@ -75,6 +79,18 @@ public class Flight {
 
     public void setArrival_airport(Airport arrival_airport) {
         this.arrival_airport = arrival_airport;
+    }
+
+    public void setTrip(Trip trip) {
+        this.trip = trip;
+    }
+
+    public Integer getFlightId() {
+        return flightId;
+    }
+
+    public void setFlightId(Integer flightId) {
+        this.flightId = flightId;
     }
 
     public int getDuration() {
