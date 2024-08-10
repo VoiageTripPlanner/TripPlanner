@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Table(name = "VO_Flight")
 @Entity
@@ -38,6 +39,12 @@ public class Flight {
 
     @Column(name = "is_layover", nullable = false)
     private boolean isLayover;
+    @OneToMany(mappedBy = "parentFlight")
+    private List<Flight> layovers;
+    @ManyToOne
+    @JoinColumn(name = "parent_flight_id")
+    @JsonIgnore
+    private Flight parentFlight;
     @Column(name = "total_duration", nullable = false)
     private int total_duration;
     @Column(name = "price", nullable = false)
