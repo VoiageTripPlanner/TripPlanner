@@ -16,20 +16,23 @@ import java.util.Optional;
 
 @RequestMapping("/auth")
 @RestController
-public class AuthRestController {
+public class AuthRestController implements IController<UserRequest, Integer> {
 
-    private final UserRepository userRepository;
-    private final EmailService emailService;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private EmailService emailService;
+
     private final AuthenticationService authenticationService;
     private final JwtService jwtService;
-    private final UserService userService;
+    @Autowired
+    private UserService userService;
 
-    public AuthRestController(UserRepository userRepository, EmailService emailService, AuthenticationService authenticationService, JwtService jwtService, UserService userService) {
-        this.userRepository = userRepository;
-        this.emailService = emailService;
-        this.authenticationService = authenticationService;
+    public AuthRestController(JwtService jwtService, AuthenticationService authenticationService) {
         this.jwtService = jwtService;
-        this.userService = userService;
+        this.authenticationService = authenticationService;
     }
 
     @PostMapping("/login")
@@ -51,8 +54,8 @@ public class AuthRestController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@RequestBody User user) {
-        User savedUser = userService.save(user);
+    public ResponseEntity<?> registerUser(@RequestBody UserRequest user) {
+        UserRequest savedUser = userService.save(user);
 
         return ResponseEntity.ok(savedUser);
     }
@@ -83,4 +86,29 @@ public class AuthRestController {
         return authenticationService.validateOTP(user);
     }
 
+    @Override
+    public ResponseEntity<UserRequest> create(UserRequest entity) {
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<List<UserRequest>> retrieveAll() {
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<UserRequest> retrieveById(Integer aLong) {
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<UserRequest> update(UserRequest entity) {
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<Void> deleteById(Integer aLong) {
+
+        return null;
+    }
 }

@@ -16,51 +16,50 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/users")
-public class UserRestController implements IController<User, Integer> {
+public class UserRestController implements IController<UserRequest, Integer> {
 
-    private final UserRepository UserRepository;
-    private final UserService userService;
+    @Autowired
+    private UserRepository UserRepository;
 
-    public UserRestController(com.project.demo.repository.UserRepository userRepository, UserService userService) {
-        UserRepository = userRepository;
-        this.userService = userService;
-    }
+    @Autowired
+    private UserService userService;
 
     @GetMapping
     @PreAuthorize("hasAnyRole('ADMIN')")
-    public ResponseEntity<List<User>> retrieveAll() {
+    public ResponseEntity<List<UserRequest>> retrieveAll() {
         return ResponseEntity.ok(userService.findAll());
     }
 
     @GetMapping("/userDetailed")
     @PreAuthorize("hasAnyRole('ADMIN')")
-    public ResponseEntity<List<User>> getAllUsersDetailed() {
-        return ResponseEntity.ok(UserRepository.findUsersWithCountryAndRole());
+    public List<User> getAllUsersDetailed() {
+        return UserRepository.findUsersWithCountryAndRole();
     }
 
     @PostMapping
-    public ResponseEntity<User> create(@RequestBody User user) {
-        return ResponseEntity.ok(userService.save(user));
+    public ResponseEntity<UserRequest> create(@RequestBody UserRequest user) {
+        UserRequest userResponse = userService.save(user);
+        return ResponseEntity.ok(userResponse);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> retrieveById(@PathVariable Integer id) {
-       return ResponseEntity.ok(userService.findById(id));
+    public ResponseEntity<UserRequest> retrieveById(@PathVariable Integer id) {
+        return ResponseEntity.ok(userService.findById(id));
     }
 
     @Override
-    public ResponseEntity<User> update(User entity) {
+    public ResponseEntity<UserRequest> update(UserRequest entity) {
         return null;
     }
 
     @GetMapping("/filterByName/{name}")
-    public ResponseEntity<List<User>> getUserById(@PathVariable String name) {
-        return ResponseEntity.ok(UserRepository.findUsersWithCharacterInName(name));
+    public List<User> getUserById(@PathVariable String name) {
+        return UserRepository.findUsersWithCharacterInName(name);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<User> update(@PathVariable Integer id, @RequestBody User user) {
-        return ResponseEntity.ok(userService.update(user));
+    public UserRequest update(@PathVariable Integer id, @RequestBody UserRequest user) {
+        return userService.update(user);
     }
 
     @PutMapping("delete/{id}")
@@ -71,8 +70,8 @@ public class UserRestController implements IController<User, Integer> {
 
     @GetMapping("/me")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<User> authenticatedUser() {
+    public User authenticatedUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return ResponseEntity.ok((User) authentication.getPrincipal());
+        return (User) authentication.getPrincipal();
     }
 }
