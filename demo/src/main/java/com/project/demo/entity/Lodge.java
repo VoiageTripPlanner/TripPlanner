@@ -1,5 +1,6 @@
 package com.project.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -11,7 +12,7 @@ import java.util.Date;
 @Table(name = "VO_Lodge")
 public class Lodge {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "lodge_id", nullable = false)
     private Integer lodgeId;
     @Column(name = "name", nullable = false,length = 100)
@@ -41,10 +42,6 @@ public class Lodge {
     @Column(name = "amenities")
     private String amenities;
 
-//    @OneToOne(cascade={CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
-//    @JoinColumn(name = "trip_id", nullable = false)
-//    private Trip tripId;
-
     @Column(nullable = false)
     private Boolean operational;
 
@@ -61,6 +58,21 @@ public class Lodge {
     @Column(nullable = true)
     private Integer updateResponsible;
 
+    public Integer getCreationResponsible() {
+        return creationResponsible;
+    }
+
+    public void setCreationResponsible(Integer creationResponsible) {
+        this.creationResponsible = creationResponsible;
+    }
+
+    public Integer getUpdateResponsible() {
+        return updateResponsible;
+    }
+
+    public void setUpdateResponsible(Integer updateResponsible) {
+        this.updateResponsible = updateResponsible;
+    }
 //    Setters and getters
 
     public Integer getLodgeId() {
@@ -183,28 +195,12 @@ public class Lodge {
         this.creationDatetime = creationDatetime;
     }
 
-    public Integer getCreationResponsible() {
-        return creationResponsible;
-    }
-
-    public void setCreationResponsible(Integer creationResponsible) {
-        this.creationResponsible = creationResponsible;
-    }
-
     public Date getLastUpdateDatetime() {
         return lastUpdateDatetime;
     }
 
     public void setLastUpdateDatetime(Date lastUpdateDatetime) {
         this.lastUpdateDatetime = lastUpdateDatetime;
-    }
-
-    public Integer getUpdateResponsible() {
-        return updateResponsible;
-    }
-
-    public void setUpdateResponsible(Integer updateResponsible) {
-        this.updateResponsible = updateResponsible;
     }
 
     public String getExternalLink() {

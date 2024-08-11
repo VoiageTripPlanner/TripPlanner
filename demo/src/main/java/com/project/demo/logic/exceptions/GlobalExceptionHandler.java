@@ -55,6 +55,18 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, e.getHttpStatus());
     }
 
+    @ExceptionHandler(TripServiceException.class)
+    public ResponseEntity<ErrorResponse> handleTripServiceException(TripServiceException e) {
+        ErrorResponse errorResponse = new ErrorResponse(
+                e.getHttpStatus().value(),
+                e.getHttpStatus().getReasonPhrase(),
+                e.getUserMessage(),
+                e.getTimestamp(),
+                e.getErrorType()
+        );
+        return new ResponseEntity<>(errorResponse, e.getHttpStatus());
+    }
+
     @ExceptionHandler(Exception.class)
     public ProblemDetail handleSecurityException(Exception exception) {
         ProblemDetail errorDetail = null;
