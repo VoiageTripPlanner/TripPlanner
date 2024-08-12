@@ -95,10 +95,10 @@ public class UserServiceTest {
     @Test
     public void UserService_FindAll_ReturnsUserRequestList() {
         List<User> userList = Mockito.mock(List.class);
-        Integer excludedUserId = 1;
-        Mockito.when(userRepository.findUsersOperationalUsers(excludedUserId)).thenReturn(userList);
+        Integer mockedId = 1;
+        Mockito.when(userRepository.findUsersOperationalUsers(mockedId)).thenReturn(userList);
 
-        List<UserRequest> userRequestList = userService.findAll();
+        List<UserRequest> userRequestList = userService.findAllMinusCurrent(mockedId);
 
         Assertions.assertThat(userRequestList).isNotNull();
     }
