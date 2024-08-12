@@ -95,7 +95,8 @@ public class UserServiceTest {
     @Test
     public void UserService_FindAll_ReturnsUserRequestList() {
         List<User> userList = Mockito.mock(List.class);
-        Mockito.when(userRepository.findUsersOperationalUsers()).thenReturn(userList);
+        Integer excludedUserId = 1;
+        Mockito.when(userRepository.findUsersOperationalUsers(excludedUserId)).thenReturn(userList);
 
         List<UserRequest> userRequestList = userService.findAll();
 
