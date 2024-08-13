@@ -1,5 +1,6 @@
 package com.project.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 
@@ -8,16 +9,16 @@ import jakarta.persistence.*;
 public class Location {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @Column(name = "location_id")
     private Integer locationId;
-    @Column(nullable = false)
     private String address;
     @Column(nullable = false)
     private double latitude;
     @Column(nullable = false)
     private double longitude;
-    @Column(nullable = false)
+    @Column(name = "place_id")
     private String placeId;
-    @Column(nullable = true)
+    @Column(name = "user_id")
     private int userId;
 
     public Location() {
