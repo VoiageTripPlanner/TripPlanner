@@ -30,8 +30,13 @@ public class TripService implements IService<Trip, Integer>{
             entity.setCurrency(currencyService.findByIdTrip(entity.getCurrency().getCurrencyId()));
             entity.setUser(userService.findByIdTrip(entity.getUser().getUser_id()));
 
+            entity.getFlight().getLayovers().forEach(layover -> {
+                    layover.setParentFlight(entity.getFlight());
+                    layover.setTrip(entity);
+                });
 
-            entity.getFlights().forEach(flight -> flight.setTrip(entity));
+            entity.getFlight().setTrip(entity);
+
             entity.getRestaurants().forEach(restaurant -> restaurant.setTrip(entity));
             entity.getActivities().forEach(activity -> activity.setTrip(entity));
 

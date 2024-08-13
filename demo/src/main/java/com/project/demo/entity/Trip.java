@@ -32,8 +32,8 @@ public class Trip {
     @Column(name = "ai_suggestion")
     private String aiSuggestion;
 
-    @OneToMany(mappedBy = "trip", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
-    private List<Flight> flights;
+    @OneToOne(mappedBy = "trip", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+    private Flight flight;
     @OneToMany(mappedBy = "trip", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true)
     private List<Restaurant> restaurants;
 
@@ -43,12 +43,12 @@ public class Trip {
     public Trip() {
     }
 
-    public List<Flight> getFlights() {
-        return flights;
+    public Flight getFlight() {
+        return flight;
     }
 
-    public void setFlights(List<Flight> flights) {
-        this.flights = flights;
+    public void setFlight(Flight flight) {
+        this.flight = flight;
     }
 
     public List<Restaurant> getRestaurants() {
