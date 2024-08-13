@@ -18,6 +18,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class OpenAIService {
@@ -32,8 +33,10 @@ public class OpenAIService {
         this.restTemplate = restTemplate;
         this.objectMapper = objectMapper;
     }
-    public String generateTravelSuggestions(String query, String prompt) throws JsonProcessingException {
+    public String generateTravelSuggestions(String query, String prompt, Map<String, Object> schema) throws JsonProcessingException {
         try {
+            Optional<Map<String, Object>> optionalSchema = Optional.ofNullable(schema);
+
             Map<String, Object> systemContent = new HashMap<>();
             systemContent.put("type", "text");
             systemContent.put("text", prompt);
@@ -61,6 +64,8 @@ public class OpenAIService {
             requestBodyMap.put("top_p", 1);
             requestBodyMap.put("frequency_penalty", 0);
             requestBodyMap.put("presence_penalty", 0);
+
+            optionalSchema.ifPresent(s -> requestBodyMap.put("response_format", s));
 
             String requestBody = objectMapper.writeValueAsString(requestBodyMap);
 
