@@ -23,10 +23,10 @@ public class UserRestController implements IController<UserRequest, Integer> {
     @Autowired
     private UserService userService;
 
-    @GetMapping
+    @GetMapping("/req/{id}")
     @PreAuthorize("hasAnyRole('ADMIN')")
-    public List<UserRequest> retrieveAll() {
-        return userService.findAll();
+    public List<UserRequest> retrieveAllMinusCurrent(@PathVariable Integer id) {
+        return userService.findAllMinusCurrent(id);
     }
 
     @GetMapping("/userDetailed")
@@ -38,6 +38,11 @@ public class UserRestController implements IController<UserRequest, Integer> {
     @PostMapping
     public UserRequest create(@RequestBody UserRequest user) {
         return userService.save(user);
+    }
+
+    @Override
+    public List<UserRequest> retrieveAll() {
+        return null;
     }
 
     @GetMapping("/{id}")

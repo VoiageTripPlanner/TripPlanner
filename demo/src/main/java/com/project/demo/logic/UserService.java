@@ -61,7 +61,11 @@ public class UserService implements IService<UserRequest, Integer> {
 
     @Override
     public List<UserRequest> findAll() {
-        return userRepository.findUsersOperationalUsers().stream()
+        return null;
+    }
+
+    public List<UserRequest> findAllMinusCurrent(Integer id) {
+        return userRepository.findUsersOperationalUsers(id).stream()
                 .map(user -> {
                     createUserRequest(user);
                     return userRequest;
