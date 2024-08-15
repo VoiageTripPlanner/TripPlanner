@@ -3,7 +3,10 @@ package com.project.demo.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import org.hibernate.annotations.Cascade;
+
 import java.util.Date;
+import java.util.List;
 
 @Table(name = "VO_Flight")
 @Entity
@@ -51,7 +54,14 @@ public class Flight {
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     @JoinColumn(name = "arrival_airport")
     private Airport arrival_airport;
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+
+    @OneToMany(mappedBy = "parentFlight", cascade = CascadeType.ALL)
+    List<Flight> layovers;
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_flight_id", referencedColumnName = "flight_id")
+    @JsonIgnore
+    private Flight parentFlight;
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "trip_id")
     @JsonIgnore
     private Trip trip;
@@ -60,6 +70,23 @@ public class Flight {
     public Flight() {}
 
     //GETTERS & SETTERS
+
+
+    public List<Flight> getLayovers() {
+        return layovers;
+    }
+
+    public void setLayovers(List<Flight> layovers) {
+        this.layovers = layovers;
+    }
+
+    public Flight getParentFlight() {
+        return parentFlight;
+    }
+
+    public void setParentFlight(Flight parentFlight) {
+        this.parentFlight = parentFlight;
+    }
 
     public Trip getTrip() {
         return trip;
