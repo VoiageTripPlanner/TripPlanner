@@ -77,6 +77,20 @@ public class CalendarEventService implements IService<CalendarEvent, Integer>{
         }
     }
 
+    public List<CalendarEvent> findAllEventsByUser(Integer userId) {
+        try {
+            return calendarEventRepository.findCalendarEventByUser(userId);
+        } catch (Exception e) {
+            throw new CalendarEventServiceException(
+                    "Failed to retrieve all CalendarEvents.",
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    "REPOSITORY_ERROR",
+                    "An error occurred while retrieving CalendarEvents. Please try again later.",
+                    e
+            );
+        }
+    }
+
     @Override
     public Optional<CalendarEvent> findById(Integer integer) {
         return Optional.empty();

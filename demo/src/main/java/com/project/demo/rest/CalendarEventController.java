@@ -26,9 +26,9 @@ public class CalendarEventController {
     private CalendarEventService calendarEventService;
 
     @GetMapping
-    public ResponseEntity<List<CalendarEvent>> retrieveAll() {
+    public ResponseEntity<List<CalendarEvent>> retrieveAll(@RequestParam("userId") Integer userId) {
 
-        return ResponseEntity.ok(calendarEventService.findAll());
+        return ResponseEntity.ok(calendarEventService.findAllEventsByUser(userId));
     }
 
 
