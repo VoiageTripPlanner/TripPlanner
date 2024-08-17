@@ -16,7 +16,7 @@ public class Activity {
     private double longitude;
     @Column(name = "icon_url")
     private String iconUrl;
-    private String location;
+    private String location =" ";
     private String rating;
     @Column(name = "price_level")
     private Integer priceLevel;
