@@ -1,14 +1,6 @@
 package com.project.demo.rest;
 
-import org.springframework.web.bind.annotation.RequestParam;
-
-public ResponseEntity<List<CalendarEvent>> retrieveAll(@RequestParam("userId") Integer userId) {
-
-        return ResponseEntity.ok(calendarEventService.findAllEventsByUser(userId));
-        }
-
-
-        import com.project.demo.entity.CalendarEvent;
+import com.project.demo.entity.CalendarEvent;
 import com.project.demo.entity.Trip;
 import com.project.demo.entity.User;
 import com.project.demo.entity.request.UserRequest;
@@ -34,6 +26,11 @@ public class CalendarEventController {
     private CalendarEventService calendarEventService;
 
     @GetMapping
+    public ResponseEntity<List<CalendarEvent>> retrieveAll(@RequestParam("userId") Integer userId) {
+
+        return ResponseEntity.ok(calendarEventService.findAllEventsByUser(userId));
+    }
+
 
     @PostMapping
     public ResponseEntity<CalendarEvent> create(@RequestBody CalendarEvent entity) {
