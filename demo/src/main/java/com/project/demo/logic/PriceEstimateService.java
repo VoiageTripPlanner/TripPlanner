@@ -41,7 +41,8 @@ public class PriceEstimateService {
                     "}\n" +
                     "\n" +
                     "Based on historical data for the provided date and destination, calculate the price for those activities or restaurants. Return a JSON object with the same structure that you receive as input.\n" +
-                    "But, make sure you update the totalEstimate with the sum of the full estimate, and the priceEstimate of each activity or restaurant. Please give real accurate price estimates.\n" +
+                    "The calculations must be done in the currency that is provided in the JSON of the request.\n" +
+                    "Also, make sure you update the totalEstimate with the sum of the full estimate, and the priceEstimate of each activity or restaurant. Please give real accurate price estimates.\n" +
                     "Also, in case of restaurants, you need to calculate on 3 meals a day for the totalEstimate. You calculate on an average a meal for that place and dates, the restaurants should not affect the estimation of the average."+
                     "You multiply the average price times total of meals for that trip using 3 meals a day. You need to subtract the restaurants which price was calculated more exactly on the list provided"+
                     "\n.The final formula for the totalEstimate is: totalEstimate = averagePrice * (numberOfMeals - numberOfRestaurantsProvided)+ sum(restaurantPriceEstimates). For activities you only sum the activies."
