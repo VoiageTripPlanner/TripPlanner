@@ -103,6 +103,37 @@ public class TripService implements IService<Trip, Integer>{
         }
     }
 
+    public Trip updateTrip(Integer id, Trip trip) {
+        try {
+            Optional<Trip> optionalTrip = tripRepository.findById(id);
+            if (optionalTrip.isPresent()) {
+                Trip existingTrip = optionalTrip.get();
+                existingTrip.setName(trip.getName());
+                existingTrip.setDescription(trip.getDescription());
+                existingTrip.setDepartureDate(trip.getDepartureDate());
+                existingTrip.setReturnDate(trip.getReturnDate());
+                existingTrip.setBudget(trip.getBudget());
+                return tripRepository.save(existingTrip);
+            } else {
+                throw new TripServiceException(
+                        HttpStatus.NOT_FOUND,
+                        "TRIP_NOT_FOUND",
+                        "The trip with the given ID was not found.",
+                        java.time.Instant.now().toString()
+
+                );
+            }
+        } catch (Exception e) {
+            throw new TripServiceException(
+                    "Failed to update trip.",
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    "UPDATE_ERROR",
+                    "An error occurred while updating the trip.",
+                    e
+            );
+        }
+    }
+
     @Override
     public Trip update(Trip entity) {
         try {
