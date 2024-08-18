@@ -8,7 +8,10 @@ import jakarta.persistence.*;
 public class Activity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    @Column(name = "id")
+    private Integer activityId;
+
+
     private String address;
     @Column(name = "image_url")
     private String imageUrl;
@@ -16,7 +19,18 @@ public class Activity {
     private double longitude;
     @Column(name = "icon_url")
     private String iconUrl;
-    private String location =" ";
+
+        @Column(name = "location")
+    private String locationAdress ;
+
+    public String getLocationAdress() {
+        return locationAdress;
+    }
+
+    public void setLocationAdress(String locationAdress) {
+        this.locationAdress = locationAdress;
+    }
+
     private String rating;
     @Column(name = "price_level")
     private Integer priceLevel;
@@ -26,13 +40,7 @@ public class Activity {
     @JsonIgnore
     private Trip trip;
 
-    public Integer getId() {
-        return id;
-    }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public String getAddress() {
         return address;
@@ -74,13 +82,7 @@ public class Activity {
         this.iconUrl = iconUrl;
     }
 
-    public String getLocation() {
-        return location;
-    }
 
-    public void setLocation(String location) {
-        this.location = location;
-    }
 
     public String getRating() {
         return rating;
@@ -113,4 +115,14 @@ public class Activity {
     public void setTrip(Trip trip) {
         this.trip = trip;
     }
+
+    public Integer getActivityId() {
+        return activityId;
+    }
+
+    public void setActivityId(Integer activityId) {
+        this.activityId = activityId;
+    }
+
+
 }
