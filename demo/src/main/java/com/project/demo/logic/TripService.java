@@ -32,7 +32,7 @@ public class TripService implements IService<Trip, Integer>{
 
             entity.getFlight().getLayovers().forEach(layover -> {
                     layover.setParentFlight(entity.getFlight());
-                    layover.setTrip(entity);
+//                    layover.setTrip(entity);
                 });
 
             entity.getFlight().setTrip(entity);
