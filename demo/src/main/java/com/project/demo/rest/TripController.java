@@ -33,7 +33,7 @@ public class TripController{
         return ResponseEntity.ok(tripService.findByIdTrip(id));
     }
 
-    @PutMapping("/{id}")
+    //@PutMapping("/{id}")
     public ResponseEntity<Trip> update(@RequestBody Trip entity) {
 
         return ResponseEntity.ok(tripService.save(entity));
@@ -48,5 +48,10 @@ public class TripController{
     public ResponseEntity<Trip> updateTrip(@PathVariable Integer id, @RequestBody Trip trip) {
         Trip updatedTrip = tripService.updateTrip(id, trip);
         return ResponseEntity.ok(updatedTrip);
+    }
+
+    @GetMapping("/user/{id}")
+    public ResponseEntity<List<Trip>> retrieveByUserId(@PathVariable Integer id) {
+        return ResponseEntity.ok(tripService.findByUserId(id));
     }
 }
