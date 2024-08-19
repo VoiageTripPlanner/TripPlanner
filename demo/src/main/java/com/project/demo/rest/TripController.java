@@ -43,4 +43,10 @@ public class TripController{
         tripService.deleteById(id);
         return ResponseEntity.ok().build();
     }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Trip> updateTrip(@PathVariable Integer id, @RequestBody Trip trip) {
+        Trip updatedTrip = tripService.updateTrip(id, trip);
+        return ResponseEntity.ok(updatedTrip);
+    }
 }

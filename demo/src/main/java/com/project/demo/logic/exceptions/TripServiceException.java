@@ -8,7 +8,7 @@ public class TripServiceException extends RuntimeException {
     private final String errorType;
     private final String userMessage;
     private final String timestamp;
-    private final Throwable cause;
+    private Throwable cause;
 
     public TripServiceException(String message, HttpStatus httpStatus, String errorType, String userMessage, Throwable cause) {
         super(message, cause);
@@ -17,6 +17,13 @@ public class TripServiceException extends RuntimeException {
         this.userMessage = userMessage;
         this.timestamp = java.time.Instant.now().toString();
         this.cause = cause;
+    }
+
+    public TripServiceException(HttpStatus httpStatus, String errorType, String userMessage, String timestamp) {
+        this.httpStatus = httpStatus;
+        this.errorType = errorType;
+        this.userMessage = userMessage;
+        this.timestamp = timestamp;
     }
 
     public HttpStatus getHttpStatus() {
