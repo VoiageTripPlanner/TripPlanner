@@ -40,11 +40,21 @@ public class Trip {
     @OneToMany(mappedBy = "trip", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private List<Activity> activities;
 
+    private boolean operational = true;
+
     public Trip() {
     }
 
     public Flight getFlight() {
         return flight;
+    }
+
+    public boolean isOperational() {
+        return operational;
+    }
+
+    public void setOperational(boolean operational) {
+        this.operational = operational;
     }
 
     public void setFlight(Flight flight) {
