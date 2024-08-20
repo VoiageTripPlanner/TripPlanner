@@ -179,4 +179,18 @@ public class TripService implements IService<Trip, Integer>{
             );
         }
     }
+
+    public List<Trip> findByUserId(Integer id) {
+        try {
+            return tripRepository.findByUserId(id);
+        } catch (Exception e) {
+            throw new TripServiceException(
+                    "Failed to find trips by user ID.",
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    "REPOSITORY_ERROR",
+                    "An error occurred while finding the trips. Please try again later.",
+                    e
+            );
+        }
+    }
 }

@@ -68,7 +68,7 @@ public class OpenAIController {
         return openAIService.generateTravelSuggestions(tripRecommendationQuery, systemPrompt, schemaObject);
     }
 
-    @GetMapping("/priceEstimation")
+    @PostMapping("/priceEstimation")
     public PriceEstimate getPriceEstimate(@RequestBody PriceEstimate priceEstimate) throws JsonProcessingException {
         return priceEstimateService.calculatePriceEstimate(priceEstimate);
     }
