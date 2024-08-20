@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -72,7 +73,7 @@ public class TripService implements IService<Trip, Integer>{
     @Override
     public List<Trip> findAll() {
         try {
-            return tripRepository.findAll();
+            return tripRepository.findAllOperational();
         } catch (Exception e) {
             throw new TripServiceException(
                     "Failed to retrieve all trips.",
@@ -91,7 +92,17 @@ public class TripService implements IService<Trip, Integer>{
 
     public Trip findByIdTrip(Integer integer) {
         try {
-            return tripRepository.findById(integer).orElse(null);
+            Trip trip = tripRepository.findByIdAndOperationalTrue(integer);
+            Objects.requireNonNull(trip, "Trip not found.");
+            return trip;
+        } catch (NullPointerException e) {
+            throw new TripServiceException(
+                    "Trip not found with id " + integer,
+                    HttpStatus.NOT_FOUND,
+                    "TRIP_NOT_FOUND",
+                    "The trip with the given ID was not found.",
+                    e
+            );
         } catch (Exception e) {
             throw new TripServiceException(
                     "Failed to find trip by ID.",
@@ -168,7 +179,7 @@ public class TripService implements IService<Trip, Integer>{
     @Override
     public void deleteById(Integer integer) {
         try {
-            tripRepository.deleteById(integer);
+            tripRepository.setOperationalFalseById(integer);
         } catch (Exception e) {
             throw new TripServiceException(
                     "Failed to delete trip by ID.",
