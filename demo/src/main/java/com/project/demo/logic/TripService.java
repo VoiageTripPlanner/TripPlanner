@@ -36,6 +36,7 @@ public class TripService implements IService<Trip, Integer>{
                 });
 
             entity.getActivities().forEach(activity -> activity.setImageUrl("test"));
+            entity.getLodge().setImages("testlodge");
             entity.getFlight().setTrip(entity);
 
             entity.getRestaurants().forEach(restaurant -> restaurant.setTrip(entity));
