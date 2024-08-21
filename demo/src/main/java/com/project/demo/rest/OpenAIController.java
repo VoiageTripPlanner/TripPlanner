@@ -1,6 +1,11 @@
 package com.project.demo.rest;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.project.demo.entity.request.OpenAIResponse;
+import com.project.demo.entity.request.PriceEstimate;
+import com.project.demo.logic.PriceEstimateService;
 import com.project.demo.logic.request.OpenAIService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +19,8 @@ public class OpenAIController {
 
     @Autowired
     private OpenAIService openAIService;
+    @Autowired
+    private PriceEstimateService priceEstimateService;
      public OpenAIController(OpenAIService openAIService) {
          this.openAIService = openAIService;
      }
@@ -59,5 +66,10 @@ public class OpenAIController {
         schemaObject.put("type", "json_schema");
         schemaObject.put("json_schema", jsonSchema);
         return openAIService.generateTravelSuggestions(tripRecommendationQuery, systemPrompt, schemaObject);
+    }
+
+    @PostMapping("/priceEstimation")
+    public PriceEstimate getPriceEstimate(@RequestBody PriceEstimate priceEstimate) throws JsonProcessingException {
+        return priceEstimateService.calculatePriceEstimate(priceEstimate);
     }
 }

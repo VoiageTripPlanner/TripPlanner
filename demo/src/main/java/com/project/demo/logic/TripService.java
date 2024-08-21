@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -32,9 +33,10 @@ public class TripService implements IService<Trip, Integer>{
 
             entity.getFlight().getLayovers().forEach(layover -> {
                     layover.setParentFlight(entity.getFlight());
-                    layover.setTrip(entity);
                 });
 
+            entity.getActivities().forEach(activity -> activity.setImageUrl("test"));
+            entity.getLodge().setImages("testlodge");
             entity.getFlight().setTrip(entity);
 
             entity.getRestaurants().forEach(restaurant -> restaurant.setTrip(entity));
@@ -72,7 +74,7 @@ public class TripService implements IService<Trip, Integer>{
     @Override
     public List<Trip> findAll() {
         try {
-            return tripRepository.findAll();
+            return tripRepository.findAllOperational();
         } catch (Exception e) {
             throw new TripServiceException(
                     "Failed to retrieve all trips.",
@@ -91,13 +93,54 @@ public class TripService implements IService<Trip, Integer>{
 
     public Trip findByIdTrip(Integer integer) {
         try {
-            return tripRepository.findById(integer).orElse(null);
+            Trip trip = tripRepository.findByIdAndOperationalTrue(integer);
+            Objects.requireNonNull(trip, "Trip not found.");
+            return trip;
+        } catch (NullPointerException e) {
+            throw new TripServiceException(
+                    "Trip not found with id " + integer,
+                    HttpStatus.NOT_FOUND,
+                    "TRIP_NOT_FOUND",
+                    "The trip with the given ID was not found.",
+                    e
+            );
         } catch (Exception e) {
             throw new TripServiceException(
                     "Failed to find trip by ID.",
                     HttpStatus.INTERNAL_SERVER_ERROR,
                     "REPOSITORY_ERROR",
                     "An error occurred while finding the trip. Please try again later.",
+                    e
+            );
+        }
+    }
+
+    public Trip updateTrip(Integer id, Trip trip) {
+        try {
+            Optional<Trip> optionalTrip = tripRepository.findById(id);
+            if (optionalTrip.isPresent()) {
+                Trip existingTrip = optionalTrip.get();
+                existingTrip.setName(trip.getName());
+                existingTrip.setDescription(trip.getDescription());
+                existingTrip.setDepartureDate(trip.getDepartureDate());
+                existingTrip.setReturnDate(trip.getReturnDate());
+                existingTrip.setBudget(trip.getBudget());
+                return tripRepository.save(existingTrip);
+            } else {
+                throw new TripServiceException(
+                        HttpStatus.NOT_FOUND,
+                        "TRIP_NOT_FOUND",
+                        "The trip with the given ID was not found.",
+                        java.time.Instant.now().toString()
+
+                );
+            }
+        } catch (Exception e) {
+            throw new TripServiceException(
+                    "Failed to update trip.",
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    "UPDATE_ERROR",
+                    "An error occurred while updating the trip.",
                     e
             );
         }
@@ -137,13 +180,27 @@ public class TripService implements IService<Trip, Integer>{
     @Override
     public void deleteById(Integer integer) {
         try {
-            tripRepository.deleteById(integer);
+            tripRepository.setOperationalFalseById(integer);
         } catch (Exception e) {
             throw new TripServiceException(
                     "Failed to delete trip by ID.",
                     HttpStatus.INTERNAL_SERVER_ERROR,
                     "REPOSITORY_ERROR",
                     "An error occurred while deleting the trip. Please try again later.",
+                    e
+            );
+        }
+    }
+
+    public List<Trip> findByUserId(Integer id) {
+        try {
+            return tripRepository.findByUserId(id);
+        } catch (Exception e) {
+            throw new TripServiceException(
+                    "Failed to find trips by user ID.",
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    "REPOSITORY_ERROR",
+                    "An error occurred while finding the trips. Please try again later.",
                     e
             );
         }
