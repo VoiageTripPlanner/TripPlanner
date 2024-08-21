@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 @Table(name = "VO_COUNTRY")
 public class Country {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "country_id", nullable = false)
     private Integer countryId;
 
@@ -26,7 +26,7 @@ public class Country {
     }
 
     @Column(name = "operational", nullable = false)
-    private boolean operational;
+    private boolean operational = true;
 
     public Integer getCountryId() {
         return countryId;

@@ -40,9 +40,21 @@ public class Trip {
     @OneToMany(mappedBy = "trip", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private List<Activity> activities;
 
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "destination_country_id", referencedColumnName = "country_id")
+    private Country destinationCountry;
+
     private boolean operational = true;
 
     public Trip() {
+    }
+
+    public Country getDestinationCountry() {
+        return destinationCountry;
+    }
+
+    public void setDestinationCountry(Country destinationCountry) {
+        this.destinationCountry = destinationCountry;
     }
 
     public Flight getFlight() {
