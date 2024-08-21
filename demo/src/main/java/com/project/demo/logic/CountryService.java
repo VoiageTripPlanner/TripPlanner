@@ -4,6 +4,7 @@ import com.project.demo.entity.Country;
 import com.project.demo.entity.request.CountryRequest;
 import com.project.demo.repository.CountryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,6 +22,7 @@ public class CountryService implements IService<CountryRequest, Integer>{
     }
 
     @Override
+    @Cacheable("countries")
     public List<CountryRequest> findAll() {
         List<Country> countries = countryRepository.findAll();
         return countries.stream()
