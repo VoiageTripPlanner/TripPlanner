@@ -73,6 +73,10 @@ public class User implements UserDetails {
     // Constructors
     public User() {}
 
+    public User(Integer user_id) {
+        this.user_id = user_id;
+    }
+
     public Integer getUser_id() {
         return user_id;
     }

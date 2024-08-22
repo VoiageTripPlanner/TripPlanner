@@ -4,6 +4,7 @@ import com.project.demo.entity.Currency;
 import com.project.demo.entity.request.CurrencyRequest;
 import com.project.demo.repository.CurrencyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,6 +23,7 @@ public class CurrencyService implements IService<CurrencyRequest, Integer> {
     }
 
     @Override
+    @Cacheable("currencies")
     public List<CurrencyRequest> findAll() {
         List<Currency> currencyList = currencyRepository.findAll();
         return currencyList.stream()
@@ -49,5 +51,9 @@ public class CurrencyService implements IService<CurrencyRequest, Integer> {
     @Override
     public void deleteById(Integer integer) {
         currencyRepository.deleteById(integer);
+    }
+
+    public Currency findByIdTrip(Integer integer) {
+        return currencyRepository.findById(integer).orElse(null);
     }
 }
