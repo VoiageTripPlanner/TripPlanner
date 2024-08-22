@@ -2,6 +2,7 @@ package com.project.demo.logic;
 
 import com.project.demo.entity.*;
 import com.project.demo.logic.exceptions.TripServiceException;
+import com.project.demo.repository.CountryRepository;
 import com.project.demo.repository.TripRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.dao.OptimisticLockingFailureException;
@@ -13,27 +14,30 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Service
-public class TripService implements IService<Trip, Integer>{
+public class TripService implements IService<Trip, Integer> {
     private final TripRepository tripRepository;
     private final CurrencyService currencyService;
     private final UserService userService;
+    private final CountryRepository countryRepository;
 
-    public TripService(TripRepository tripRepository, CurrencyService currencyService, UserService userService) {
+    public TripService(TripRepository tripRepository, CurrencyService currencyService, UserService userService, CountryRepository countryRepository) {
         this.tripRepository = tripRepository;
         this.currencyService = currencyService;
         this.userService = userService;
+        this.countryRepository = countryRepository;
     }
 
     @Override
     @Transactional
     public Trip save(Trip entity) {
-        try{
-            entity.setCurrency(currencyService.findByIdTrip(entity.getCurrency().getCurrencyId()));
+        try {
+            Currency curr = currencyService.findByIdTrip(entity.getCurrency().getCurrencyId());
+            entity.setCurrency(curr);
             entity.setUser(userService.findByIdTrip(entity.getUser().getUser_id()));
 
             entity.getFlight().getLayovers().forEach(layover -> {
-                    layover.setParentFlight(entity.getFlight());
-                });
+                layover.setParentFlight(entity.getFlight());
+            });
 
             entity.getActivities().forEach(activity -> activity.setImageUrl("test"));
             entity.getLodge().setImages("testlodge");
@@ -42,8 +46,17 @@ public class TripService implements IService<Trip, Integer>{
             entity.getRestaurants().forEach(restaurant -> restaurant.setTrip(entity));
             entity.getActivities().forEach(activity -> activity.setTrip(entity));
 
+            if (entity.getDestinationCountry() != null) {
+
+                Country country = findOrCreateCountry(entity.getDestinationCountry().getCountryName());
+                if (country != null) {
+                    entity.setDestinationCountry(country);
+                } else {
+                    entity.getDestinationCountry().setCurrency(curr);
+                }
+            }
             return tripRepository.save(entity);
-        }  catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             throw new TripServiceException(
                     "Failed to save trip: invalid entity.",
                     HttpStatus.BAD_REQUEST,
@@ -200,9 +213,36 @@ public class TripService implements IService<Trip, Integer>{
                     "Failed to find trips by user ID.",
                     HttpStatus.INTERNAL_SERVER_ERROR,
                     "REPOSITORY_ERROR",
-                    "An error occurred while finding the trips. Please try again later.",
+                    "An error occurred while deleting the trip. Please try again later.",
                     e
             );
         }
     }
+
+    // Complementary methods
+
+    public static String normalizeCountryName(String countryName) {
+        if (countryName == null || countryName.isEmpty()) {
+            return countryName;
+        }
+        String[] words = countryName.trim().split("\\s+");
+        StringBuilder normalized = new StringBuilder();
+        for (String word : words) {
+            if (!word.isEmpty()) {
+                normalized.append(Character.toUpperCase(word.charAt(0)));
+                normalized.append(word.substring(1).toLowerCase());
+                normalized.append(" ");
+            }
+        }
+        return normalized.toString().trim();
+    }
+
+    public Country findOrCreateCountry(String countryName) {
+        String normalizedCountryName = normalizeCountryName(countryName);
+
+        return countryRepository.findByCountryName(normalizedCountryName).orElse(null);
+    }
+
+
 }
+   
