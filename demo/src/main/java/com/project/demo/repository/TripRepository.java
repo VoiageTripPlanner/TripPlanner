@@ -25,6 +25,9 @@ public interface TripRepository extends JpaRepository<Trip, Integer> {
     @Query("SELECT t FROM Trip t WHERE t.operational = true")
     List<Trip> findAllOperational();
 
+    @Query("SELECT t.destinationCountry.countryId, t.destinationCountry.countryName, COUNT(t) as tripCount FROM Trip t WHERE t.operational = true AND t.user.user_id = :userId GROUP BY t.destinationCountry.countryId, t.destinationCountry.countryName ORDER BY tripCount DESC")
+    List<Object[]> findTripCountByUserAndCountry(@Param("userId") Integer userId);
+
     @Transactional
     @Modifying
     @Query("UPDATE Trip t SET t.operational = false WHERE t.id = :id")
