@@ -69,6 +69,7 @@ public class UserRestController implements IController<UserRequest, Integer> {
     }
 
     @PutMapping("delete/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public void deleteById(@PathVariable Integer id) {
         userService.deleteById(id);
     }
