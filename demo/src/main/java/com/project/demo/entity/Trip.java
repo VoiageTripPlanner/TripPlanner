@@ -40,9 +40,41 @@ public class Trip {
     @OneToMany(mappedBy = "trip", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private List<Activity> activities;
 
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "destination_country_id", referencedColumnName = "country_id")
+    private Country destinationCountry;
+    @Column(name = "activities_estimated_cost")
+    private Double activitiesEstimatedCost;
+    @Column(name = "restaurants_estimated_cost")
+    private Double restaurantsEstimatedCost;
+
     private boolean operational = true;
 
     public Trip() {
+    }
+
+    public Double getActivitiesEstimatedCost() {
+        return activitiesEstimatedCost;
+    }
+
+    public void setActivitiesEstimatedCost(Double activitiesEstimatedCost) {
+        this.activitiesEstimatedCost = activitiesEstimatedCost;
+    }
+
+    public Double getRestaurantsEstimatedCost() {
+        return restaurantsEstimatedCost;
+    }
+
+    public void setRestaurantsEstimatedCost(Double restaurantsEstimatedCost) {
+        this.restaurantsEstimatedCost = restaurantsEstimatedCost;
+    }
+
+    public Country getDestinationCountry() {
+        return destinationCountry;
+    }
+
+    public void setDestinationCountry(Country destinationCountry) {
+        this.destinationCountry = destinationCountry;
     }
 
     public Flight getFlight() {
