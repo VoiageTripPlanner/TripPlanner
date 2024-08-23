@@ -6,21 +6,25 @@ on:
       - main
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Set up JDK 21
-      uses: actions/setup-java@v3
-      with:
-        java-version: '21'
-        distribution: 'temurin'
+    - name: List files in root directory
+      run: ls -la
+
+    - name: List files in demo directory
+      run: ls -la demo
+
+    - name: Make gradlew executable
+      run: chmod +x demo/gradlew
 
     - name: Build with Gradle
-      run: ./gradlew clean build
+      working-directory: demo
+      run: ./gradlew clean build -x test
 
     - name: Deploy to EC2
       env:
@@ -28,21 +32,11 @@ jobs:
         USER: ${{ secrets.EC2_USER }}
         SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
       run: |
-        # Write the private key to a file
         echo "${SSH_KEY}" > id_rsa
         chmod 600 id_rsa
-
-        # Copy the build artifact to the EC2 instance
-        scp -i id_rsa build/libs/demo-0.0.1-SNAPSHOT ${USER}@${HOST}:/home/ubuntu/backend
-
-        # SSH into the EC2 instance and deploy the application
-        ssh -i id_rsa ${USER}@${HOST} << 'EOF'
-        # Stop the running instance of the application
+        scp -i id_rsa demo/build/libs/demo-0.0.1-SNAPSHOT.jar ${USER}@${HOST}:/home/ubuntu/backend
+        ssh -i id_rsa ${USER}@${HOST} << EOF
         sudo systemctl stop spring-boot-app.service || true
-
-        # Replace the old JAR with the new one
-        sudo cp /home/ubuntu/backend /opt/spring-boot-app/backend
-
-        # Start the application again
+        sudo cp /home/ubuntu/backend/demo.jar /opt/spring-boot-app/backend
         sudo systemctl start spring-boot-app.service
         EOF
