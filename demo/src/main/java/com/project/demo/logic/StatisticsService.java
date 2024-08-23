@@ -1,56 +1,57 @@
 package com.project.demo.logic;
 
+import com.project.demo.entity.Trip;
 import com.project.demo.entity.request.BudgetOverview;
 import com.project.demo.entity.request.CountryVisit;
+import com.project.demo.repository.TripRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class StatisticsService {
 
-    public Optional<List<CountryVisit>> getTopCountryVisits() {
-        // TODO: Get country visits from the database
-        CountryVisit countryVisit1 = new CountryVisit(1, "United States", 100);
-        CountryVisit countryVisit2 = new CountryVisit(2, "Germany", 50);
-        CountryVisit countryVisit3 = new CountryVisit(3, "Costa Rica", 30);
-        List<CountryVisit> countryVisitList = new ArrayList<CountryVisit>();
-        countryVisitList.add(countryVisit1);
-        countryVisitList.add(countryVisit2);
-        countryVisitList.add(countryVisit3);
+    @Autowired
+    TripRepository tripRepository;
+
+    public Optional<List<CountryVisit>> getCountryVisits(Integer userId) {
+        List<Object[]> countryVisits = tripRepository.findTripCountByUserAndCountry(userId);
+        List<CountryVisit> countryVisitList = countryVisits.stream().map(countryVisit -> {
+            Integer countryId = (Integer) countryVisit[0];
+            String countryName = (String) countryVisit[1];
+            Long tripCount = (Long) countryVisit[2];
+            return new CountryVisit(countryId, countryName, tripCount.intValue());
+        }).toList();
         return Optional.of(countryVisitList);
     }
 
-    public Optional<List<CountryVisit>> getCountryVisits() {
-        // TODO: Get country visits from the database
-        CountryVisit countryVisit1 = new CountryVisit(1, "United States of America", 100);
-        CountryVisit countryVisit2 = new CountryVisit(2, "Germany", 50);
-        CountryVisit countryVisit3 = new CountryVisit(3, "Costa Rica", 30);
-        CountryVisit countryVisit4 = new CountryVisit(3, "Mexico", 20);
-        CountryVisit countryVisit5 = new CountryVisit(3, "Colombia", 10);
-        CountryVisit countryVisit6 = new CountryVisit(3, "Spain", 9);
-        CountryVisit countryVisit7 = new CountryVisit(3, "France", 8);
-        CountryVisit countryVisit8 = new CountryVisit(3, "Sweden", 7);
-        CountryVisit countryVisit9 = new CountryVisit(3, "Iceland", 6);
-        CountryVisit countryVisit10 = new CountryVisit(3, "Poland", 3);
-        List<CountryVisit> countryVisitList = new ArrayList<CountryVisit>();
-        countryVisitList.add(countryVisit1);
-        countryVisitList.add(countryVisit2);
-        countryVisitList.add(countryVisit3);
-        countryVisitList.add(countryVisit4);
-        countryVisitList.add(countryVisit5);
-        countryVisitList.add(countryVisit6);
-        countryVisitList.add(countryVisit7);
-        countryVisitList.add(countryVisit8);
-        countryVisitList.add(countryVisit9);
-        countryVisitList.add(countryVisit10);
-        return Optional.of(countryVisitList);
-    }
-
-    public Optional<BudgetOverview> getBudgetOverview() {
-        BudgetOverview budgetOverview = new BudgetOverview(10000.00, 5000.00, 30000.00, 1000.00, 5000.00, 12000500.00);
+    public Optional<BudgetOverview> getBudgetOverview(Integer userId) {
+        List<Trip> trips = tripRepository.findByUserId(userId);
+        Double totalBudget = trips.stream().mapToDouble(Trip::getBudget).sum();
+        Double totalActivitiesEstimatedCost = trips.stream().mapToDouble(trip -> {
+            return trip.getActivitiesEstimatedCost() != null ? trip.getActivitiesEstimatedCost() : 0;
+        }).sum();
+        Double totalRestaurantsEstimatedCost = trips.stream().mapToDouble(trip -> {
+            return trip.getRestaurantsEstimatedCost() != null ? trip.getRestaurantsEstimatedCost() : 0;
+        }).sum();
+        Double totalFlightCost = trips.stream().mapToDouble(trip -> {
+            if (trip.getFlight() == null) {
+                return 0;
+            }
+            return trip.getFlight().getPrice();
+        }).sum();
+        Double totalLodgeCost = trips.stream().mapToDouble(trip -> {
+            Date departureDate = trip.getDepartureDate();
+            Date returnDate = trip.getReturnDate();
+            int nights = (int) ((returnDate.getTime() - departureDate.getTime()) / (1000 * 60 * 60 * 24));
+            return trip.getLodge().getNightPrice() * nights;
+        }).sum();
+        Double otherCosts = totalBudget - (totalActivitiesEstimatedCost + totalRestaurantsEstimatedCost + totalFlightCost + totalLodgeCost);
+        BudgetOverview budgetOverview = new BudgetOverview(totalFlightCost, totalLodgeCost, totalRestaurantsEstimatedCost, totalActivitiesEstimatedCost, otherCosts, totalBudget);
         return Optional.of(budgetOverview);
     }
 }
