@@ -1,10 +1,14 @@
 package com.project.demo.logic;
 
 import com.project.demo.entity.*;
+import com.project.demo.entity.request.PaginationRequest;
 import com.project.demo.logic.exceptions.TripServiceException;
 import com.project.demo.repository.TripRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.dao.OptimisticLockingFailureException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -75,6 +79,22 @@ public class TripService implements IService<Trip, Integer>{
     public List<Trip> findAll() {
         try {
             return tripRepository.findAllOperational();
+        } catch (Exception e) {
+            throw new TripServiceException(
+                    "Failed to retrieve all trips.",
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    "REPOSITORY_ERROR",
+                    "An error occurred while retrieving trips. Please try again later.",
+                    e
+            );
+        }
+    }
+
+    public PaginationRequest<List<Trip>> findAllByPage(Integer userId, Integer page, Integer size) {
+        try {
+            Pageable pageable = PageRequest.of(page, size);
+            Page<Trip> pageTrip = tripRepository.findByUserIdPage(userId, pageable);
+            return new PaginationRequest<List<Trip>>(pageTrip.getNumber(), pageTrip.getSize(), (int) pageTrip.getTotalElements(), pageTrip.getTotalPages(), pageTrip.getContent());
         } catch (Exception e) {
             throw new TripServiceException(
                     "Failed to retrieve all trips.",
