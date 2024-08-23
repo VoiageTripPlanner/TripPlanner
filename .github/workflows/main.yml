@@ -34,7 +34,7 @@ jobs:
       run: |
         echo "${SSH_KEY}" > id_rsa
         chmod 600 id_rsa
-        scp -i id_rsa demo/build/libs/demo-0.0.1-SNAPSHOT.jar ${USER}@${HOST}:/home/ubuntu/backend/demo.jar
+        scp -i id_rsa demo/build/libs/demo-0.0.1-SNAPSHOT.jar ${USER}@${HOST}:/home/ubuntu/backend
         ssh -i id_rsa ${USER}@${HOST} << EOF
         sudo systemctl stop spring-boot-app.service || true
         sudo cp /home/ubuntu/backend/demo.jar /opt/spring-boot-app/backend
