@@ -18,8 +18,8 @@ public interface UserRepository extends JpaRepository<User, Integer>  {
     List<User> findUsersWithCharacterInName(String character);
 
 
-    @Query("SELECT u FROM User u WHERE u.operational=true")
-    List<User> findUsersOperationalUsers();
+    @Query("SELECT u FROM User u WHERE u.operational=true AND u.user_id <> :id")
+    List<User> findUsersOperationalUsers(@Param("id") Integer id);
     @Query("SELECT u FROM User u WHERE u.name = ?1")
     Optional<User> findByName(String name);
 

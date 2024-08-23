@@ -1,5 +1,6 @@
 package com.project.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -19,9 +20,26 @@ public class Currency {
     private String currencyCode;
     @Column(name = "currency_symbol", nullable = false)
     private String currencySymbol;
-    @Transient
     @OneToMany(mappedBy = "currency")
+    @JsonIgnore
     private List<Country> countries;
+
+    public Currency(Integer currencyId) {
+        this.currencyId = currencyId;
+    }
+
+    public Currency() {
+    }
+
+
+
+    public List<Country> getCountries() {
+        return countries;
+    }
+
+    public void setCountries(List<Country> countries) {
+        this.countries = countries;
+    }
 
     public Integer getCurrencyId() {
         return currencyId;
@@ -55,11 +73,4 @@ public class Currency {
         this.currencySymbol = currencySymbol;
     }
 
-    public List<Country> getCountries() {
-        return countries;
-    }
-
-    public void setCountries(List<Country> countries) {
-        this.countries = countries;
-    }
 }

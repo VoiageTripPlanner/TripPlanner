@@ -2,11 +2,13 @@ package com.project.demo.logic;
 
 import com.project.demo.entity.*;
 import com.project.demo.entity.request.UserRequest;
+import com.project.demo.logic.exceptions.UserServiceException;
 import com.project.demo.repository.CountryRepository;
 import com.project.demo.repository.CurrencyRepository;
 import com.project.demo.repository.RoleRepository;
 import com.project.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -59,7 +61,11 @@ public class UserService implements IService<UserRequest, Integer> {
 
     @Override
     public List<UserRequest> findAll() {
-        return userRepository.findUsersOperationalUsers().stream()
+        return null;
+    }
+
+    public List<UserRequest> findAllMinusCurrent(Integer id) {
+        return userRepository.findUsersOperationalUsers(id).stream()
                 .map(user -> {
                     createUserRequest(user);
                     return userRequest;
@@ -129,5 +135,19 @@ public class UserService implements IService<UserRequest, Integer> {
         userRequest.setCreateAt(user.getCreation_datetime().toString());
         userRequest.setUpdateAt(user.getLast_update_datetime().toString());
         userRequest.setRoleId(user.getRole().getRole_id());
+    }
+
+    public User findByIdTrip(Integer id) {
+        try {
+            return userRepository.findById(id).orElse(null);
+        } catch (Exception e) {
+            throw new UserServiceException(
+                    "Failed to find user by ID.",
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    "REPOSITORY_ERROR",
+                    "An error occurred while finding the user. Please try again later.",
+                    e
+            );
+        }
     }
 }
