@@ -1,11 +1,18 @@
 package com.project.demo.logic;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.demo.entity.*;
+import com.project.demo.entity.request.OpenAIResponse;
+import com.project.demo.entity.request.PaginationRequest;
 import com.project.demo.logic.exceptions.TripServiceException;
+import com.project.demo.logic.request.OpenAIService;
 import com.project.demo.repository.CountryRepository;
 import com.project.demo.repository.TripRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.dao.OptimisticLockingFailureException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -19,12 +26,14 @@ public class TripService implements IService<Trip, Integer> {
     private final CurrencyService currencyService;
     private final UserService userService;
     private final CountryRepository countryRepository;
+    private final OpenAIService openAIService;
 
-    public TripService(TripRepository tripRepository, CurrencyService currencyService, UserService userService, CountryRepository countryRepository) {
+    public TripService(TripRepository tripRepository, CurrencyService currencyService, UserService userService, CountryRepository countryRepository, OpenAIService openAIService) {
         this.tripRepository = tripRepository;
         this.currencyService = currencyService;
         this.userService = userService;
         this.countryRepository = countryRepository;
+        this.openAIService = openAIService;
     }
 
     @Override
@@ -47,8 +56,8 @@ public class TripService implements IService<Trip, Integer> {
             entity.getActivities().forEach(activity -> activity.setTrip(entity));
 
             if (entity.getDestinationCountry() != null) {
-
-                Country country = findOrCreateCountry(entity.getDestinationCountry().getCountryName());
+                String countryName = extractCountryNameFromDestination(entity.getDestinationCountry().getCountryName());
+                Country country = countryRepository.findByCountryName(countryName).orElse(null);
                 if (country != null) {
                     entity.setDestinationCountry(country);
                 } else {
@@ -56,6 +65,7 @@ public class TripService implements IService<Trip, Integer> {
                 }
             }
             return tripRepository.save(entity);
+
         } catch (IllegalArgumentException e) {
             throw new TripServiceException(
                     "Failed to save trip: invalid entity.",
@@ -88,6 +98,22 @@ public class TripService implements IService<Trip, Integer> {
     public List<Trip> findAll() {
         try {
             return tripRepository.findAllOperational();
+        } catch (Exception e) {
+            throw new TripServiceException(
+                    "Failed to retrieve all trips.",
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    "REPOSITORY_ERROR",
+                    "An error occurred while retrieving trips. Please try again later.",
+                    e
+            );
+        }
+    }
+
+    public PaginationRequest<List<Trip>> findAllByPage(Integer userId, Integer page, Integer size) {
+        try {
+            Pageable pageable = PageRequest.of(page, size);
+            Page<Trip> pageTrip = tripRepository.findByUserIdPage(userId, pageable);
+            return new PaginationRequest<List<Trip>>(pageTrip.getNumber(), pageTrip.getSize(), (int) pageTrip.getTotalElements(), pageTrip.getTotalPages(), pageTrip.getContent());
         } catch (Exception e) {
             throw new TripServiceException(
                     "Failed to retrieve all trips.",
@@ -218,31 +244,29 @@ public class TripService implements IService<Trip, Integer> {
             );
         }
     }
+    private String extractCountryNameFromDestination(String destinationCountryName) {
+        try {
+            String query = String.format("{\"destination\": \"%s\"}", destinationCountryName);
+            String prompt = "You are an expert in geography. Extract the country name from the following text and format it with the first letter of each word in caps. Return only the country name.\n" +
+                    "Example: 'Barcelona, Spain' should return 'Spain'.\n" +
+                    "Text: " + destinationCountryName;
 
-    // Complementary methods
+            String openAIResponseString = openAIService.generateTravelSuggestions(query, prompt, null);
+            ObjectMapper objectMapper = new ObjectMapper();
+            OpenAIResponse openAIResponse = objectMapper.readValue(openAIResponseString, OpenAIResponse.class);
 
-    public static String normalizeCountryName(String countryName) {
-        if (countryName == null || countryName.isEmpty()) {
-            return countryName;
+            String content = openAIResponse.getChoices().get(0).getMessage().getContent();
+            content = content.replace("```json", "").replace("```", "").trim();
+
+            return content;
+        } catch (Exception e) {
+            throw new TripServiceException(
+                    "Failed to extract country name from destination.",
+                    HttpStatus.INTERNAL_SERVER_ERROR,
+                    "OPENAI_SERVICE_ERROR",
+                    "An error occurred while extracting the country name from the destination.",
+                    e
+            );
         }
-        String[] words = countryName.trim().split("\\s+");
-        StringBuilder normalized = new StringBuilder();
-        for (String word : words) {
-            if (!word.isEmpty()) {
-                normalized.append(Character.toUpperCase(word.charAt(0)));
-                normalized.append(word.substring(1).toLowerCase());
-                normalized.append(" ");
-            }
-        }
-        return normalized.toString().trim();
     }
-
-    public Country findOrCreateCountry(String countryName) {
-        String normalizedCountryName = normalizeCountryName(countryName);
-
-        return countryRepository.findByCountryName(normalizedCountryName).orElse(null);
-    }
-
-
 }
-   
