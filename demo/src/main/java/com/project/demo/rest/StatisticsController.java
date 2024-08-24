@@ -6,6 +6,7 @@ import com.project.demo.logic.StatisticsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,27 +18,19 @@ public class StatisticsController {
     @Autowired
     private StatisticsService statisticsService;
 
-    @GetMapping("/topCountryVisits")
-    public ResponseEntity<List<CountryVisit>> getTopCountryVisits() {
-        if (statisticsService.getTopCountryVisits().isEmpty()) {
+    @GetMapping("/countryVisits/{userId}")
+    public ResponseEntity<List<CountryVisit>> getCountryVisits(@PathVariable Integer userId) {
+        if (statisticsService.getCountryVisits(userId).isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(statisticsService.getTopCountryVisits().get());
+        return ResponseEntity.ok(statisticsService.getCountryVisits(userId).get());
     }
 
-    @GetMapping("/countryVisits")
-    public ResponseEntity<List<CountryVisit>> getCountryVisits() {
-        if (statisticsService.getCountryVisits().isEmpty()) {
+    @GetMapping("/budgetOverview/{userId}")
+    public ResponseEntity<BudgetOverview> getBudgetOverview(@PathVariable Integer userId) {
+        if (statisticsService.getBudgetOverview(userId).isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(statisticsService.getCountryVisits().get());
-    }
-
-    @GetMapping("/budgetOverview")
-    public ResponseEntity<BudgetOverview> getBudgetOverview() {
-        if (statisticsService.getBudgetOverview().isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(statisticsService.getBudgetOverview().get());
+        return ResponseEntity.ok(statisticsService.getBudgetOverview(userId).get());
     }
 }
